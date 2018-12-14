@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class StudentListGenerator {
-    List<Tutor> mTutorList = new ArrayList<>();//教师列表
+
     String mExcelPath;//excel路径
     List<Student> mStudentList = new ArrayList<>();
     List<Student> mWhiteList = new ArrayList<>();
@@ -23,22 +23,18 @@ public class StudentListGenerator {
         this.mExcelPath = excelPath;
     }
 
+    /**
+     * 如果没有的话，默认这个表存放在当前程序所在文件夹下，名字叫做cnm.xlsx
+     */
+    public StudentListGenerator(){
+        this.mExcelPath = System.getProperty("user.dir") + "/cnm.xlsx";
+    }
+
     public void start(){
-        this.getTutorList();
         this.setTargetStudents();
     }
 
-    /**
-     * 获取教师列表，将mTutorList中放入所有老师
-     */
-    private void getTutorList(){
-        List<People> people = ExcelReader.readSimpleExcel(mExcelPath, "辅导员");
-        Tutor t;
-        for(int i = 0; i < people.size(); i++){
-            t = (Tutor) people.get(i);
-            mTutorList.add(t);
-        }
-    }
+
 
     private void setTargetStudents(){
         //getWhiteList
@@ -76,11 +72,10 @@ public class StudentListGenerator {
      * 将mStudentList中加入失踪学生名单
      */
     private void getStudentList(){
-    //TODO
-    }
+        //TODO
+        List<Student> result = new ArrayList<>();
 
 
-    private void sendEmail(){
-    //TODO
     }
+
 }
