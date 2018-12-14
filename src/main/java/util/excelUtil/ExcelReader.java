@@ -65,25 +65,25 @@ public class ExcelReader {
                 tutorList.add(tutor);
             }
 
-            Collections.sort(tutorList, new Comparator<People>() {
-                //            @Override
-                public int compare(People p1, People p2) {
-                    Tutor t1 = (Tutor)p1;
-                    Tutor t2 = (Tutor)p2;
-                    if (t1.getInstitute().equals(t2.getInstitute())){
-                        if (t1.getGrade().equals("全部")){
-                            return -1;
-                        }
-                        else if (t2.getGrade().equals("全部")){
-                            return 1;
-                        }
-                        return Integer.valueOf(t1.getGrade()) - Integer.valueOf(t2.getGrade());
-                    }
-                    else {
-                        return t1.getInstitute().charAt(0) - t2.getInstitute().charAt(0);
-                    }
-                }
-            });
+//            Collections.sort(tutorList, new Comparator<People>() {
+//                //            @Override
+//                public int compare(People p1, People p2) {
+//                    Tutor t1 = (Tutor)p1;
+//                    Tutor t2 = (Tutor)p2;
+//                    if (t1.getInstitute().equals(t2.getInstitute())){
+//                        if (t1.getGrade().equals("全部")){
+//                            return -1;
+//                        }
+//                        else if (t2.getGrade().equals("全部")){
+//                            return 1;
+//                        }
+//                        return Integer.valueOf(t1.getGrade()) - Integer.valueOf(t2.getGrade());
+//                    }
+//                    else {
+//                        return t1.getInstitute().charAt(0) - t2.getInstitute().charAt(0);
+//                    }
+//                }
+//            });
             return tutorList;
         }
 
