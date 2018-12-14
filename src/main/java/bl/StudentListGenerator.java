@@ -16,7 +16,7 @@ public class StudentListGenerator {
     List<Student> mWhiteList = new ArrayList<>();
 
     /**
-     *
+     * 初始化时输入excel表所在位置.表中包含教师列表以及白名单
      * @param excelPath excel表所在的地址
      */
     public StudentListGenerator(String excelPath){
