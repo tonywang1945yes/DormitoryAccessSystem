@@ -1,8 +1,9 @@
-package util.excelUtil;
+package entity;
 
 import org.apache.poi.ss.usermodel.Row;
 
-public class Student extends People{
+public class Student extends People {
+
     private String institute;
     private String name;
     private String grade;
@@ -25,6 +26,10 @@ public class Student extends People{
         this.name = name;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getInstitute() {
         return institute;
     }
@@ -37,7 +42,19 @@ public class Student extends People{
         return grade;
     }
 
-    public String getId() {
-        return id;
+    public void setInstitute(String institute) {
+        this.institute = institute;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

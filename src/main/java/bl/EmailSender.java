@@ -1,9 +1,9 @@
 package bl;
 
+import entity.People;
+import entity.Student;
+import entity.Tutor;
 import util.excelUtil.ExcelReader;
-import util.excelUtil.People;
-import util.excelUtil.Student;
-import util.excelUtil.Tutor;
 import util.mailUtil.Mail;
 
 import java.util.ArrayList;

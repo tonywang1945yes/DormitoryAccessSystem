@@ -1,11 +1,12 @@
-package util.excelUtil;
+package entity;
 
 import org.apache.poi.ss.usermodel.Row;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
-
-public class Tutor extends People{
+public class Tutor extends People {
     private String institute;
     private String name;
     private String grade;
@@ -26,7 +27,6 @@ public class Tutor extends People{
         else {
             this.emailAddress = "";
         }
-
     }
 
     /**
@@ -55,6 +55,11 @@ public class Tutor extends People{
         return true;
     }
 
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
     public String getInstitute() {
         return institute;
     }
@@ -67,7 +72,20 @@ public class Tutor extends People{
         return grade;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public void setInstitute(String institute) {
+        this.institute = institute;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
 }

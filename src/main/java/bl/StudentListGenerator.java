@@ -1,8 +1,9 @@
 package bl;
 
 import util.excelUtil.ExcelReader;
-import util.excelUtil.People;
-import util.excelUtil.Student;
+import entity.People;
+import entity.Student;
+import entity.Tutor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,13 +50,22 @@ public class StudentListGenerator {
 
         //获取全部失踪学生
         getStudentList();
+        System.out.println("所有不在的学生有：");
+        for(Student a : mStudentList){
+            System.out.println(a.getInstitute() + " " + a.getName());
+        }
+        System.out.println();
 
         //将白名单中的学生去除
         removeSublist(mStudentList, mWhiteList);
 
+        System.out.println("除去白名单，不在的学生有：");
         for(Student a : mStudentList){
             System.out.println(a.getInstitute() + " " + a.getName());
         }
+        System.out.println();
+
+
 
     }
 
