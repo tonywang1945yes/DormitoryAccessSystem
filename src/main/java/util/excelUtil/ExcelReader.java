@@ -1,5 +1,8 @@
 package util.excelUtil;
 
+import entity.People;
+import entity.Student;
+import entity.Tutor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
