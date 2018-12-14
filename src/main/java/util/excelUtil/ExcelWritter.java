@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,6 +60,10 @@ public class ExcelWritter {
 //        新建文件
         FileOutputStream out = null;
         try {
+            File file = new File(filepath).getParentFile();
+            if (!file.exists()){
+                file.mkdirs();
+            }
             out = new FileOutputStream(filepath);
             workbook.write(out);
         } catch (FileNotFoundException e) {

@@ -10,7 +10,6 @@ public class Tutor extends People {
     private String name;
     private String grade;
     private String emailAddress;
-    private List<Student> studentList;
 
     /**
      * 通过传入某一行来构造一个Tutor对象
@@ -26,7 +25,6 @@ public class Tutor extends People {
         else {
             this.emailAddress = "";
         }
-        this.studentList = new ArrayList<>();
     }
 
     /**
@@ -88,11 +86,4 @@ public class Tutor extends People {
         this.emailAddress = emailAddress;
     }
 
-    public List<Student> getStudentList() {
-        return studentList;
-    }
-
-    public void addStudent(Student student) {
-        this.studentList.add(student);
-    }
 }
