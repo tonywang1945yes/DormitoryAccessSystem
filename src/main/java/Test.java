@@ -9,7 +9,7 @@ import util.mailUtil.Mail;
  */
 public class Test {
     public static void main(String[] args) {
-        StudentListGenerator slg = new StudentListGenerator("")
+        StudentListGenerator slg = new StudentListGenerator("");
     }
 
 }

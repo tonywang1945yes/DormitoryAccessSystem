@@ -18,6 +18,12 @@ public class Student extends People{
         this.name = row.getCell(1).toString();
         this.id = row.getCell(2).toString().substring(0, row.getCell(2).toString().length() - 2);
     }
+    public Student(String institute, String name, String grade, String id){
+        this.id = id;
+        this.institute = institute;
+        this.grade = grade;
+        this.name = name;
+    }
 
     public String getInstitute() {
         return institute;
