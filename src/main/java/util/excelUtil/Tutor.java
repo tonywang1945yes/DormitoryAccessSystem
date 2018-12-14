@@ -6,7 +6,7 @@ public class Tutor {
     String institute;
     String name;
     String grade;
-    String emailAddress;
+    public String emailAddress;
 
     public Tutor(Row row){
         this.institute = row.getCell(0).toString();
