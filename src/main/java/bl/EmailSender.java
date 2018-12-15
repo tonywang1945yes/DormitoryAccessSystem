@@ -4,7 +4,6 @@ import entity.People;
 import entity.Student;
 import entity.Tutor;
 import util.excelUtil.ExcelReader;
-import util.mailUtil.Mail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +70,7 @@ public class EmailSender {
             t = mTutorList.get(i);
             for(int j = 0; j < mStudentList.size(); j++){
                 s = mStudentList.get(j);
-                if(!notSameProp(t, s)){
+                if(SameProp(t, s)){
                     //一样的年级、院系
                     text += s.getId() + s.getName() + "\n";
                 }
@@ -98,10 +97,10 @@ public class EmailSender {
      * @param b 学生
      * @return
      */
-    private boolean notSameProp(Tutor a, Student b){
+    private boolean SameProp(Tutor a, Student b){
         if(!a.getInstitute().equals(b.getInstitute())){
-            return true;
-        }else if(!a.getGrade().contains(b.getGrade())){
+            return false;
+        }else if(a.getGrade().contains(b.getGrade()) || a.getGrade().equals("全部")){
             return true;
         }
         return false;
