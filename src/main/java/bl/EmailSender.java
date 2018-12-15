@@ -31,7 +31,7 @@ public class EmailSender {
      */
     public EmailSender(){
         this.mInputExcelPath = System.getProperty("user.dir") + "\\input.xlsx";
-        this.mStudentExcelPath = System.getProperty("user.dir") + "\\student.xlsx";
+        this.mStudentExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
         //this.mInputExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\input.xlsx";
         //this.mStudentExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\student.xlsx";
     }
@@ -47,7 +47,7 @@ public class EmailSender {
      * 获取教师列表，将mTutorList中放入所有老师
      */
     private void getTutorList(){
-        List<People> people = ExcelReader.readSimpleExcel(mStudentExcelPath, "辅导员");
+        List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "辅导员");
         Tutor t;
         for(int i = 0; i < people.size(); i++){
             t = (Tutor) people.get(i);
@@ -113,7 +113,7 @@ public class EmailSender {
      * 获得黑名单
      */
     private void getStudentList(){
-        List<People> people = ExcelReader.readSimpleExcel(mStudentExcelPath, "白名单");
+        List<People> people = ExcelReader.readSimpleExcel(mStudentExcelPath, "学生名单");
         Student s;
         for(int i = 0; i < people.size(); i++){
             s = (Student) people.get(i);

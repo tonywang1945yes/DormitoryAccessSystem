@@ -4,6 +4,7 @@ import util.excelUtil.ExcelReader;
 import entity.People;
 import entity.Student;
 import entity.Tutor;
+import util.excelUtil.ExcelWritter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,23 +13,27 @@ import java.util.List;
 public class StudentListGenerator {
 
     String mInputExcelPath;//excel路径
+    String mOutputExcelPath;
     List<Student> mStudentList = new ArrayList<>();
     List<Student> mWhiteList = new ArrayList<>();
 
 
     /**
      * 初始化时输入excel表所在位置.表中包含教师列表以及白名单
-     * @param excelPath excel表所在的地址
+     * @param inputExcelPath 输入表所在的地址
+     * @param outputExcelpath 输出的表格的位置
      */
-    public StudentListGenerator(String excelPath){
-        this.mInputExcelPath = excelPath;
+    public StudentListGenerator(String inputExcelPath, String outputExcelpath){
+        this.mInputExcelPath = inputExcelPath;
+        this.mOutputExcelPath = outputExcelpath;
     }
 
     /**
-     * 如果没有的话，默认这个表存放在当前程序所在文件夹下，名字叫做cnm.xlsx
+     * 如果没有的话，默认这个表存放在当前程序所在文件夹下，名字叫做input.xlsx
      */
     public StudentListGenerator(){
-        this.mInputExcelPath = System.getProperty("user.dir") + "/cnm.xlsx";
+        this.mInputExcelPath = System.getProperty("user.dir") + "\\input.xlsx";
+        this.mOutputExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
     }
 
     public void start(){
@@ -65,6 +70,7 @@ public class StudentListGenerator {
         }
         System.out.println();
 
+        ExcelWritter.writeSimpleExcel(mStudentList, mOutputExcelPath);
 
 
     }
@@ -97,9 +103,10 @@ public class StudentListGenerator {
         //TODO
         List<Student> result = new ArrayList<>();
         mStudentList.add(new Student("软件学院", "冯二", "2017", "1"));
-        mStudentList.add(new Student("商学院", "李六", "2017", "5"));
+        mStudentList.add(new Student("商学院", "李六", "2017", "MG5"));
         mStudentList.add(new Student("文学院", "张三", "2018", "4"));
         mStudentList.add(new Student("软件学院", "cnm", "2016", "2"));
+        mStudentList.add(new Student("软件学院", "haha", "2016", "9"));
     }
 
 
