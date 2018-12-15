@@ -15,9 +15,17 @@ public class Student extends People {
      */
     public Student(Row row){
         this.institute = row.getCell(0).toString();
-        this.grade = row.getCell(3).toString().substring(0, row.getCell(3).toString().length() - 2);
+        String grade = row.getCell(3).toString();
+        if (grade.endsWith(".0")){
+            grade = grade.substring(0, grade.length() - 2);
+        }
+        this.grade = grade;
         this.name = row.getCell(1).toString();
-        this.id = row.getCell(2).toString().substring(0, row.getCell(2).toString().length() - 2);
+        String id = row.getCell(2).toString();
+        if (id.endsWith(".0")){
+            id = id.substring(0, id.length() - 2);
+        }
+        this.id = id;
     }
     public Student(String institute, String name, String grade, String id){
         this.id = id;
