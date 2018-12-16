@@ -30,9 +30,7 @@ public class StudentListGenerator{
      */
     public StudentListGenerator(String inputExcelPath, String password){
         this.mInputExcelPath = inputExcelPath;
-        this.mOutputExcelPath = inputExcelPath;
-        //TODO
-        //要稍加修改output的文件名。
+        this.mOutputExcelPath = inputExcelPath.substring(0, inputExcelPath.lastIndexOf("\\")) + "\\output.xlsx";
         this.mPassword = password;
     }
 

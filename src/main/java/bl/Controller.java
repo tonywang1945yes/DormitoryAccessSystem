@@ -7,6 +7,7 @@ import service.DASservice;
 public class Controller implements DASservice{
     String mInputExcelPath;
     String mOutputExcelPath;
+
     public ListGeneratResult StudentListGenerate(String excelPath, String password){
         this.mInputExcelPath = excelPath;
         StudentListGenerator slg = new StudentListGenerator(excelPath, password);
@@ -15,6 +16,7 @@ public class Controller implements DASservice{
             this.mOutputExcelPath = slg.getOutputExcelPath();
         }catch (Exception e){
             System.out.println(e.getMessage());
+            e.printStackTrace();
             return ListGeneratResult.No_Such_File;
         }
 
