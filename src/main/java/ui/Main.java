@@ -20,8 +20,7 @@ import  javafx.scene.control.TextField;
 
 public class Main extends Application {
     public static Label resultLabel=new Label();
-    public static StudentListGenerator generator;
-    public static EmailSender sender;
+    public static boolean isvisited=false;
     public static TextField path;
     public static PasswordField password;
     public static String filepath;
@@ -39,11 +38,21 @@ public class Main extends Application {
         HBox hbox1=new HBox();
         HBox hbox2=new HBox();
         HBox hbox3=new HBox();
+        HBox hbox4=new HBox();
+        HBox hbox5=new HBox();
+
         vbox1.getChildren().add(hbox1);
+        vbox1.getChildren().add(hbox4);
         vbox1.getChildren().add(hbox2);
+        vbox1.getChildren().add(hbox5);
         vbox1.getChildren().add(hbox3);
         //应该是 一列两行的意思
 
+        Label num=new Label("");
+        hbox4.getChildren().add(num);
+        Label numm=new Label("");
+        hbox5.getChildren().add(numm);
+        //手动换行
 
         Label pathlabel=new Label("文件路径：");
          path=new TextField();
@@ -79,7 +88,7 @@ public class Main extends Application {
         hbox1.setPrefSize(400,30);
         hbox1.setMinSize(400,30);
         vbox1.setLayoutX(20);
-        vbox1.setLayoutY(100);
+        vbox1.setLayoutY(80);
 
 
 
