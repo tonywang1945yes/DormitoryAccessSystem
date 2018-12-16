@@ -100,6 +100,18 @@ public class StudentListGenerator {
         mStudentList.add(new Student("商学院", "李六", "2017", "5"));
         mStudentList.add(new Student("文学院", "张三", "2018", "4"));
         mStudentList.add(new Student("软件学院", "cnm", "2016", "2"));
+        mStudentList.add(new Student("软件学院", "冯三", "2017", "1"));
+        mStudentList.add(new Student("商学院", "李六六", "2017", "5"));
+        mStudentList.add(new Student("文学院", "张三三", "2018", "4"));
+        mStudentList.add(new Student("软件学院", "cnmm", "2016", "2"));
+        mStudentList.add(new Student("软件学院", "冯二二二", "2017", "1"));
+        mStudentList.add(new Student("商学院", "李六六六", "2017", "5"));
+        mStudentList.add(new Student("文学院", "张三三三", "2018", "4"));
+        mStudentList.add(new Student("软件学院", "cnmmm", "2016", "2"));
+        mStudentList.add(new Student("软件学院", "冯二二二", "2017", "1"));
+        mStudentList.add(new Student("商学院", "李六六六", "2017", "5"));
+        mStudentList.add(new Student("文学院", "张三三三", "2018", "4"));
+        mStudentList.add(new Student("软件学院", "cnmm", "2016", "2"));
     }
 
 
