@@ -7,6 +7,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import util.excelUtil.ExcelException.FileNotClosable;
+import util.excelUtil.ExcelException.FileNotWritable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +23,8 @@ public class ExcelWritter {
      * @param studentList（已排好序）
      * @param filepath
      */
-    public static void writeSimpleExcel(List<Student> studentList, String filepath){
+    public static void writeSimpleExcel(List<Student> studentList, String filepath)
+            throws FileNotFoundException, FileNotWritable, FileNotClosable {
 
         Workbook workbook;
         if (filepath.endsWith(".xls")){
@@ -66,15 +69,13 @@ public class ExcelWritter {
             }
             out = new FileOutputStream(filepath);
             workbook.write(out);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileNotWritable("The file cannot be written to.");
         } finally {
             try {
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new FileNotClosable("The file cannot be closed normally.");
             }
         }
 
