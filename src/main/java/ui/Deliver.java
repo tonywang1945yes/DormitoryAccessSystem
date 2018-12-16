@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 public class Deliver implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
+        Main.resultLabel.setText("正在发送");
         Main.sender=new EmailSender();
         Main.sender.start();
         Main.resultLabel.setText("已发送给各院系辅导员。");
