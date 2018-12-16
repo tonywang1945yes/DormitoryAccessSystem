@@ -19,7 +19,11 @@ public class Tutor extends People {
      */
     public Tutor(Row row){
         this.institute = row.getCell(0).toString();
-        this.grade = row.getCell(1).toString().substring(0, row.getCell(1).toString().length() - 2);
+        String grade = row.getCell(1).toString();
+        if (grade.endsWith(".0")){
+            grade = grade.substring(0, grade.length() - 2);
+        }
+        this.grade = grade;
         this.name = row.getCell(2).toString();
         if (checkValid(row.getCell(3).toString())){
             this.emailAddress = row.getCell(3).toString();

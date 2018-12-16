@@ -56,7 +56,7 @@ public class ExcelReader {
             return null;
         }
         Sheet sheet = workbook.getSheet(sheetName);
-        if (sheetName == "辅导员") {
+        if (sheetName.equals("辅导员")) {
 
 
             List<People> tutorList = new ArrayList();
@@ -88,7 +88,7 @@ public class ExcelReader {
             return tutorList;
         }
 
-        else if (sheetName == "白名单"){
+        else if (sheetName.equals("白名单") || sheetName.equals("学生名单")){
 
             List<People> studentList = new ArrayList<>();
             int rowNum = sheet.getLastRowNum();
