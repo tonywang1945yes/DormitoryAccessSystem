@@ -27,10 +27,16 @@ public class Main extends Application {
     public static Controller controller=new Controller();
 
     public void start(Stage primaryStage) throws Exception {
-
+        ImageView mv=new ImageView();
         AnchorPane panel=new AnchorPane();
+        panel.getChildren().add(mv);
+        Image image=new Image(this.getClass().getResource("singal.jpg").toExternalForm(),true);
+        mv.setImage(image);
+        mv.setOpacity(0.2);
+        mv.setLayoutX(65);
         panel.setMaxSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
         panel.setMaxSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
+        panel.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
 
         VBox vbox1=new VBox();
         panel.getChildren().add(vbox1);
@@ -57,7 +63,8 @@ public class Main extends Application {
         Label pathlabel=new Label("文件路径：");
          path=new TextField();
         path.setEditable(false);
-        path.setPromptText("在此输入表格路径");
+        path.setPromptText("");
+        path.setOpacity(0.7);
         Button setpath=new Button("选择路径");
         hbox1.getChildren().add(pathlabel);
         hbox1.getChildren().add(path);
@@ -68,6 +75,7 @@ public class Main extends Application {
         this.password=new PasswordField();
 
         this.password.setPromptText("在此输入密码");
+        this.password.setOpacity(0.7);
         hbox2.getChildren().add(password);
         hbox2.getChildren().add(this.password);
 
@@ -77,8 +85,10 @@ public class Main extends Application {
         setfield.setText("欢迎使用：");
         Button setxlsx=new Button();
         setxlsx.setText("点此生成名单");
+        setxlsx.setOpacity(1);
         Button deliver=new Button();
         deliver.setText("点此发送名单");
+        deliver.setOpacity(1);
 
         hbox3.getChildren().add(setfield);
         hbox3.getChildren().add(setxlsx);
