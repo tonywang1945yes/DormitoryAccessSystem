@@ -15,6 +15,7 @@ public class Controller implements DASservice{
             this.mOutputExcelPath = slg.getOutputExcelPath();
         }catch (Exception e){
             System.out.println(e.getMessage());
+            return ListGeneratResult.No_Such_File;
         }
 
         return ListGeneratResult.Success;
@@ -26,6 +27,7 @@ public class Controller implements DASservice{
             es.start();
         }catch (Exception e){
             e.printStackTrace();
+            return MailResult.NOT_OK;
         }
         return MailResult.OK;
     }
