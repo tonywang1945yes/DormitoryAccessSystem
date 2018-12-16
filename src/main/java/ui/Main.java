@@ -1,7 +1,9 @@
 package ui;
 
+import bl.Controller;
 import bl.EmailSender;
 import bl.StudentListGenerator;
+import service.DASservice;
 import entity.Student;
 import java.lang.*;
 import javafx.application.Application;
@@ -21,6 +23,7 @@ public class Main extends Application {
     public static TextField path;
     public static PasswordField password;
     public static String filepath;
+    public static Controller controller=new Controller();
 
     public void start(Stage primaryStage) throws Exception {
 

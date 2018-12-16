@@ -1,5 +1,7 @@
 package bl;
 
+import entity.ListGeneratResult;
+import service.DASservice;
 import util.excelUtil.ExcelReader;
 import entity.People;
 import entity.Student;
@@ -10,22 +12,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class StudentListGenerator {
+public class StudentListGenerator{
 
     String mInputExcelPath;//excel路径
     String mOutputExcelPath;
+    String mPassword;
     List<Student> mStudentList = new ArrayList<>();
     List<Student> mWhiteList = new ArrayList<>();
 
 
+
+
     /**
-     * 初始化时输入excel表所在位置.表中包含教师列表以及白名单
+     * 初始化时输入excel表所在位置.表中包含教师列表以及白名单 ...
      * @param inputExcelPath 输入表所在的地址
-     * @param outputExcelpath 输出的表格的位置
+     * @param password 数据库密码
      */
-    public StudentListGenerator(String inputExcelPath, String outputExcelpath){
+    public StudentListGenerator(String inputExcelPath, String password){
         this.mInputExcelPath = inputExcelPath;
-        this.mOutputExcelPath = outputExcelpath;
+        this.mOutputExcelPath = inputExcelPath.substring(0, inputExcelPath.lastIndexOf("\\")) + "\\output.xlsx";
+        this.mPassword = password;
     }
 
     /**
@@ -38,6 +44,10 @@ public class StudentListGenerator {
 
     public void start(){
         this.setTargetStudents();
+    }
+
+    public String getOutputExcelPath(){
+        return mOutputExcelPath;
     }
 
 
