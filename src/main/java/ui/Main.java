@@ -30,7 +30,7 @@ public class Main extends Application {
         ImageView mv=new ImageView();
         AnchorPane panel=new AnchorPane();
         panel.getChildren().add(mv);
-        Image image=new Image(this.getClass().getResource("singal.jpg").toExternalForm(),true);
+        Image image=new Image(this.getClass().getResource("/ui/singal.jpg").toExternalForm(),true);
         mv.setImage(image);
         mv.setOpacity(0.2);
         mv.setLayoutX(65);
