@@ -11,6 +11,5 @@ public class Setpath  implements EventHandler<javafx.scene.input.MouseEvent> {
         filechoose.getFilePath();
         Main.path.setText(filechoose.path);
         Main.filepath=filechoose.path;
-        Main.filepath=Main.filepath+"\\cnm.xlsx";
     }
 }

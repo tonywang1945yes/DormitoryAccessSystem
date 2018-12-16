@@ -8,7 +8,7 @@ public class Filechoose {
     public void getFilePath(){
 
         JFileChooser fc=new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);//只能选择目录
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         String path=null;
         File f=null;
         int flag=0;

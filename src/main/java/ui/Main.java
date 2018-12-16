@@ -3,6 +3,8 @@ package ui;
 import bl.Controller;
 import bl.EmailSender;
 import bl.StudentListGenerator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import service.DASservice;
 import entity.Student;
 import java.lang.*;
@@ -28,7 +30,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         AnchorPane panel=new AnchorPane();
-
         panel.setMaxSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
         panel.setMaxSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
 
@@ -46,6 +47,7 @@ public class Main extends Application {
 
         Label pathlabel=new Label("文件路径：");
          path=new TextField();
+        path.setEditable(false);
         path.setPromptText("在此输入表格路径");
         Button setpath=new Button("选择路径");
         hbox1.getChildren().add(pathlabel);
