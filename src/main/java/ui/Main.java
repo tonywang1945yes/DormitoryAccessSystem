@@ -115,7 +115,7 @@ public class Main extends Application {
 
         Scene scene=new Scene(panel, BoundarySize.WIDTH, BoundarySize.HEIGHT);
 
-        primaryStage.setTitle("javafx 实例");
+        primaryStage.setTitle("Dormitory Access System");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
