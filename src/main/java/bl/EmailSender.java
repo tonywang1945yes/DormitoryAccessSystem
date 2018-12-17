@@ -4,9 +4,14 @@ import entity.People;
 import entity.Student;
 import entity.Tutor;
 import ui.Main;
+import util.excelUtil.ExcelException.FileNotFoundException;
 import util.excelUtil.ExcelReader;
 import util.mailUtil.Mail;
+import util.mailUtil.mailException.MailException;
 
+import javax.mail.MessagingException;
+import java.security.GeneralSecurityException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,49 +19,38 @@ public class EmailSender {
 
     private List<Student> mStudentList = new ArrayList<>();
     private String mStudentExcelPath;//之前输出的缺席学生名单
-    private String mInputExcelPath;//最开始输入老师的文件
-    List<Tutor> mTutorList = new ArrayList<>();//教师列表
+    List<Tutor> mTutorList;//教师列表
+
 
     /**
      * 所有失踪、不在白名单内的学生列表的excel位置
-     * @param inputExcelPath 最开始的输入文件
+     *
      * @param studentExcelPath 里面是缺席的学生名单
      */
-    public EmailSender(String inputExcelPath, String studentExcelPath){
+    public EmailSender(List<Tutor> tutorList, String studentExcelPath){
         this.mStudentExcelPath = studentExcelPath;
-        this.mInputExcelPath = inputExcelPath;
+        this.mTutorList = tutorList;
     }
 
     /**
      * 没有地址，默认input在当前文件夹下的cnm.xlsx，默认student在次文件夹的haha.xlsx
      */
-    public EmailSender(){
-        this.mInputExcelPath = System.getProperty("user.dir") + "\\input.xlsx";
+    public EmailSender(List<Tutor> tutorList){
+        this.mTutorList = tutorList;
         this.mStudentExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
         //this.mInputExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\input.xlsx";
         //this.mStudentExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\student.xlsx";
     }
 
-    public void start(){
+    public void start() throws MailException, GeneralSecurityException,MessagingException, java.io.FileNotFoundException{
         this.getStudentList();
-        this.getTutorList();
         this.sendEmail();
 
     }
 
-    /**
-     * 获取教师列表，将mTutorList中放入所有老师
-     */
-    private void getTutorList(){
-        List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "辅导员");
-        Tutor t;
-        for(int i = 0; i < people.size(); i++){
-            t = (Tutor) people.get(i);
-            mTutorList.add(t);
-        }
-    }
 
-    private void sendEmail(){
+
+    private void sendEmail() throws MailException, GeneralSecurityException,MessagingException{
         //全校没有一个人缺席的情况
         if(mStudentList.size() == 0){
             return;
@@ -83,13 +77,11 @@ public class EmailSender {
                 text = "以下学生失联\n" + text;
             }
             text = t.getName() + "您好，这一次" + t.getInstitute() + "的" + t.getGrade() + "学生夜不归宿情况是:\n" + text;
-            try{
-                System.out.println(text);
-                Thread.sleep(500);
-                //Mail.sendSimpleMail("1250925329@qq.com", "nrmwztvhmdlsgfdi", t.getEmailAddress(), text);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+
+            System.out.println(text);
+            //Thread.sleep(500);
+            Mail.sendSimpleMail("1250925329@qq.com", "noalhxlgbyndgdgc", "主题",t.getEmailAddress(), text);
+
 
         }
     }
@@ -114,7 +106,7 @@ public class EmailSender {
     /**
      * 获得黑名单
      */
-    private void getStudentList(){
+    private void getStudentList() throws java.io.FileNotFoundException {
         List<People> people = ExcelReader.readSimpleExcel(mStudentExcelPath, "学生名单");
         Student s;
         for(int i = 0; i < people.size(); i++){

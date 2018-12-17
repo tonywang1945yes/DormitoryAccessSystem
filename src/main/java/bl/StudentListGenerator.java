@@ -2,12 +2,15 @@ package bl;
 
 import entity.ListGeneratResult;
 import service.DASservice;
+import util.excelUtil.ExcelException.FileNotClosable;
+import util.excelUtil.ExcelException.FileNotWritable;
 import util.excelUtil.ExcelReader;
 import entity.People;
 import entity.Student;
 import entity.Tutor;
 import util.excelUtil.ExcelWritter;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +22,7 @@ public class StudentListGenerator{
     String mPassword;
     List<Student> mStudentList = new ArrayList<>();
     List<Student> mWhiteList = new ArrayList<>();
+    List<Tutor> mTutorList = new ArrayList<>();//教师列表
 
 
 
@@ -42,19 +46,31 @@ public class StudentListGenerator{
         this.mOutputExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
     }
 
-    public void start(){
+    public void start() throws FileNotFoundException, FileNotWritable, FileNotClosable{
         this.setTargetStudents();
+        this.setTutorList();
     }
 
     public String getOutputExcelPath(){
         return mOutputExcelPath;
     }
 
+    /**
+     * 获取教师列表，将mTutorList中放入所有老师
+     */
+    private void setTutorList() throws  FileNotFoundException{
+        List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "辅导员");
+        Tutor t;
+        for(int i = 0; i < people.size(); i++){
+            t = (Tutor) people.get(i);
+            mTutorList.add(t);
+        }
+    }
 
     /**
      * 获得所有失踪且不在黑名单中的学生
      */
-    private void setTargetStudents(){
+    private void setTargetStudents() throws FileNotWritable, FileNotClosable, FileNotFoundException {
         //getWhiteList
         List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "白名单");
         Student s;
@@ -104,7 +120,9 @@ public class StudentListGenerator{
         }
     }
 
-
+    public List<Tutor> getTutorList() {
+        return mTutorList;
+    }
 
     /**
      * 将mStudentList中加入失踪学生名单
