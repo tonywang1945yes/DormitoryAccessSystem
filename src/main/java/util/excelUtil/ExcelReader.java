@@ -26,7 +26,8 @@ public class ExcelReader {
      * @param sheetName
      * @return
      */
-    public static List<People> readSimpleExcel(String filepath, String sheetName){
+    public static List<People> readSimpleExcel(String filepath, String sheetName)
+            throws FileNotFoundException{
         Workbook workbook = null;
 
 //        由路径获取文件并解析
@@ -45,10 +46,8 @@ public class ExcelReader {
             else {
                 workbook = null;
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileNotFoundException("The file cannot be found.");
         }
 
 //        读取文件内容
