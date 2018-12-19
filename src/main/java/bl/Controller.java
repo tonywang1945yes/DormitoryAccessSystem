@@ -1,5 +1,8 @@
 package bl;
 
+import dao.DriverErrorException;
+import dao.LoggingInExeption;
+import dao.SQLServerConnectException;
 import entity.ListGeneratResult;
 import entity.MailResult;
 import entity.Tutor;
@@ -25,10 +28,23 @@ public class Controller implements DASservice{
             slg.start();
             mTutorList = slg.getTutorList();
             this.mOutputExcelPath = slg.getOutputExcelPath();
-        }catch (Exception e){
+        }catch (FileNotFoundException | FileNotWritable |
+                FileNotClosable e){
             System.out.println(e.getMessage());
             e.printStackTrace();
             return ListGeneratResult.No_Such_File;
+        }catch (DriverErrorException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return ListGeneratResult.Driver_Error;
+        }catch (LoggingInExeption e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return ListGeneratResult.Wrong_Password;
+        }catch (SQLServerConnectException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return ListGeneratResult.Connection_Error;
         }
 
         return ListGeneratResult.Success;
@@ -42,7 +58,7 @@ public class Controller implements DASservice{
             e.printStackTrace();
             return MailResult.NOT_OK;
         }catch (java.io.FileNotFoundException e){
-            return MailResult.No_SUCH_FILE;
+            return MailResult.No_FILE;
         }
         return MailResult.OK;
     }

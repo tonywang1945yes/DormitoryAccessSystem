@@ -1,5 +1,9 @@
 package bl;
 
+import dao.DBInquirer;
+import dao.DriverErrorException;
+import dao.LoggingInExeption;
+import dao.SQLServerConnectException;
 import entity.ListGeneratResult;
 import service.DASservice;
 import util.excelUtil.ExcelException.FileNotClosable;
@@ -46,7 +50,8 @@ public class StudentListGenerator{
         this.mOutputExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
     }
 
-    public void start() throws FileNotFoundException, FileNotWritable, FileNotClosable{
+    public void start() throws FileNotFoundException, FileNotWritable,
+            FileNotClosable, DriverErrorException,LoggingInExeption, SQLServerConnectException{
         this.setTargetStudents();
         this.setTutorList();
     }
@@ -70,7 +75,7 @@ public class StudentListGenerator{
     /**
      * 获得所有失踪且不在黑名单中的学生
      */
-    private void setTargetStudents() throws FileNotWritable, FileNotClosable, FileNotFoundException {
+    private void setTargetStudents() throws FileNotWritable, FileNotClosable, FileNotFoundException, DriverErrorException,LoggingInExeption, SQLServerConnectException {
         //getWhiteList
         List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "白名单");
         Student s;
@@ -127,9 +132,10 @@ public class StudentListGenerator{
     /**
      * 将mStudentList中加入失踪学生名单
      */
-    private void getStudentList(){
+    private void getStudentList() throws DriverErrorException, LoggingInExeption, SQLServerConnectException {
         //TODO
         List<Student> result = new ArrayList<>();
+        result = DBInquirer.querySuspiciousStudent("cnm", mPassword);
         mStudentList.add(new Student("软件学院", "冯二", "2017", "1"));
         mStudentList.add(new Student("商学院", "李六", "2017", "5"));
         mStudentList.add(new Student("文学院", "张三", "2018", "4"));
