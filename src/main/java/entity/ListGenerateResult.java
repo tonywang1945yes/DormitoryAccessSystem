@@ -1,5 +1,5 @@
 package entity;
 
-public enum ListGeneratResult {
+public enum ListGenerateResult {
     No_Such_File, Wrong_Password, Success, Connection_Error, Driver_Error
 }

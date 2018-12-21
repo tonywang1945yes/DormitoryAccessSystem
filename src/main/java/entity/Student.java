@@ -8,6 +8,7 @@ public class Student extends People {
     private String name;
     private String grade;
     private String id;
+    private String dormitory;
 
     /**
      * 通过传入某一行来构造一个Student对象
@@ -26,12 +27,18 @@ public class Student extends People {
             id = id.substring(0, id.length() - 2);
         }
         this.id = id;
+        String dormitory=row.getCell(4).toString();
+        if (dormitory.endsWith(".0")){
+            dormitory = dormitory.substring(0, grade.length() - 2);
+        }
+        this.dormitory=dormitory;
     }
-    public Student(String institute, String name, String grade, String id){
+    public Student(String institute, String name, String grade, String id,String dormitory){
         this.id = id;
         this.institute = institute;
         this.grade = grade;
         this.name = name;
+        this.dormitory=dormitory;
     }
 
     public String getId() {
@@ -49,6 +56,8 @@ public class Student extends People {
     public String getGrade() {
         return grade;
     }
+
+    public String getDormitory(){return dormitory;}
 
     public void setInstitute(String institute) {
         this.institute = institute;
