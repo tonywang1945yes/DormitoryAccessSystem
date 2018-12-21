@@ -1,9 +1,9 @@
 package service;
 
-import entity.ListGeneratResult;
+import entity.ListGenerateResult;
 import entity.MailResult;
 
 public interface DASservice {
-    public ListGeneratResult StudentListGenerate(String excelPath, String password);
+    public ListGenerateResult StudentListGenerate(String excelPath, String password);
     public MailResult MailSend();
 }

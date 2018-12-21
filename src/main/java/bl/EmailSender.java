@@ -79,8 +79,12 @@ public class EmailSender {
             text = t.getName() + "您好，这一次" + t.getInstitute() + "的" + t.getGrade() + "学生夜不归宿情况是:\n" + text;
 
             System.out.println(text);
-            //Thread.sleep(500);
-            Mail.sendSimpleMail("1250925329@qq.com", "noalhxlgbyndgdgc", "主题",t.getEmailAddress(), text);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //Mail.sendSimpleMail("1250925329@qq.com", "noalhxlgbyndgdgc", "主题",t.getEmailAddress(), text);
 
 
         }

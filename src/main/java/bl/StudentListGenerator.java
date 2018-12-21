@@ -4,8 +4,6 @@ import dao.DBInquirer;
 import dao.DriverErrorException;
 import dao.LoggingInExeption;
 import dao.SQLServerConnectException;
-import entity.ListGeneratResult;
-import service.DASservice;
 import util.excelUtil.ExcelException.FileNotClosable;
 import util.excelUtil.ExcelException.FileNotWritable;
 import util.excelUtil.ExcelReader;
@@ -135,7 +133,7 @@ public class StudentListGenerator{
     private void getStudentList() throws DriverErrorException, LoggingInExeption, SQLServerConnectException {
         //TODO
         List<Student> result = new ArrayList<>();
-        result = DBInquirer.querySuspiciousStudent("cnm", mPassword);
+        //result = DBInquirer.querySuspiciousStudent("cnm", mPassword);
         mStudentList.add(new Student("软件学院", "冯二", "2017", "1"));
         mStudentList.add(new Student("商学院", "李六", "2017", "5"));
         mStudentList.add(new Student("文学院", "张三", "2018", "4"));

@@ -3,7 +3,7 @@ package bl;
 import dao.DriverErrorException;
 import dao.LoggingInExeption;
 import dao.SQLServerConnectException;
-import entity.ListGeneratResult;
+import entity.ListGenerateResult;
 import entity.MailResult;
 import entity.Tutor;
 import service.DASservice;
@@ -21,7 +21,7 @@ public class Controller implements DASservice{
     String mOutputExcelPath;
     List<Tutor> mTutorList;
 
-    public ListGeneratResult StudentListGenerate(String excelPath, String password){
+    public ListGenerateResult StudentListGenerate(String excelPath, String password){
         this.mInputExcelPath = excelPath;
         try{
             StudentListGenerator slg = new StudentListGenerator(excelPath, password);
@@ -32,22 +32,22 @@ public class Controller implements DASservice{
                 FileNotClosable e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ListGeneratResult.No_Such_File;
+            return ListGenerateResult.No_Such_File;
         }catch (DriverErrorException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ListGeneratResult.Driver_Error;
+            return ListGenerateResult.Driver_Error;
         }catch (LoggingInExeption e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ListGeneratResult.Wrong_Password;
+            return ListGenerateResult.Wrong_Password;
         }catch (SQLServerConnectException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ListGeneratResult.Connection_Error;
+            return ListGenerateResult.Connection_Error;
         }
 
-        return ListGeneratResult.Success;
+        return ListGenerateResult.Success;
     }
 
     public MailResult MailSend(){
