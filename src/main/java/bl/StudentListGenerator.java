@@ -84,6 +84,9 @@ public class StudentListGenerator{
             mWhiteList.add(s);
         }
 
+        //TODO
+        //获取转宿舍学生，并添加在白名单之后
+
         //获取全部失踪学生
         getStudentList();
         System.out.println("所有不在的学生有：");
@@ -134,6 +137,7 @@ public class StudentListGenerator{
      */
     private void getStudentList() throws DriverErrorException, LoggingInExeption, SQLServerConnectException {
         //TODO
+        //需要在这之后按转专业名单修改学生列表
         List<Student> result = new ArrayList<>();
         result = DBInquirer.querySuspiciousStudent("cnm", mPassword);
         mStudentList.add(new Student("软件学院", "冯二", "2017", "1"));
