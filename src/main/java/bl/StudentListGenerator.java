@@ -136,21 +136,21 @@ public class StudentListGenerator{
         //TODO
         List<Student> result = new ArrayList<>();
         result = DBInquirer.querySuspiciousStudent("cnm", mPassword);
-        mStudentList.add(new Student("软件学院", "冯二", "2017", "1"));
-        mStudentList.add(new Student("商学院", "李六", "2017", "5"));
-        mStudentList.add(new Student("文学院", "张三", "2018", "4"));
-        mStudentList.add(new Student("软件学院", "cnm", "2016", "2"));
-        mStudentList.add(new Student("软件学院", "冯三", "2017", "1"));
-        mStudentList.add(new Student("商学院", "李六六", "2017", "5"));
-        mStudentList.add(new Student("文学院", "张三三", "2018", "4"));
-        mStudentList.add(new Student("软件学院", "cnmm", "2016", "2"));
-        mStudentList.add(new Student("软件学院", "冯二二二", "2017", "1"));
-        mStudentList.add(new Student("商学院", "李六六六", "2017", "5"));
-        mStudentList.add(new Student("文学院", "张三三三", "2018", "4"));
-        mStudentList.add(new Student("软件学院", "cnmmm", "2016", "2"));
-        mStudentList.add(new Student("软件学院", "冯二二二", "2017", "1"));
-        mStudentList.add(new Student("商学院", "李六六六", "2017", "5"));
-        mStudentList.add(new Student("文学院", "张三三三", "2018", "4"));
+        mStudentList.add(new Student("软件学院", "冯二", "2017", "1","!"));
+        mStudentList.add(new Student("商学院", "李六", "2017", "5","1"));
+        mStudentList.add(new Student("文学院", "张三", "2018", "4","2"));
+        mStudentList.add(new Student("软件学院", "cnm", "2016", "2","2"));
+        mStudentList.add(new Student("软件学院", "冯三", "2017", "1","3"));
+        mStudentList.add(new Student("商学院", "李六六", "2017", "5","1"));
+        mStudentList.add(new Student("文学院", "张三三", "2018", "4","6"));
+        mStudentList.add(new Student("软件学院", "cnmm", "2016", "2","1"));
+        mStudentList.add(new Student("软件学院", "冯二二二", "2017", "1","5"));
+        mStudentList.add(new Student("商学院", "李六六六", "2017", "5","6"));
+        mStudentList.add(new Student("文学院", "张三三三", "2018", "4","8"));
+        mStudentList.add(new Student("软件学院", "cnmmm", "2016", "2","9"));
+        mStudentList.add(new Student("软件学院", "冯二二二", "2017", "1","4"));
+        mStudentList.add(new Student("商学院", "李六六六", "2017", "5","5"));
+        mStudentList.add(new Student("文学院", "张三三三", "2018", "4","6"));
 
     }
 
