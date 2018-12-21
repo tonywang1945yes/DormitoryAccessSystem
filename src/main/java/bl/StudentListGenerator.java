@@ -6,6 +6,7 @@ import dao.LoggingInExeption;
 import dao.SQLServerConnectException;
 import util.excelUtil.ExcelException.FileNotClosable;
 import util.excelUtil.ExcelException.FileNotWritable;
+import util.excelUtil.ExcelException.NoSuchSheet;
 import util.excelUtil.ExcelReader;
 import entity.People;
 import entity.Student;
@@ -48,7 +49,7 @@ public class StudentListGenerator{
         this.mOutputExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
     }
 
-    public void start() throws FileNotFoundException, FileNotWritable,
+    public void start() throws FileNotFoundException, FileNotWritable, NoSuchSheet,
             FileNotClosable, DriverErrorException,LoggingInExeption, SQLServerConnectException{
         this.setTargetStudents();
         this.setTutorList();
@@ -61,7 +62,7 @@ public class StudentListGenerator{
     /**
      * 获取教师列表，将mTutorList中放入所有老师
      */
-    private void setTutorList() throws  FileNotFoundException{
+    private void setTutorList() throws  FileNotFoundException, NoSuchSheet {
         List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "辅导员");
         Tutor t;
         for(int i = 0; i < people.size(); i++){
@@ -73,7 +74,7 @@ public class StudentListGenerator{
     /**
      * 获得所有失踪且不在黑名单中的学生
      */
-    private void setTargetStudents() throws FileNotWritable, FileNotClosable, FileNotFoundException, DriverErrorException,LoggingInExeption, SQLServerConnectException {
+    private void setTargetStudents() throws NoSuchSheet, FileNotWritable, FileNotClosable, FileNotFoundException, DriverErrorException,LoggingInExeption, SQLServerConnectException {
         //getWhiteList
         List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "白名单");
         Student s;

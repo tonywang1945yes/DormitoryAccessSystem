@@ -112,7 +112,7 @@ public class ExcelReader {
             return studentList;
         }
 
-        else throw new NoSuchSheet("No such sheet!");
+        else throw new NoSuchSheet(sheetName);
     }
 
 }

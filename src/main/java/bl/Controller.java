@@ -9,6 +9,7 @@ import entity.Tutor;
 import service.DASservice;
 import util.excelUtil.ExcelException.FileNotClosable;
 import util.excelUtil.ExcelException.FileNotWritable;
+import util.excelUtil.ExcelException.NoSuchSheet;
 import util.mailUtil.mailException.MailException;
 
 import javax.mail.MessagingException;
@@ -33,6 +34,9 @@ public class Controller implements DASservice{
             System.out.println(e.getMessage());
             e.printStackTrace();
             return ListGenerateResult.No_Such_File;
+        }catch (NoSuchSheet e){
+            e.getMessage();
+            return ListGenerateResult.NO_Sheet_Name;
         }catch (DriverErrorException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -58,6 +62,8 @@ public class Controller implements DASservice{
             e.printStackTrace();
             return MailResult.NOT_OK;
         }catch (java.io.FileNotFoundException e){
+            return MailResult.No_FILE;
+        }catch (NoSuchSheet e){
             return MailResult.No_FILE;
         }
         return MailResult.OK;

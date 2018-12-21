@@ -5,6 +5,7 @@ import entity.Student;
 import entity.Tutor;
 import ui.Main;
 import util.excelUtil.ExcelException.FileNotFoundException;
+import util.excelUtil.ExcelException.NoSuchSheet;
 import util.excelUtil.ExcelReader;
 import util.mailUtil.Mail;
 import util.mailUtil.mailException.MailException;
@@ -42,7 +43,7 @@ public class EmailSender {
         //this.mStudentExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\student.xlsx";
     }
 
-    public void start() throws MailException, GeneralSecurityException,MessagingException, java.io.FileNotFoundException{
+    public void start() throws MailException, GeneralSecurityException,MessagingException, java.io.FileNotFoundException, NoSuchSheet{
         this.getStudentList();
         this.sendEmail();
 
@@ -110,7 +111,7 @@ public class EmailSender {
     /**
      * 获得黑名单
      */
-    private void getStudentList() throws java.io.FileNotFoundException {
+    private void getStudentList() throws java.io.FileNotFoundException, NoSuchSheet{
         List<People> people = ExcelReader.readSimpleExcel(mStudentExcelPath, "学生名单");
         Student s;
         for(int i = 0; i < people.size(); i++){
