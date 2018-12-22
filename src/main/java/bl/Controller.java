@@ -10,7 +10,7 @@ import service.DASservice;
 import util.excelUtil.ExcelException.FileNotClosable;
 import util.excelUtil.ExcelException.FileNotWritable;
 import util.excelUtil.ExcelException.NoSuchSheet;
-import util.mailUtil.mailException.MailException;
+import util.mailUtil.MailException;
 
 import javax.mail.MessagingException;
 import java.io.FileNotFoundException;

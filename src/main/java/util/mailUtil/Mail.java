@@ -20,8 +20,7 @@ import javax.mail.Transport;
 import javax.mail.internet.*;
 
 import com.sun.mail.util.MailSSLSocketFactory;
-import util.mailUtil.mailException.MailException;
-import util.mailUtil.mailException.MailExceptionEnum;
+import entity.MailExceptionEnum;
 
 public class Mail {
     /**

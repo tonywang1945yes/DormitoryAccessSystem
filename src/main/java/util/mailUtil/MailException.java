@@ -1,4 +1,4 @@
-package util.mailUtil.mailException;
+package util.mailUtil;
 
 import service.ExceptionEnum;
 
