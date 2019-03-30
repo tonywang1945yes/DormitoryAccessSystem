@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 执行筛选逻辑的DB探针类
@@ -112,14 +111,14 @@ public class DBProbe {
     }
 
     public boolean judge(List<PassRecord> records, TimeRequirement requirement) {
-        List<PassRecord> yesterday = records
-                .stream()
-                .filter(o1 -> o1.getPassTime().get(Calendar.DATE) == requirement.startTime.get(Calendar.DATE))
-                .collect(Collectors.toList());
-        if (yesterday.size() != 0 && yesterday.get(0).getDirection() == 1) {
-            //如果前一天有进出记录(可能因为各种原因没有记录)且最后一次刷卡记录为出去，被怀疑
-            return true;
-        }
+//        List<PassRecord> yesterday = records
+//                .stream()
+//                .filter(o1 -> o1.getPassTime().get(Calendar.DATE) == requirement.startTime.get(Calendar.DATE))
+//                .collect(Collectors.toList());
+//        if (yesterday.size() != 0 && yesterday.get(0).getDirection().equals("1")) {
+//            //如果前一天有进出记录(可能因为各种原因没有记录)且最后一次刷卡记录为出去，被怀疑
+//            return true;
+//        }
         return true;
     }
 
@@ -144,10 +143,10 @@ public class DBProbe {
     private PassRecord rs2pr(ResultSet rs) throws SQLException {
         PassRecord pr = new PassRecord();
         pr.setId(rs.getInt("id"));
-        pr.setUserId(rs.getString("UserId"));
+        pr.setUserId(rs.getInt("UserId"));
         pr.setSysId(rs.getInt("SysId"));
-        pr.setPassStatus(rs.getInt("PassStatus"));
-        pr.setDirection(rs.getInt("Direction"));
+        pr.setPassStatus(rs.getInt(("PassStatus")));
+        pr.setDirection(rs.getInt(("Direction")));
         Calendar c = Calendar.getInstance();
         c.setTime(rs.getTime("PassTime"));
         pr.setPassTime(c);

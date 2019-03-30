@@ -4,11 +4,12 @@ import java.util.Calendar;
 
 public class PassRecord {
     private Integer id;
-    private String UserId;
+    private Integer userId;
     private Calendar passTime;
-    private int sysId;
-    private int PassStatus;
-    private int Direction;
+    private Integer sysId;
+    private Integer passStatus;
+    private Integer direction;
+
 
     public Integer getId() {
         return id;
@@ -18,12 +19,12 @@ public class PassRecord {
         this.id = id;
     }
 
-    public String getUserId() {
-        return UserId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Calendar getPassTime() {
@@ -34,37 +35,37 @@ public class PassRecord {
         this.passTime = passTime;
     }
 
-    public int getSysId() {
+    public Integer getSysId() {
         return sysId;
     }
 
-    public void setSysId(int sysId) {
+    public void setSysId(Integer sysId) {
         this.sysId = sysId;
     }
 
-    public int getPassStatus() {
-        return PassStatus;
+    public Integer getPassStatus() {
+        return passStatus;
     }
 
-    public void setPassStatus(int passStatus) {
-        PassStatus = passStatus;
+    public void setPassStatus(Integer passStatus) {
+        this.passStatus = passStatus;
     }
 
-    public int getDirection() {
-        return Direction;
+    public Integer getDirection() {
+        return direction;
     }
 
-    public void setDirection(int direction) {
-        Direction = direction;
+    public void setDirection(Integer direction) {
+        this.direction = direction;
     }
 
-    public PassRecord(Integer id, String userId, Calendar passTime, int sysId, int passStatus, int direction) {
+    public PassRecord(Integer id, Integer userId, Calendar passTime, Integer sysId, Integer passStatus, Integer direction) {
         this.id = id;
-        UserId = userId;
+        this.userId = userId;
         this.passTime = passTime;
         this.sysId = sysId;
-        PassStatus = passStatus;
-        Direction = direction;
+        this.passStatus = passStatus;
+        this.direction = direction;
     }
 
     public PassRecord() {

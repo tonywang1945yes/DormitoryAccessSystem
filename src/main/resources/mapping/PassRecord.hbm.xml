@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="entity.PassRecord" table="passinfo">
+        <id name="id" column="id" type="java.lang.Integer">
+            <!-- 主键的生成策略 -->
+            <generator class="assigned"/>
+        </id>
+        <property name="userId" type="java.lang.Integer" column="UserId"/>
+        <property name="passTime" type="java.util.Calendar" column="PassTime"/>
+        <property name="sysId" type="java.lang.Integer" column="SysId"/>
+        <property name="passStatus" type="java.lang.Integer" column="PassStatus"/>
+        <property name="direction" type="java.lang.Integer" column="Direction"/>
+
+
+    </class>
+</hibernate-mapping>
