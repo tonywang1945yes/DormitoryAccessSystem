@@ -1,4 +1,4 @@
-package util.excelUtil.ExcelException;
+package exception.excelException;
 
 public abstract class ExcelException extends Exception {
 

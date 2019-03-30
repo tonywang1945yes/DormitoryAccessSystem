@@ -7,8 +7,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import util.excelUtil.ExcelException.FileNotClosable;
-import util.excelUtil.ExcelException.FileNotWritable;
+import exception.excelException.FileNotClosable;
+import exception.excelException.FileNotWritable;
 
 import java.io.File;
 import java.io.FileNotFoundException;

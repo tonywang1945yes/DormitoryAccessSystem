@@ -1,4 +1,4 @@
-package util.mailUtil.mailException;
+package exception.mailException;
 
 /**
  * @author Wen Sun

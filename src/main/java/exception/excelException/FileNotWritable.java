@@ -1,4 +1,4 @@
-package util.excelUtil.ExcelException;
+package exception.excelException;
 
 public class FileNotWritable extends ExcelException {
     public FileNotWritable(){

@@ -1,11 +1,8 @@
 package ui;
 
-import bl.EmailSender;
-import entity.MailResult;
+import enums.MailResult;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
-import java.awt.event.MouseListener;
 
 public class Deliver implements EventHandler<MouseEvent> {
     @Override

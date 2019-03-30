@@ -1,48 +1,45 @@
 package bl;
 
-import entity.ListGeneratResult;
-import entity.MailResult;
+import enums.ListGenerateResult;
+import enums.MailResult;
 import entity.Tutor;
 import service.DASservice;
-import util.excelUtil.ExcelException.FileNotClosable;
-import util.excelUtil.ExcelException.FileNotWritable;
-import util.mailUtil.mailException.MailException;
+import exception.mailException.MailException;
 
 import javax.mail.MessagingException;
-import java.io.FileNotFoundException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
-public class Controller implements DASservice{
+public class Controller implements DASservice {
     String mInputExcelPath;
     String mOutputExcelPath;
     List<Tutor> mTutorList;
 
-    public ListGeneratResult StudentListGenerate(String excelPath, String password){
+    public ListGenerateResult StudentListGenerate(String excelPath, String password) {
         this.mInputExcelPath = excelPath;
-        try{
+        try {
             StudentListGenerator slg = new StudentListGenerator(excelPath, password);
             slg.start();
             mTutorList = slg.getTutorList();
             this.mOutputExcelPath = slg.getOutputExcelPath();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ListGeneratResult.No_Such_File;
+            return ListGenerateResult.NO_SUCH_FILE;
         }
 
-        return ListGeneratResult.Success;
+        return ListGenerateResult.SUCCESS;
     }
 
-    public MailResult MailSend(){
-        try{
+    public MailResult MailSend() {
+        try {
             EmailSender es = new EmailSender(mTutorList, mOutputExcelPath);
             es.start();
-        } catch (MailException | GeneralSecurityException | MessagingException e){
+        } catch (MailException | GeneralSecurityException | MessagingException e) {
             e.printStackTrace();
             return MailResult.NOT_OK;
-        }catch (java.io.FileNotFoundException e){
-            return MailResult.No_SUCH_FILE;
+        } catch (java.io.FileNotFoundException e) {
+            return MailResult.NO_SUCH_FILE;
         }
         return MailResult.OK;
     }

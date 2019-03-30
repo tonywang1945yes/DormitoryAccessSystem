@@ -1,4 +1,4 @@
-package dao;
+package exception.daoException;
 
 import java.sql.SQLException;
 
@@ -7,7 +7,7 @@ public class SQLServerConnectException extends SQLException {
 		
 	}
 	
-	protected SQLServerConnectException(String message) {
+	public SQLServerConnectException(String message) {
 		super(message);
 	}
 }

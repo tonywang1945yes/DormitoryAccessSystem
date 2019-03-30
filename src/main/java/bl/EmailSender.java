@@ -3,15 +3,12 @@ package bl;
 import entity.People;
 import entity.Student;
 import entity.Tutor;
-import ui.Main;
-import util.excelUtil.ExcelException.FileNotFoundException;
 import util.excelUtil.ExcelReader;
 import util.mailUtil.Mail;
-import util.mailUtil.mailException.MailException;
+import exception.mailException.MailException;
 
 import javax.mail.MessagingException;
 import java.security.GeneralSecurityException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 

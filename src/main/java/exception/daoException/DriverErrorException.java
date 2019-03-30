@@ -1,4 +1,4 @@
-package dao;
+package exception.daoException;
 
 import java.sql.SQLException;
 
@@ -7,7 +7,7 @@ public class DriverErrorException extends SQLException {
 		
 	}
 	
-	protected DriverErrorException(String message) {
+	public DriverErrorException(String message) {
 		super(message);
 	}
 }
