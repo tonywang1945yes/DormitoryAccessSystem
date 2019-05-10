@@ -1,5 +1,5 @@
 package enums;
 
 public enum CheckResult {
-    NO_SUCH_FILE, DatabaseError, WRONG_PASSWORD, SUCCESS
+    NO_SUCH_FILE, WRONG_PASSWORD, SUCCESS, CONNECTION_ERROR, DRIVER_ERROR, NO_SHEET_NAME
 }
