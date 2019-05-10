@@ -8,7 +8,8 @@ public class SetPath implements EventHandler<MouseEvent> {
     public void handle(MouseEvent event) {
         FileChoose fileChoose = new FileChoose();
         fileChoose.getFilePath();
-        Main.path.setText(fileChoose.path);
+        Main.pathField.setText(fileChoose.path);
         Main.filepath = fileChoose.path;
     }
 }
+
