@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 public class EmailSender {
 
     private List<SuspectStudent> studentList = new ArrayList<>();
@@ -147,7 +148,12 @@ public class EmailSender {
     /**
      * 获得被怀疑学生名单
      */
-//    private void getStudentList() throws FileNotFoundException {
+    private void getStudentList() throws FileNotFoundException {
+        //TODO 未完成
+        studentList.addAll(ExcelReader.readSuspectedStudentList(studentExcelPath, "学生名单"));
+    }
+
+    //    private void getStudentList() throws FileNotFoundException {
 //        List<People> people = ExcelReader.readSimpleExcel(studentExcelPath, "学生名单");
 //        Student s;
 //        for (int i = 0; i < people.size(); i++) {
@@ -155,10 +161,5 @@ public class EmailSender {
 //            studentList.add(s);
 //        }
 //    }
-    private void getStudentList() throws FileNotFoundException {
-        //TODO
-        studentList.addAll(ExcelReader.readSuspectedStudentList(studentExcelPath, "学生名单"));
-
-    }
 
 }

@@ -74,6 +74,7 @@ public class Controller implements DASService {
     public CheckResult generateStudentList(String excelPath, String password, LongStayInspector inspector, TimeRequirement requirement) {
         this.inspector = inspector;
 
+        //TODO 细分异常情况
         try {
             readFile(excelPath);
             prepareDatabase(password);
@@ -84,11 +85,46 @@ public class Controller implements DASService {
             return CheckResult.NO_SUCH_FILE;
         } catch (DatabaseErrorException e) {
             e.printStackTrace();
-            return e.getMessage().equals("密码错误") ? CheckResult.WRONG_PASSWORD : CheckResult.DatabaseError;
+            return e.getMessage().equals("密码错误") ? CheckResult.WRONG_PASSWORD : CheckResult.CONNECTION_ERROR;
         }
 
         return CheckResult.SUCCESS;
 
+//public class Controller implements DASservice{
+//    String mInputExcelPath;
+//    String mOutputExcelPath;
+//    List<Tutor> mTutorList;
+//
+//    public ListGenerateResult StudentListGenerate(String excelPath, String password){
+//        this.mInputExcelPath = excelPath;
+//        try{
+//            StudentListGenerator slg = new StudentListGenerator(excelPath, password);
+//            slg.start();
+//            mTutorList = slg.getTutorList();
+//            this.mOutputExcelPath = slg.getOutputExcelPath();
+//        }catch (FileNotFoundException | FileNotWritable |
+//                FileNotClosable e){
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//            return ListGenerateResult.NO_SUCH_FILE;
+//        }catch (NoSuchSheet e){
+//            e.getMessage();
+//            return ListGenerateResult.NO_SHEET_NAME;
+//        }catch (DriverErrorException e){
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//            return ListGenerateResult.DRIVER_ERROR;
+//        }catch (LoggingInExeption e){
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//            return ListGenerateResult.WRONG_PASSWORD;
+//        }catch (SQLServerConnectException e){
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//            return ListGenerateResult.CONNECTION_ERROR;
+//        }
+//
+//        return ListGenerateResult.SUCCESS;
     }
 
     @Override
@@ -99,8 +135,10 @@ public class Controller implements DASService {
         } catch (MailException | GeneralSecurityException | MessagingException e) {
             e.printStackTrace();
             return MailResult.NOT_OK;
+
         } catch (FileNotFoundException e) {
             return MailResult.NO_SUCH_FILE;
+
         }
         return MailResult.OK;
     }
