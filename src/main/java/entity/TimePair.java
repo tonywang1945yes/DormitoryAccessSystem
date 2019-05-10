@@ -18,6 +18,14 @@ public class TimePair {
     Timestamp t1;
     Timestamp t2;
 
+    public TimePair() {
+    }
+
+    public TimePair(Timestamp t1, Timestamp t2) {
+        this.t1 = new Timestamp(t1.getTime());
+        this.t2 = new Timestamp(t2.getTime());
+    }
+
     public Duration getDuration() {
         if (t1 == null || t2 == null)
             return Duration.ofMinutes(0);

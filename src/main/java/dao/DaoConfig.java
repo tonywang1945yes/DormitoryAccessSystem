@@ -14,10 +14,10 @@ public class DaoConfig {
     static final String THIRDBUFFER = "table_3";
     static final int THIRDBUFFERINTERVAL = 30;
 
-    static final String driver = "com.mysql.jdbc.Driver";
-    static final String url = "jdbc:mysql://114.212.99.210:3306/test";
-    static final String username = "dbtest";
-    static final String password = "njuacdbtest";
+    public static final String driver = "com.mysql.jdbc.Driver";
+    public static final String url = "jdbc:mysql://114.212.99.210:3306/test";
+    public static final String username = "dbtest";
+    public static final String password = "njuacdbtest";
 
 
     /*

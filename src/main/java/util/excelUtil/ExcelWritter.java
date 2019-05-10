@@ -1,14 +1,15 @@
 package util.excelUtil;
 
 import entity.Student;
+import entity.SuspectStudent;
+import exception.excelException.FileNotClosable;
+import exception.excelException.FileNotWritable;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import exception.excelException.FileNotClosable;
-import exception.excelException.FileNotWritable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +21,7 @@ import java.util.List;
 public class ExcelWritter {
     /**
      * 新建excel文件。并把list中学生数据写入
+     *
      * @param studentList（已排好序）
      * @param filepath
      */
@@ -27,10 +29,9 @@ public class ExcelWritter {
             throws FileNotFoundException, FileNotWritable, FileNotClosable {
 
         Workbook workbook;
-        if (filepath.endsWith(".xls")){
+        if (filepath.endsWith(".xls")) {
             workbook = new HSSFWorkbook();
-        }
-        else {
+        } else {
             workbook = new XSSFWorkbook();
         }
 
@@ -45,8 +46,8 @@ public class ExcelWritter {
         Cell cell3 = title.createCell(3);
         cell3.setCellValue("年级");
 
-        if (studentList != null || studentList.size() != 0){
-            for (int i = 0; i < studentList.size(); i ++){
+        if (studentList != null || studentList.size() != 0) {
+            for (int i = 0; i < studentList.size(); i++) {
                 Student student = studentList.get(i);
                 Row row = sheet.createRow(i + 1);
                 Cell institute = row.createCell(0);
@@ -64,7 +65,7 @@ public class ExcelWritter {
         FileOutputStream out = null;
         try {
             File file = new File(filepath).getParentFile();
-            if (!file.exists()){
+            if (!file.exists()) {
                 file.mkdirs();
             }
             out = new FileOutputStream(filepath);
@@ -79,5 +80,9 @@ public class ExcelWritter {
             }
         }
 
+    }
+
+    public void writeSuspectedStudent(List<SuspectStudent> students) throws FileNotWritable, FileNotClosable {
+        //TODO 定义规格，将被怀疑学生输出为excel文件
     }
 }

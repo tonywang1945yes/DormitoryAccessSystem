@@ -7,9 +7,9 @@ import javafx.scene.input.MouseEvent;
 public class Deliver implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
-        if(Main.isvisited){
-            Main.controller.MailSend();
-            if(Main.controller.MailSend()==MailResult.OK) {
+        if (Main.isVisited) {
+            Main.controller.sendMail();
+            if (Main.controller.sendMail() == MailResult.OK) {
                 Main.resultLabel.setText("已发送给辅导员");
             }
             else {

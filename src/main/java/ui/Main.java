@@ -1,26 +1,21 @@
 package ui;
 
 import bl.Controller;
-import bl.EmailSender;
-import bl.StudentListGenerator;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import service.DASservice;
-import entity.Student;
-import java.lang.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import  javafx.scene.control.TextField;
 
 public class Main extends Application {
     public static Label resultLabel=new Label();
-    public static boolean isvisited=false;
+    public static boolean isVisited = false;
     public static TextField path;
     public static PasswordField password;
     public static String filepath;
@@ -109,7 +104,7 @@ public class Main extends Application {
 
         hbox3.getChildren().add(resultLabel);
 
-        setpath.setOnMouseClicked(new Setpath());
+        setpath.setOnMouseClicked(new SetPath());
         setxlsx.setOnMouseClicked(new SetExcel());
         deliver.setOnMouseClicked(new Deliver());
 

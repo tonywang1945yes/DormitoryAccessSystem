@@ -7,7 +7,19 @@ package util;
  * @version 1.0
  * @since 2019/4/26
  */
-public class LogUtil {
+public class AppLog {
+
+    private static AppLog instance;
+
+    private AppLog() {
+
+    }
+
+    public static AppLog getInstance() {
+        if (instance == null)
+            instance = new AppLog();
+        return instance;
+    }
 
     public String get(String key) {
         return "";

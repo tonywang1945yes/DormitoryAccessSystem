@@ -2,14 +2,15 @@ package util.excelUtil;
 
 import entity.People;
 import entity.Student;
+import entity.SuspectStudent;
 import entity.Tutor;
+import exception.excelException.FileNotFoundException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,28 +23,27 @@ public class ExcelReader {
 
     /**
      * 读取excel表格，并按照不同的sheetName返回不同类型的List
+     *
      * @param filepath
      * @param sheetName
      * @return
      */
     public static List<People> readSimpleExcel(String filepath, String sheetName)
-            throws FileNotFoundException{
+            throws FileNotFoundException {
         Workbook workbook = null;
 
 //        由路径获取文件并解析
-        if (filepath == null){
+        if (filepath == null) {
             return null;
         }
         String type = filepath.substring(filepath.lastIndexOf("."));
         try {
             InputStream inputStream = new FileInputStream(filepath);
-            if (type.equals(".xls")){
+            if (type.equals(".xls")) {
                 workbook = new HSSFWorkbook(inputStream);
-            }
-            else if (type.equals(".xlsx")){
+            } else if (type.equals(".xlsx")) {
                 workbook = new XSSFWorkbook(inputStream);
-            }
-            else {
+            } else {
                 workbook = null;
             }
         } catch (IOException e) {
@@ -51,7 +51,7 @@ public class ExcelReader {
         }
 
 //        读取文件内容
-        if (workbook == null){
+        if (workbook == null) {
             return null;
         }
         Sheet sheet = workbook.getSheet(sheetName);
@@ -60,7 +60,7 @@ public class ExcelReader {
 
             List<People> tutorList = new ArrayList();
             int rowNum = sheet.getLastRowNum();
-            for (int i = 1; i <= rowNum; i ++){
+            for (int i = 1; i <= rowNum; i++) {
                 Tutor tutor = new Tutor(sheet.getRow(i));
                 tutorList.add(tutor);
             }
@@ -85,13 +85,11 @@ public class ExcelReader {
 //                }
 //            });
             return tutorList;
-        }
-
-        else if (sheetName.equals("白名单") || sheetName.equals("学生名单")){
+        } else if (sheetName.equals("白名单") || sheetName.equals("学生名单")) {
 
             List<People> studentList = new ArrayList<>();
             int rowNum = sheet.getLastRowNum();
-            for (int i = 1; i <= rowNum; i ++){
+            for (int i = 1; i <= rowNum; i++) {
                 Student student = new Student(sheet.getRow(i));
                 studentList.add(student);
             }
@@ -99,12 +97,11 @@ public class ExcelReader {
             Collections.sort(studentList, new Comparator<People>() {
                 //                            @Override
                 public int compare(People p1, People p2) {
-                    Student s1 = (Student)p1;
-                    Student s2 = (Student)p2;
-                    if (s1.getInstitute().equals(s2.getInstitute())){
+                    Student s1 = (Student) p1;
+                    Student s2 = (Student) p2;
+                    if (s1.getInstitute().equals(s2.getInstitute())) {
                         return Integer.valueOf(s1.getGrade()) - Integer.valueOf(s2.getGrade());
-                    }
-                    else {
+                    } else {
                         return s1.getInstitute().charAt(0) - s2.getInstitute().charAt(0);
                     }
                 }
@@ -112,9 +109,12 @@ public class ExcelReader {
 
 
             return studentList;
-        }
+        } else return null;
+    }
 
-        else return null;
+    public static List<SuspectStudent> readSuspectedStudentList(String filePath, String fileName) throws FileNotFoundException {
+        //TODO 定义规则，从excel表格中读取被怀疑学生信息
+        return null;
     }
 
 }

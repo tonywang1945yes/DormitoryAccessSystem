@@ -2,6 +2,7 @@ package dao;
 
 import entity.IdMap;
 import entity.PassRecord;
+import entity.TimePair;
 import exception.daoException.DatabaseErrorException;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -11,9 +12,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import util.LogUtil;
+import util.AppLog;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,13 +77,12 @@ public class MDProbe {
 
     /**
      * 检查数据库自上次应用启动后是否出现异常情况
-     * 目前隐藏异常
      */
-    private void check() {
+    public void check() throws DatabaseErrorException {
         //TODO 等待与文件键值对读写工具协作
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(new Date());
-        LogUtil log = new LogUtil();
+        AppLog log = AppLog.getInstance();
         if (log.get("latestCheckDate").equals(today))
             return;
 
@@ -118,8 +119,46 @@ public class MDProbe {
      * @return 真实id与刷卡记录的映射
      */
     private Map<String, List<PassRecord>> group(List<PassRecord> records, List<IdMap> maps) {
-        //TODO 实现真正的分组
-        return records.stream().collect(Collectors.groupingBy(PassRecord::getUserId));
+        Map<String, List<PassRecord>> res = new HashMap<>();
+        Map<String, List<PassRecord>> recordMap = records.stream().collect(Collectors.groupingBy(PassRecord::getUserId));
+
+        maps.stream()
+                .collect(Collectors
+                        .groupingBy(IdMap::getCredentialId))
+                .forEach((key, list) -> {
+                    //每一个userId对应此studentId的有效时间区间
+                    Map<String, TimePair> idTimeMap = new LinkedHashMap<>();
+                    list.sort(Comparator.comparing(IdMap::getUpdateTime));//从时间晚到早排序
+
+                    final Timestamp[] earliest = {new Timestamp(Calendar.getInstance().getTimeInMillis())};
+                    final String[] earliestId = new String[1];
+                    list.stream().reduce((a, b) -> {
+                        TimePair tp = new TimePair(b.getUpdateTime(), a.getUpdateTime());
+                        earliest[0] = b.getUpdateTime();
+                        earliestId[0] = b.getUserId();
+                        idTimeMap.put(a.getUserId(), tp);
+                        return b;
+                    });
+                    //加入最早的时间，设定时间区间为一年
+                    idTimeMap.put(earliestId[0], new TimePair(new Timestamp(earliest[0].getTime() - 365L * 24 * 60 * 60 * 1000), earliest[0]));
+
+                    Set<String> idSet = idTimeMap.keySet();
+                    List<PassRecord> toPut = new ArrayList<>();
+
+                    recordMap.entrySet()
+                            .stream()
+                            .filter(e -> idSet.contains(e.getKey()))
+                            .map(Map.Entry::getValue)
+                            .forEach(l ->
+                                    l.forEach(i -> {
+                                        if (idTimeMap.get(i.getUserId()).include(i.getPassTime()))
+                                            toPut.add(i);
+                                    }));
+
+                    res.put(key, toPut);
+                });
+
+        return res;
     }
 
 }
