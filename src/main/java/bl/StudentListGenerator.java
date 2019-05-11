@@ -215,7 +215,6 @@ public class StudentListGenerator {
 //            mWhiteList.add(s);
 //        }
 //
-//        //TODO
 //        //获取转宿舍学生，并添加在白名单之后
 //
 //        //获取全部失踪学生

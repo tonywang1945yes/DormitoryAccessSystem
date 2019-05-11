@@ -34,7 +34,6 @@ public class EmailSender {
         this.studentExcelPath = studentExcelPath;
         this.tutorList = tutorList;
 
-        //TODO 这部分应该使用配置文件来填入
         hostAddress = "171250530@smail.nju.edu.cn";
         password = "xxxx";
 
