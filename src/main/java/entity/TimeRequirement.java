@@ -15,8 +15,8 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 @Data
 public class TimeRequirement {
 
-    TimePair interval;
-    Duration reqDuration;
+    TimePair interval;//起始+终止时间
+    Duration reqDuration;//终止-起始
     Duration limitationToNow; //到当前的限制，LongOutStrategy需要的。使用者指定的需用于判断距使用时的最大时间间隔，以便找出到目前仍未回到宿舍的学生
     Duration minBreak; //最小出进宿舍时间，LongInStrategy用于过滤出进宿舍拿外卖的情况
 

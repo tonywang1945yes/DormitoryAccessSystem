@@ -1,4 +1,4 @@
-package ui;
+package ui.old;
 
 class BoundarySize {
     static final double WIDTH = 400;
