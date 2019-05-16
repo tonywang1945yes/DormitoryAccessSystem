@@ -22,5 +22,7 @@ public interface PassRecordMapper {
 
     public List<PassRecord> getRecordByDate(Date date);
 
-    public Long getRecordNumByDate(Date date);
+    public List<PassRecord> getRecordWithLimit(int limit);
+
+    public Long getRecordCountByDate(Date date);
 }

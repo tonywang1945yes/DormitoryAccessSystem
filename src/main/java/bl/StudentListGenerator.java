@@ -82,7 +82,7 @@ public class StudentListGenerator {
 //        }
 //        System.out.println();
 //
-//        ExcelWritter.writeSimpleExcel(mStudentList, outputExcelPath);
+//        ExcelWriter.writeSimpleExcel(mStudentList, outputExcelPath);
 //
 //
 //    }
@@ -135,15 +135,15 @@ public class StudentListGenerator {
 //import dao.DBInquirer;
 //import dao.DriverErrorException;
 //import dao.LoggingInExeption;
-//import dao.SQLServerConnectException;
-//import util.excelUtil.ExcelException.FileNotClosable;
-//import util.excelUtil.ExcelException.FileNotWritable;
-//import util.excelUtil.ExcelException.NoSuchSheet;
-//import util.excelUtil.ExcelReader;
+//import dao.DBConnectionException;
+//import util.excel.ExcelException.FileNotClosable;
+//import util.excel.ExcelException.FileNotWritable;
+//import util.excel.ExcelException.SheetNameException;
+//import util.excel.ExcelReader;
 //import entity.People;
 //import entity.Student;
 //import entity.Tutor;
-//import util.excelUtil.ExcelWritter;
+//import util.excel.ExcelWriter;
 //
 //import java.io.FileNotFoundException;
 //import java.util.ArrayList;
@@ -181,8 +181,8 @@ public class StudentListGenerator {
 //        this.mOutputExcelPath = System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx";
 //    }
 //
-//    public void start() throws FileNotFoundException, FileNotWritable, NoSuchSheet,
-//            FileNotClosable, DriverErrorException,LoggingInExeption, SQLServerConnectException{
+//    public void start() throws FileNotFoundException, FileNotWritable, SheetNameException,
+//            FileNotClosable, DriverErrorException,LoggingInExeption, DBConnectionException{
 //        this.setTargetStudents();
 //        this.setTutorList();
 //    }
@@ -194,7 +194,7 @@ public class StudentListGenerator {
 //    /**
 //     * 获取教师列表，将mTutorList中放入所有老师
 //     */
-//    private void setTutorList() throws  FileNotFoundException, NoSuchSheet {
+//    private void setTutorList() throws  FileNotFoundException, SheetNameException {
 //        List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "辅导员");
 //        Tutor t;
 //        for(int i = 0; i < people.size(); i++){
@@ -206,7 +206,7 @@ public class StudentListGenerator {
 //    /**
 //     * 获得所有失踪且不在黑名单中的学生
 //     */
-//    private void setTargetStudents() throws NoSuchSheet, FileNotWritable, FileNotClosable, FileNotFoundException, DriverErrorException,LoggingInExeption, SQLServerConnectException {
+//    private void setTargetStudents() throws SheetNameException, FileNotWritable, FileNotClosable, FileNotFoundException, DriverErrorException,LoggingInExeption, DBConnectionException {
 //        //getWhiteList
 //        List<People> people = ExcelReader.readSimpleExcel(mInputExcelPath, "白名单");
 //        Student s;
@@ -234,7 +234,7 @@ public class StudentListGenerator {
 //        }
 //        System.out.println();
 //
-//        ExcelWritter.writeSimpleExcel(mStudentList, mOutputExcelPath);
+//        ExcelWriter.writeSimpleExcel(mStudentList, mOutputExcelPath);
 //
 //
 //    }
@@ -265,7 +265,7 @@ public class StudentListGenerator {
 //    /**
 //     * 将mStudentList中加入失踪学生名单
 //     */
-//    private void getStudentList() throws DriverErrorException, LoggingInExeption, SQLServerConnectException {
+//    private void getStudentList() throws DriverErrorException, LoggingInExeption, DBConnectionException {
 //        //需要在这之后按转专业名单修改学生列表
 //        List<Student> result = new ArrayList<>();
 //

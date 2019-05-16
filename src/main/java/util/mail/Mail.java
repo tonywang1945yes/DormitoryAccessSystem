@@ -1,4 +1,4 @@
-package util.mailUtil;
+package util.mail;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 import exception.mailException.AttachmentTooLargeException;

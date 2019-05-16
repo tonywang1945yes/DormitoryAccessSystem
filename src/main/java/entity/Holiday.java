@@ -5,7 +5,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 /**
- * simple introduction
+ * 用于节假日筛选
  *
  * @author Nosolution
  * @version 1.0
@@ -13,6 +13,7 @@ import java.sql.Timestamp;
  */
 @Data
 public class Holiday {
+    String name;
     TimePair interval;
 
     public boolean inHoliday(Timestamp time) {

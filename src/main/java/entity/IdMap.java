@@ -14,6 +14,6 @@ import java.sql.Timestamp;
 @Data
 public class IdMap {
     private String userId; //伪id
-    private String credentialId; //真实id
+    private String cridentialId; //真实id
     private Timestamp updateTime; //该信息更新时间
 }

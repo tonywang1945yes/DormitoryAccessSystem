@@ -3,63 +3,41 @@ package bl;
 import entity.Student;
 import entity.SuspectStudent;
 import entity.Tutor;
-import exception.excelException.FileNotFoundException;
 import exception.mailException.MailException;
-import util.excelUtil.ExcelReader;
-import util.mailUtil.Mail;
+import util.mail.Mail;
 
 import javax.mail.MessagingException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
 public class EmailSender {
 
-    private List<SuspectStudent> studentList = new ArrayList<>();
-    private String studentExcelPath;//之前输出的缺席学生名单
-    private Map<Tutor, List<String>> tutorList;//教师列表
-
-    private String hostAddress;
-    private String password;
+    private List<SuspectStudent> students;
+    private Map<Tutor, List<String>> tsMap;//辅导员与对应的异常学生id列表
 
 
-    /**
-     * 所有失踪、不在白名单内的学生列表的excel位置
-     *
-     * @param studentExcelPath 里面是缺席的学生名单
-     */
-    public EmailSender(Map<Tutor, List<String>> tutorList, String studentExcelPath) {
-        this.studentExcelPath = studentExcelPath;
-        this.tutorList = tutorList;
-
-        hostAddress = "171250530@smail.nju.edu.cn";
-        password = "xxxx";
-
+    public EmailSender(Map<Tutor, List<String>> tsMap, List<SuspectStudent> students) {
+        this.tsMap = tsMap;
+        this.students = students;
     }
 
-    /**
-     * 没有地址，默认input在当前文件夹下的cnm.xlsx，默认student在次文件夹的haha.xlsx
-     */
-    public EmailSender(Map<Tutor, List<String>> tutorList) {
-        this(tutorList, System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx");
-
-        //this.inputExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\input.xlsx";
-        //this.studentExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\student.xlsx";
-
-    }
-
-    public void start() throws MailException, GeneralSecurityException, MessagingException, FileNotFoundException {
-        getStudentList();
-        sendEmails();
-
-    }
+//    /**
+//     * 没有地址，默认input在当前文件夹下的cnm.xlsx，默认student在次文件夹的haha.xlsx
+//     */
+//    public EmailSender(Map<Tutor, List<String>> tsMap) {
+//        this(tsMap, System.getProperty("user.dir") + "\\失踪学生名单_不包含白名单.xlsx");
+//
+//        //this.inputExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\input.xlsx";
+//        //this.studentExcelPath = "C:\\Users\\12509\\Desktop\\wrh" + "\\student.xlsx";
+//
+//    }
 
 
 //    private void sendEmails() throws MailException, GeneralSecurityException, MessagingException {
 //        //全校没有一个人缺席的情况
-//        if (studentList.size() == 0) {
+//        if (students.size() == 0) {
 //            return;
 //        }
 //
@@ -68,11 +46,11 @@ public class EmailSender {
 //        Student s;
 //        String text = "";//属于某个老师的学生列表
 //        //对每一个老师，查找属于她的学生
-//        for (int i = 0; i < tutorList.size(); i++) {
+//        for (int i = 0; i < tsMap.size(); i++) {
 //            text = "";
-//            t = tutorList.get(i);
-//            for (int j = 0; j < studentList.size(); j++) {
-//                s = studentList.get(j);
+//            t = tsMap.get(i);
+//            for (int j = 0; j < students.size(); j++) {
+//                s = students.get(j);
 //                if (SameProp(t, s)) {
 //                    //一样的年级、院系
 //                    text += s.getId() + s.getName() + "\n";
@@ -94,17 +72,19 @@ public class EmailSender {
 //    }
 
     /**
-     * 向负责各学生的辅导员发送邮件
+     * 向老师发邮件
      *
+     * @param hostAddress 邮箱号
+     * @param password    密码
      * @throws MailException
      * @throws GeneralSecurityException
      * @throws MessagingException
      */
-    private void sendEmails() throws MailException, GeneralSecurityException, MessagingException {
-        if (studentList.size() == 0)
+    public void sendEmails(String hostAddress, String password) throws MailException, GeneralSecurityException, MessagingException {
+        if (students.size() == 0)
             return;
 
-        for (Map.Entry<Tutor, List<String>> e : tutorList.entrySet()) {
+        for (Map.Entry<Tutor, List<String>> e : tsMap.entrySet()) {
             Tutor tutor = e.getKey();
             List<String> list = e.getValue();
 
@@ -115,7 +95,7 @@ public class EmailSender {
                     .append("的")
                     .append(tutor.getGrade())
                     .append("级的学生刷卡记录检测情况是\n");
-            studentList.stream()
+            students.stream()
                     .filter(o -> list.contains(o.getStudentId()))
                     .forEach(o -> {
                         //TODO 邮件内容还需要再仔细处理
@@ -145,20 +125,11 @@ public class EmailSender {
 
 
     /**
-     * 获得被怀疑学生名单
+     * 获得被怀疑学生名单，逻辑移至controller中
      */
-    private void getStudentList() throws FileNotFoundException {
-        //TODO 未完成
-        studentList.addAll(ExcelReader.readSuspectedStudentList(studentExcelPath, "学生名单"));
-    }
-
-    //    private void getStudentList() throws FileNotFoundException {
-//        List<People> people = ExcelReader.readSimpleExcel(studentExcelPath, "学生名单");
-//        Student s;
-//        for (int i = 0; i < people.size(); i++) {
-//            s = (Student) people.get(i);
-//            studentList.add(s);
-//        }
+//    private void getStudentList() throws FileNotFoundException {
+//        students.addAll(ExcelReader.readSuspectedStudentList(studentExcelPath, "学生名单"));
 //    }
+
 
 }

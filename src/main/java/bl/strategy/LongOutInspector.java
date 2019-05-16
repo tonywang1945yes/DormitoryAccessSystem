@@ -34,7 +34,7 @@ public class LongOutInspector extends LongStayInspector {
         TimePair stillOut = judgeStillOut(records, req);
         if (stillOut != null) {
             student.getDoubtfulRecords().add(stillOut);
-            student.setStatus(StudentStatus.STILLOUT.name());
+            student.setStatus(StudentStatus.STILL_OUT.name());
             student.setLevel(3);
         }
     }
@@ -53,9 +53,9 @@ public class LongOutInspector extends LongStayInspector {
                 student.setLevel(2);
             }
             if (evidence.stream().map(TimePair::getStatus).anyMatch(o -> o.equals(PairStatus.NORMAL.name()))) {
-                student.setStatus(student.getStatus() + ":" + StudentStatus.LONGOUT);
+                student.setStatus(student.getStatus() + ":" + StudentStatus.LONG_OUT);
             } else {
-                student.setStatus(student.getStatus() + ":" + StudentStatus.LONGOUTWITHCONFUSION);
+                student.setStatus(student.getStatus() + ":" + StudentStatus.LONG_OUT_WITH_CONFUSION);
             }
         }
     }

@@ -23,6 +23,7 @@ public abstract class LongStayInspector {
     Map<String, List<PassRecord>> recordMaps; //学生id及对应的刷卡记录列表
     List<WhiteStudent> whiteList; //白名单
     List<BlackStudent> blackList; //关注名单，命名偷了懒
+    List<Holiday> holidays;
 
 
     public void setRecordMaps(Map<String, List<PassRecord>> recordMaps) {
@@ -35,6 +36,10 @@ public abstract class LongStayInspector {
 
     public void setBlackList(List<BlackStudent> blackList) {
         this.blackList = blackList;
+    }
+
+    public void setHolidays(List<Holiday> holidays) {
+        this.holidays = holidays;
     }
 
     /**

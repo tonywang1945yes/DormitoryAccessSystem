@@ -8,7 +8,22 @@ package enums;
  * @since 2019/5/6
  */
 public enum StudentStatus {
-    LONGOUTWITHCONFUSION, LONGOUT, STILLOUT, INWHITELISTBUTNORECORDNOW, WATCHED,
-    LONGINWITHCONFUSION, LONGIN
+    LONG_OUT_WITH_CONFUSION("存在长时间在外情况，但是存在混淆记录"),
+    LONG_OUT("存在长时间在外情况"),
+    STILL_OUT("到目前仍在外未回"),
+    WATCHED("在关注名单上"),
+    LONG_IN_WITH_CONFUSION("长时间待在宿舍，但是存在混淆记录"),
+    LONG_IN("长时间呆在宿舍");
+
+    private String msg;
+
+    public String getMsg() {
+        return this.msg;
+    }
+
+    StudentStatus(String msg) {
+
+        this.msg = msg;
+    }
 
 }

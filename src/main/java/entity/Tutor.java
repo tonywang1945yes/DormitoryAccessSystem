@@ -117,6 +117,9 @@ public class Tutor extends People {
         }
     }
 
+    public Tutor() {
+    }
+
     /**
      * 检查Email地址是否是合法的
      * @param address

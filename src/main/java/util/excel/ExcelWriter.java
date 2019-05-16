@@ -1,4 +1,4 @@
-package util.excelUtil;
+package util.excel;
 
 import entity.Student;
 import entity.SuspectStudent;
@@ -11,14 +11,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 
-public class ExcelWritter {
+public class ExcelWriter {
     /**
      * 新建excel文件。并把list中学生数据写入
      *
@@ -61,28 +58,27 @@ public class ExcelWritter {
             }
         }
 
-//        新建文件。找不到文件夹。
-        FileOutputStream out = null;
-        try {
-            File file = new File(filepath).getParentFile();
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            out = new FileOutputStream(filepath);
-            workbook.write(out);
-        } catch (IOException e) {
-            throw new FileNotWritable("The file cannot be written to.");
-        } finally {
-            try {
-                out.close();
-            } catch (IOException e) {
-                throw new FileNotClosable("The file cannot be closed normally.");
-            }
-        }
+////        新建文件。找不到文件夹。
+//        FileOutputStream out = null;
+//        try {
+//            File file = new File(filepath).getParentFile();
+//            if (!file.exists()) {
+//                file.mkdirs();
+//            }
+//            out = new FileOutputStream(filepath);
+//            workbook.write(out);
+//        } catch (IOException e) {
+//            throw new FileNotWritable("The file cannot be written to.");
+//        } finally {
+//            try {
+//                out.close();
+//            } catch (IOException e) {
+//                throw new FileNotClosable("The file cannot be closed normally.");
+//            }
+//        }
 
     }
 
     public void writeSuspectedStudent(List<SuspectStudent> students) throws FileNotWritable, FileNotClosable {
-        //TODO 定义规格，将被怀疑学生输出为excel文件
     }
 }
