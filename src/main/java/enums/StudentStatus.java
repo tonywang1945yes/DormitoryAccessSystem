@@ -13,7 +13,8 @@ public enum StudentStatus {
     STILL_OUT("到目前仍在外未回"),
     WATCHED("在关注名单上"),
     LONG_IN_WITH_CONFUSION("长时间待在宿舍，但是存在混淆记录"),
-    LONG_IN("长时间呆在宿舍");
+    LONG_IN("长时间呆在宿舍"),
+    WITH_CONFUSION("存在混淆记录");
 
     private String msg;
 
@@ -24,6 +25,14 @@ public enum StudentStatus {
     StudentStatus(String msg) {
 
         this.msg = msg;
+    }
+
+    public static StudentStatus getNameByMsg(String msg) {
+        for (StudentStatus s : StudentStatus.values()) {
+            if (msg.equals(s.getMsg()))
+                return s;
+        }
+        return null;
     }
 
 }

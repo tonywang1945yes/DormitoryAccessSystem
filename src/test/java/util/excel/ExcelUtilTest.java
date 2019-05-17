@@ -58,7 +58,7 @@ public class ExcelUtilTest {
 
         try {
             List<SuspectStudent> students = ExcelUtil.readSuspectStudent("异常学生名单.xlsx", "异常学生名单");
-            assertThat(students.size()).isEqualTo(2);
+            assertThat(students.size()).isEqualTo(1);
         } catch (FileNotFoundException | WrongFormatException | SheetNameException e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class ExcelUtilTest {
         SuspectStudent s = new SuspectStudent();
         s.setStudentId("171250530");
         s.setStatus(StudentStatus.LONG_OUT.getMsg());
-        s.setLevel(3);
+        s.setLevel(2);
         List<TimePair> pairs = new ArrayList<>();
         pairs.add(new TimePair(new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime())));
         pairs.add(new TimePair(new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime())));

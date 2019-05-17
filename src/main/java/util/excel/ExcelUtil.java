@@ -152,15 +152,15 @@ public class ExcelUtil {
 
         List<SuspectStudent> res = new ArrayList<>();
         int rowNum = sheet.getLastRowNum();
-        boolean uncompleted = false;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
             SuspectStudent s = null;
             List<TimePair> records = new ArrayList<>();
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
-                if (row.getFirstCellNum() == 0) {
+                //如果是学生的第一条记录且使用者确定要发送该学生的信息
+                if (row.getFirstCellNum() == 0 && row.getCell(3).toString().equals("是")) {
                     s = new SuspectStudent();
                     records = new ArrayList<>();
 
@@ -174,14 +174,18 @@ public class ExcelUtil {
                     s.setStatus(status);
                     s.setLevel(level);
                     s.setDoubtfulRecords(records);
-
                     res.add(s);
 
-                }
+                    //该学生记录后也有一对时间记录
+                    TimePair tp = readWeirdRecord(row, format);
+                    records.add(tp);
 
-                Timestamp startTime = new Timestamp(format.parse(row.getCell(3).toString()).getTime());
-                Timestamp endTime = new Timestamp(format.parse(row.getCell(4).toString()).getTime());
-                records.add(new TimePair(startTime, endTime));
+
+                    //读取当前学生剩下的时间记录, s!=null防止时间记录在第一个学生被初始化之前被读入
+                } else if (row.getFirstCellNum() != 0 && s != null) {
+                    TimePair tp = readWeirdRecord(row, format);
+                    records.add(tp);
+                }
 
             }
 
@@ -219,9 +223,12 @@ public class ExcelUtil {
         Cell cell2 = title.createCell(2);
         cell2.setCellValue("严重等级");
         Cell cell3 = title.createCell(3);
-        cell3.setCellValue("开始时间");
+        cell3.setCellValue("是否发送"); //由使用者决定是否发送
         Cell cell4 = title.createCell(4);
-        cell4.setCellValue("结束时间");
+        cell4.setCellValue("开始时间");
+        Cell cell5 = title.createCell(5);
+        cell5.setCellValue("结束时间");
+
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -240,22 +247,18 @@ public class ExcelUtil {
                 level.setCellType(CellType.STRING);
                 level.setCellValue(s.getLevel());
 
+                Cell willBeSent = row.createCell(3);
+                willBeSent.setCellValue(s.getLevel() > 2 ? "是" : "否");
+
                 List<TimePair> pairs = s.getDoubtfulRecords();
                 TimePair first = pairs.get(0);
-
-                Cell startTime = row.createCell(3);
-                startTime.setCellValue(format.format(new Date(first.getT1().getTime())));
-                Cell endTime = row.createCell(4);
-                endTime.setCellValue(format.format(new Date(first.getT2().getTime())));
+                writeWeirdRecord(row, first, format);
 
                 for (int j = 1; j < pairs.size(); j++) {
                     total++;
                     Row recordRow = sheet.createRow(total);
                     TimePair next = pairs.get(j);
-                    Cell st = recordRow.createCell(3);
-                    st.setCellValue(format.format(new Date(next.getT1().getTime())));
-                    Cell et = recordRow.createCell(4);
-                    et.setCellValue(format.format(new Date(next.getT2().getTime())));
+                    writeWeirdRecord(recordRow, next, format);
                 }
             }
         }
@@ -338,13 +341,53 @@ public class ExcelUtil {
         return Duration.of(days * 24 + hours, HOURS);
     }
 
+    /**
+     * 从字符串中解析时间长度(单位:分钟)
+     *
+     * @param raw 待解析字符串
+     * @return 时间长度
+     */
     private static Duration parseMinutes(String raw) throws WrongFormatException {
         int minutes = 0;
-        if (raw.contains("分钟"))
-            minutes = Integer.parseInt(raw.substring(0, raw.indexOf("分钟")));
-        else
-            minutes = Integer.parseInt(raw);
-        return Duration.of(minutes, MINUTES);
+        try {
+            if (raw.contains("分钟"))
+                minutes = Integer.parseInt(raw.substring(0, raw.indexOf("分钟")));
+            else
+                minutes = Integer.parseInt(raw);
+            return Duration.of(minutes, MINUTES);
+        } catch (Exception e) {
+            throw new WrongFormatException("时间长度格式不匹配");
+        }
+    }
+
+    /**
+     * 写入时间对记录
+     *
+     * @param row    被写入行
+     * @param tp     时间对记录
+     * @param format 需要转化的时间格式
+     */
+    private static void writeWeirdRecord(Row row, TimePair tp, SimpleDateFormat format) {
+        Cell st = row.createCell(4);
+        st.setCellValue(format.format(new Date(tp.getT1().getTime())));
+        Cell et = row.createCell(5);
+        et.setCellValue(format.format(new Date(tp.getT2().getTime())));
+    }
+
+    /**
+     * 读入时间对记录
+     *
+     * @param row    被读取行
+     * @param format 时间格式
+     * @return 读取并转换后的时间对
+     */
+    private static TimePair readWeirdRecord(Row row, SimpleDateFormat format) throws ParseException {
+        TimePair res = new TimePair();
+        Cell st = row.getCell(4);
+        res.setT1(new Timestamp(format.parse(st.toString()).getTime()));
+        Cell et = row.getCell(5);
+        res.setT2(new Timestamp(format.parse(et.toString()).getTime()));
+        return res;
     }
 
 }

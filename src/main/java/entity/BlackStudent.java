@@ -14,8 +14,8 @@ import java.time.Duration;
 @Data
 public class BlackStudent {
     private String studentId;
-    private TimeRequirement outRequirement; //特别指定的用于LongOutInspector的时间要求
-    private TimeRequirement inRequirement; //特别指定的用于LongInInspector的时间要求
+//    private TimeRequirement outRequirement; //特别指定的用于LongOutInspector的时间要求
+//    private TimeRequirement inRequirement; //特别指定的用于LongInInspector的时间要求
 
     private Duration outReqDuration;
     private Duration inReqDuration;

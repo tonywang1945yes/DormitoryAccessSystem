@@ -5,6 +5,7 @@ import dao.MDProbe;
 import entity.*;
 import enums.CheckResult;
 import enums.MailResult;
+import enums.StudentStatus;
 import exception.daoException.DatabaseErrorException;
 import exception.excelException.*;
 import exception.mailException.MailException;
@@ -90,6 +91,7 @@ public class Controller implements DASService {
         try {
             readFile();
             List<SuspectStudent> students = doCheck(requirement);
+            translateStatus(students);
             writeFile(students);
 
         } catch (FileNotFoundException e) {
@@ -117,11 +119,11 @@ public class Controller implements DASService {
     @Override
     public Map<CheckResult, List<String>> testDatabase(String password) {
         Map<CheckResult, List<String>> res = new HashMap<>();
-        List<String> weridDates;
+        List<String> weirdDates;
         probe = MDProbe.build(password);
         try {
-            weridDates = probe.check();
-            res.put(CheckResult.DATABASE_ERROR, weridDates);
+            weirdDates = probe.check();
+            res.put(CheckResult.DATABASE_ERROR, weirdDates);
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("ClassNotFoundException"))
@@ -172,5 +174,28 @@ public class Controller implements DASService {
 
     private List<SuspectStudent> getSuspectedStudents() throws FileNotFoundException, SheetNameException, WrongFormatException {
         return ExcelUtil.readSuspectStudent(outputExcelPath, "异常学生名单");
+    }
+
+    private void translateStatus(List<SuspectStudent> students) {
+        students.forEach(s -> {
+            List<String> statusList = Arrays.stream(s.getStatus().split(":")).filter(o -> o.length() > 0).collect(Collectors.toList());
+            StringBuilder builder = new StringBuilder();
+            if (statusList.contains(StudentStatus.STILL_OUT.name()))
+                builder.append("学生长时间在外，到现在仍未回;");
+
+            if (statusList.contains(StudentStatus.LONG_IN.name())) {
+                builder.append("存在长时间待在宿舍的情况,");
+            } else {
+                builder.append("存在长时间在外的情况,");
+            }
+
+            if (statusList.contains(StudentStatus.WITH_CONFUSION.name()))
+                builder.append("但存在混淆的记录;");
+
+            if (statusList.contains(StudentStatus.WATCHED.name()))
+                builder.append("该学生在关注名单上");
+
+            s.setStatus(builder.toString());
+        });
     }
 }

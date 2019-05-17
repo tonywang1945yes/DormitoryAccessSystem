@@ -46,10 +46,9 @@ public class LongInInspector extends LongStayInspector {
             if (student.getLevel() <= 2) {
                 student.setLevel(2);
             }
-            if (evidence.stream().map(TimePair::getStatus).anyMatch(o -> o.equals(PairStatus.NORMAL.name()))) {
-                student.setStatus(student.getStatus() + ":" + StudentStatus.LONG_IN);
-            } else {
-                student.setStatus(student.getStatus() + ":" + StudentStatus.LONG_IN_WITH_CONFUSION);
+            student.setStatus(student.getStatus() + ":" + StudentStatus.LONG_IN.name());
+            if (evidence.stream().map(TimePair::getStatus).noneMatch(o -> o.equals(PairStatus.NORMAL.name()))) {
+                student.setStatus(student.getStatus() + ":" + StudentStatus.WITH_CONFUSION);
             }
         }
     }

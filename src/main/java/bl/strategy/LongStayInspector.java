@@ -2,6 +2,7 @@ package bl.strategy;
 
 import entity.*;
 import enums.PairStatus;
+import enums.StudentStatus;
 
 import java.time.Duration;
 import java.util.*;
@@ -132,7 +133,7 @@ public abstract class LongStayInspector {
         SuspectStudent res = judge(blackInfo.getStudentId(), records, specificReq);
         if (res != null) {
             res.setLevel(res.getLevel() + 1);
-            res.setStatus(":WASINBLACKLIST");
+            res.setStatus(":" + StudentStatus.WATCHED.name());
         }
         return res;
     }
