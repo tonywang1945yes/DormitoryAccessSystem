@@ -27,7 +27,7 @@ public class Operator {
     //    文件路径
     static String filepath;
     //    启动器
-    static Controller controller=new Controller();
+
 
     public void start(Stage primaryStage) {
         window = primaryStage;
@@ -104,7 +104,7 @@ public class Operator {
         hBox7.getChildren().add(threshold);
         hBox7.getChildren().add(Operator.relatesheet);
         hBox7.getChildren().add(relate);
-        relatesheet.setOnAction(event -> {
+        relate.setOnAction(event -> {
             FileChoose filechoose =new FileChoose();
             filechoose.getFilePath();
             Operator.relatesheet.setText(filechoose.path);
@@ -116,12 +116,9 @@ public class Operator {
         Button filter=new Button();
         filter.setText("选择筛选条件");
         filter.setOpacity(1);
-        Button setxlsx=new Button();
-        setxlsx.setText("点此生成名单");
-        setxlsx.setOpacity(1);
+
         hbox3.getChildren().add(setfield);
         hbox3.getChildren().add(filter);
-        hbox3.getChildren().add(setxlsx);
 
 
         Label text=new Label();
@@ -131,6 +128,11 @@ public class Operator {
         deliver.setOpacity(1);
         hBox9.getChildren().addAll(text,deliver);
 
+        deliver.setOnAction(event -> {
+            MailSend sender = new MailSend();
+            sender.display(new Stage());
+            window.close();
+        });
 
 //        组合
         hbox4.getChildren().add(new Label(""));

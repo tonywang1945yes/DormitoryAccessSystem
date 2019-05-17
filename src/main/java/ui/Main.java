@@ -1,4 +1,6 @@
 package ui;
+import bl.Controller;
+import enums.CheckResult;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,12 +11,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.List;
+import java.util.Map;
+
 public class Main extends Application {
 
     Stage window;
     Button login;
     static PasswordField dbPassword;
-    static PasswordField mailPassword;
     @Override
     public void start(Stage primaryStage) throws Exception{
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -37,18 +41,20 @@ public class Main extends Application {
         Label label = new Label("");
         hbox1.getChildren().add(label);
 
+//
 
-        password=new Label("邮箱的密码: ");
-        Main.mailPassword =new PasswordField();
-        Main.mailPassword.setPromptText("在此输入密码");
-        Main.mailPassword.setOpacity(0.7);
-        HBox hbox2 = new HBox();
-        hbox2.getChildren().addAll(password,Main.mailPassword);
 
         login = new Button("登录");
 
         login.setOnAction(event -> {
-            if(true){
+            boolean res ;
+            Controller controller = new Controller();
+            Map<CheckResult, List<String>> map = controller.testDatabase(dbPassword.getText());
+            if(map.containsKey(CheckResult.DRIVER_ERROR)||map.containsKey(CheckResult.CONNECTION_ERROR)) {
+                Warn.display("数据库异常","数据库密码错误");
+                window.close();
+            }
+            else{
                 try {
                     Operator open = new Operator();
                     open.start(new Stage());
@@ -64,7 +70,7 @@ public class Main extends Application {
 
         VBox vBox = new VBox();
         panel.getChildren().add(vBox);
-        vBox.getChildren().addAll(hbox,hbox1,hbox2);
+        vBox.getChildren().addAll(hbox,hbox1);
 
         vBox.setLayoutX(20);
         vBox.setLayoutY(60);
@@ -72,9 +78,9 @@ public class Main extends Application {
 //        vbox =new VBox();
 //        layout.getChildren().add(vbox);
         login.setLayoutX(140);
-        login.setLayoutY(180);
+        login.setLayoutY(140);
         panel.getChildren().add(login);
-        Scene scene = new Scene(panel,350,250);
+        Scene scene = new Scene(panel,350,200);
         window.setScene(scene);
         window.show();
         window.setResizable(false);

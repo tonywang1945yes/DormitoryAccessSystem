@@ -58,4 +58,17 @@ public class TimeRequirement {
         tr.setMinBreak(Duration.ofMillis(this.minBreak.toMillis()));
         return tr;
     }
+
+    public TimeRequirement(){
+
+    }
+    public TimeRequirement(TimePair interval, Duration reqDuration, Duration limitationToNow,boolean isOut) {
+        this.interval = interval;
+        this.reqDuration = reqDuration;
+        if(isOut) {
+            this.limitationToNow = limitationToNow;
+        }
+        else
+            this.minBreak = limitationToNow;
+    }
 }

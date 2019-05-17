@@ -75,6 +75,7 @@ public class Controller implements DASService {
 //
 //    }
 
+
     private List<SuspectStudent> doCheck(TimeRequirement requirement) {
         Map<String, List<PassRecord>> recordMaps = probe.getRecordsGrouped();
         inspector.setRecordMaps(recordMaps);
