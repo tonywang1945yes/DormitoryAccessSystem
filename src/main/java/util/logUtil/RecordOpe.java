@@ -38,13 +38,13 @@ public class RecordOpe implements AppLog {
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
         Record record = new Record(Type.Exception, str, date, time);
-        dump(record);
+        dump(record,0);
     }
 
     @Override
     public void createExceptionRecord(String str, String date) {
         Record record = new Record(Type.Exception, str, date, "00:00:00");
-        dump(record);
+        dump(record,0);
     }
 
     /**
@@ -59,7 +59,7 @@ public class RecordOpe implements AppLog {
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
         Record record = new Record(Type.SingleRecord, str, date, time);
-        dump(record);
+        dump(record,0);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class RecordOpe implements AppLog {
     @Override
     public void createInsSumRecord(int num, String date, String time) {
         Record record = new Record(date, time, Type.SumRecord, num, "This is a sum");
-        dump(record);
+        dump(record,0);
     }
 
     /**
@@ -117,7 +117,7 @@ public class RecordOpe implements AppLog {
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
         Record record = new Record(Type.Start, "Starting", date, time);
-        dump(record);
+        dump(record,0);
     }
 
     @Override
@@ -155,15 +155,51 @@ public class RecordOpe implements AppLog {
         return records.get(records.size() - 1);
     }
 
+
+    /**
+     * 读取已录入的路径
+     * @param which
+     * @return
+     */
+    @Override
+    public String readpath(int which){
+//        File logger = new File("D://log.yaml");
+        File logger = new File(System.getenv("APPDATA") + "/das/applog.yaml");
+        if(!logger.exists()){
+            return "";
+        }
+        else{
+            Record startRecord = (Record) readYaml().get(0);
+            switch (which){
+                case 0:return startRecord.getWhiteSheet();
+                case 1:return startRecord.getRelationSheet();
+                case 2:return startRecord.getConcernSheet();
+                default:return startRecord.getResultSheet();
+            }
+        }
+    }
+
     /**
      * 写入
      *
      * @param record
      */
-    private void dump(Record record) {
+    private void dump(Record record,int cases) {
         List<Record> records = readYaml();
         File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
-        records.add(record);
+//        File dumpFile =new File("D://log.yaml");
+        dumpFile.delete();
+        try {
+            dumpFile.createNewFile();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        if (cases==0) {
+            records.add(record);
+        }else if(cases==1){
+            records.set(0,record);
+        }
         try {
             YamlEncoder enc = new YamlEncoder(new FileOutputStream(dumpFile));
             for (int i = 0; i < records.size(); i++) {
@@ -178,24 +214,24 @@ public class RecordOpe implements AppLog {
 
     //    修改 起始设置
     private void dumpfirst(Record record) {
-        List<Record> records = readYaml();
+//        File dumpFile =new File("D://log.yaml");
         File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
-        if (records.size() == 0) {
-            dump(record);
-            return;
-        } else {
-            records.set(0, record);
-        }
         try {
-            YamlEncoder enc = new YamlEncoder(new FileOutputStream(dumpFile));
-            for (int i = 0; i < records.size(); i++) {
-                enc.writeObject(records.get(i));
-                enc.flush();
+            if (!dumpFile.exists()) {
+                dumpFile.createNewFile();
             }
-            enc.close();
-        } catch (FileNotFoundException e) {
+        }catch (IOException e){
             e.printStackTrace();
         }
+        List<Record> records = readYaml();
+        if (records.size() == 0) {
+            dump(record,0);
+            return;
+        } else {
+            dump(record,1);
+
+        }
+
     }
 
 
@@ -210,10 +246,11 @@ public class RecordOpe implements AppLog {
             File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
             Record record = (Record) Yaml.loadType(dumpFile, Record.class);
             YamlDecoder dec = new YamlDecoder(new FileInputStream(dumpFile));
-            while (true) {
-                record = (Record) dec.readObject();
+            while ((record = (Record) dec.readObject())!=null) {
                 records.add(record);
             }
+            dec.close();
+            System.out.println("closed");
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (EOFException e) {

@@ -33,6 +33,7 @@ public class XlsxSetBox {
     public void start(Stage primaryStage, boolean isOutStrategy, Integer day,
                       Integer hour, Integer minute, LocalDate begin, LocalDate end,
                       String threshold) {
+        AppLog ope = RecordOpe.getInstance();
         window = primaryStage;
         AnchorPane panel = new AnchorPane();
         VBox vBox = new VBox();
@@ -45,6 +46,7 @@ public class XlsxSetBox {
         text.setPromptText("在此选择路径");
         text.setEditable(false);
         text.setOpacity(0.7);
+        text.setText(ope.readpath(4));
         Button relate = new Button("选择路径");
         hBox.getChildren().add(path);
         hBox.getChildren().add(text);
@@ -61,7 +63,7 @@ public class XlsxSetBox {
         vBox.setAlignment(Pos.CENTER);
 
         yesButton.setOnAction(event -> {
-            AppLog ope = RecordOpe.getInstance();
+
             try {
                 ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(), text.getText());
                 Controller controller = new Controller();
@@ -80,7 +82,7 @@ public class XlsxSetBox {
 
                 TimeRequirement requirement = new TimeRequirement(pair, result, specialReq, isOutStrategy);
                 controller.generateStudentList(requirement);
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 ope.createExceptionRecord("ParseException");
                 System.out.println(e);
             }

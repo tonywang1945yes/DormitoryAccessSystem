@@ -53,6 +53,7 @@ public class Main extends Application {
             Controller controller = new Controller();
             Map<CheckResult, List<String>> map = controller.testDatabase(dbPassword.getText());
             if (map.containsKey(CheckResult.DRIVER_ERROR) || map.containsKey(CheckResult.CONNECTION_ERROR)) {
+//            if(false){
                 Warn.display("数据库异常", "数据库密码错误");
                 window.close();
             } else {
@@ -64,9 +65,6 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
             }
-//            else{
-//                Warn.display("警告","密码不正确");
-//            }
         });
 
         VBox vBox = new VBox();

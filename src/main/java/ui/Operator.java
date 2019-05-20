@@ -9,11 +9,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import util.logUtil.AppLog;
+import util.logUtil.RecordOpe;
 
 public class Operator {
 
     Stage window;
 
+    AppLog  log;
     //    表格是否生成
     static boolean isvisited=false;
     //    文件选择框
@@ -30,6 +33,9 @@ public class Operator {
 
 
     public void start(Stage primaryStage) {
+
+        log =RecordOpe.getInstance();
+
         window = primaryStage;
 //        图片加载器
         ImageView mv=new ImageView();
@@ -68,6 +74,7 @@ public class Operator {
         whitesheet.setEditable(false);
         whitesheet.setPromptText("在此选择文件");
         whitesheet.setOpacity(0.7);
+        whitesheet.setText(log.readpath(0));
         Button setpath=new Button("选择路径");
         hbox1.getChildren().add(pathlabel);
         hbox1.getChildren().add(whitesheet);
@@ -84,6 +91,7 @@ public class Operator {
         concernsheet.setEditable(false);
         concernsheet.setPromptText("在此选择文件");
         concernsheet.setOpacity(0.7);
+        concernsheet.setText(log.readpath(2));
         Button concern = new Button("选择路径");
         hbox2.getChildren().add(endlabel);
         hbox2.getChildren().add(concernsheet);
@@ -100,6 +108,7 @@ public class Operator {
         Operator.relatesheet.setPromptText("在此选择文件");
         Operator.relatesheet.setEditable(false);
         Operator.relatesheet.setOpacity(0.7);
+        Operator.relatesheet.setText(log.readpath(1));
         Button relate = new Button("选择路径");
         hBox7.getChildren().add(threshold);
         hBox7.getChildren().add(Operator.relatesheet);
@@ -116,6 +125,7 @@ public class Operator {
         Button filter=new Button();
         filter.setText("选择筛选条件");
         filter.setOpacity(1);
+
 
         hbox3.getChildren().add(setfield);
         hbox3.getChildren().add(filter);

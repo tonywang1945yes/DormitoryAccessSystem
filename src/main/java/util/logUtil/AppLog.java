@@ -64,4 +64,6 @@ public interface AppLog {
      * @return 最新一条错误记录
      */
     public Record getLatestException();
+
+    public String readpath(int which);
 }
