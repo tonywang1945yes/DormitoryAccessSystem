@@ -20,9 +20,9 @@ public interface PassRecordMapper {
 
     public List<IdMap> getUserIdMaps();
 
-    public List<PassRecord> getRecordByDate(Date date);
+    public List<PassRecord> getRecordByDate(String date);
 
     public List<PassRecord> getRecordWithLimit(int limit);
 
-    public Long getRecordCountByDate(Date date);
+    public int getRecordCountByDate(Date date);
 }

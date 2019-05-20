@@ -1,4 +1,5 @@
 package ui;
+
 import bl.Controller;
 import enums.CheckResult;
 import javafx.application.Application;
@@ -19,22 +20,23 @@ public class Main extends Application {
     Stage window;
     Button login;
     static PasswordField dbPassword;
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 //        primaryStage.setTitle("Hello World");
 //        primaryStage.setScene(new Scene(root, 300, 275));
 //        primaryStage.show();
-        AnchorPane panel=new AnchorPane();
+        AnchorPane panel = new AnchorPane();
         window = primaryStage;
         window.setTitle("Dormitary");
 
-        Label password=new Label("数据库密码: ");
-        Main.dbPassword =new PasswordField();
+        Label password = new Label("数据库密码: ");
+        Main.dbPassword = new PasswordField();
         Main.dbPassword.setPromptText("在此输入密码");
         Main.dbPassword.setOpacity(0.7);
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(password,Main.dbPassword);
+        hbox.getChildren().addAll(password, Main.dbPassword);
 //        hbox.setPadding(new Insets(75,50,180,20));
 
         HBox hbox1 = new HBox();
@@ -47,30 +49,29 @@ public class Main extends Application {
         login = new Button("登录");
 
         login.setOnAction(event -> {
-            boolean res ;
+            boolean res;
             Controller controller = new Controller();
             Map<CheckResult, List<String>> map = controller.testDatabase(dbPassword.getText());
-            if(map.containsKey(CheckResult.DRIVER_ERROR)||map.containsKey(CheckResult.CONNECTION_ERROR)) {
-                Warn.display("数据库异常","数据库密码错误");
+            if (map.containsKey(CheckResult.DRIVER_ERROR) || map.containsKey(CheckResult.CONNECTION_ERROR)) {
+                Warn.display("数据库异常", "数据库密码错误");
                 window.close();
-            }
-            else{
+            } else {
                 try {
                     Operator open = new Operator();
                     open.start(new Stage());
                     window.hide();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            else{
-                Warn.display("警告","密码不正确");
-            }
+//            else{
+//                Warn.display("警告","密码不正确");
+//            }
         });
 
         VBox vBox = new VBox();
         panel.getChildren().add(vBox);
-        vBox.getChildren().addAll(hbox,hbox1);
+        vBox.getChildren().addAll(hbox, hbox1);
 
         vBox.setLayoutX(20);
         vBox.setLayoutY(60);
@@ -80,7 +81,7 @@ public class Main extends Application {
         login.setLayoutX(140);
         login.setLayoutY(140);
         panel.getChildren().add(login);
-        Scene scene = new Scene(panel,350,200);
+        Scene scene = new Scene(panel, 350, 200);
         window.setScene(scene);
         window.show();
         window.setResizable(false);

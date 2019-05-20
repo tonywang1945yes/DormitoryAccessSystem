@@ -14,7 +14,8 @@ public enum StudentStatus {
     WATCHED("在关注名单上"),
     LONG_IN_WITH_CONFUSION("长时间待在宿舍，但是存在混淆记录"),
     LONG_IN("长时间呆在宿舍"),
-    WITH_CONFUSION("存在混淆记录");
+    WITH_CONFUSION("存在混淆记录"),
+    ABOUT_HOLIDAY("与假期有关");
 
     private String msg;
 

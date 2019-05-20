@@ -1,5 +1,6 @@
 package util.logUtil;
 
+import enums.Type;
 import org.ho.yaml.Yaml;
 import org.ho.yaml.YamlDecoder;
 import org.ho.yaml.YamlEncoder;
@@ -11,18 +12,38 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RecordOpe implements LogOperation{
+public class RecordOpe implements AppLog {
+    private static RecordOpe instance = null;
+
+    public static RecordOpe getInstance() {
+        if (instance == null)
+            instance = new RecordOpe();
+        return instance;
+    }
+
+    private RecordOpe() {
+        super();
+    }
+
+
     /**
      * 新建一条异常记录
      *
      * @param str
      */
-    public void createExceptionRecord(String str){
+    @Override
+    public void createExceptionRecord(String str) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
-        Record record = new Record(Type.Exception,str,date,time);
+        Record record = new Record(Type.Exception, str, date, time);
+        dump(record);
+    }
+
+    @Override
+    public void createExceptionRecord(String str, String date) {
+        Record record = new Record(Type.Exception, str, date, "00:00:00");
         dump(record);
     }
 
@@ -31,20 +52,23 @@ public class RecordOpe implements LogOperation{
      *
      * @param str
      */
-    public void createInsertionRecord(String str){
+    @Override
+    public void createInsertionRecord(String str) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
-        Record record = new Record(Type.SingleRecord,str,date,time);
+        Record record = new Record(Type.SingleRecord, str, date, time);
         dump(record);
     }
-    public void createInsertionRecord(String white,String relat,String concern,String res){
+
+    @Override
+    public void createInsertionRecord(String white, String relat, String concern, String res) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
-        Record record = new Record(date,time,Type.Start,1,"",white,relat,concern,res);
+        Record record = new Record(date, time, Type.Start, 1, "", white, relat, concern, res);
         dumpfirst(record);
     }
 
@@ -55,32 +79,57 @@ public class RecordOpe implements LogOperation{
      * @param end
      * @return
      */
-    public int sumInsertion(Date start, Date end){
-        //TODO
-        return 0;
-    };
+    @Override
+    public int sumInsertion(Date start, Date end) {
+        int res = 0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        long[] now = new long[1];
+        for (now[0] = start.getTime(); now[0] <= end.getTime(); now[0] += 1000L * 3600 * 24) {
+            Record oneDay = readYaml()
+                    .stream()
+                    .filter(o -> o.getType().equals(Type.SumRecord) && o.getDate().equals(format.format(new Date(now[0]))))
+                    .findFirst().get();
+            res += oneDay.getNum();
+        }
+        return res;
+    }
+
+    ;
 
     /**
      * 新建一条单日插入总数记录
      *
      * @param num
      */
-    public void createInsSumRecord(int num,String date,String time){
-        Record record = new Record(date,time,Type.SumRecord,num,"This is a sum");
+    @Override
+    public void createInsSumRecord(int num, String date, String time) {
+        Record record = new Record(date, time, Type.SumRecord, num, "This is a sum");
         dump(record);
     }
 
     /**
      * 新建一条起始记录，标记机器启动时间
-     *
      */
-    public void createStartRecord(){
+    @Override
+    public void createStartRecord() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
-        Record record = new Record(Type.Start,"Starting",date,time);
+        Record record = new Record(Type.Start, "Starting", date, time);
         dump(record);
+    }
+
+    @Override
+    public Record getLatestStartRecord() {
+        List<Record> records = readYaml()
+                .stream()
+                .filter(o -> o.getType().equals(Type.Start))
+                .collect(Collectors.toList());
+
+        if (records.size() == 0)
+            return null;
+        return records.get(records.size() - 1);
     }
 
     /**
@@ -89,19 +138,21 @@ public class RecordOpe implements LogOperation{
      * @param date
      * @return
      */
-    public List<Record> getExceptionByDate(String date){
-        List<Record> records = readYaml().stream().filter(o->(o.getType().equals(Type.Exception)&&(o.getDate().equals(date)))).collect(Collectors.toList());
+    @Override
+    public List<Record> getExceptionByDate(String date) {
+        List<Record> records = readYaml().stream().filter(o -> (o.getType().equals(Type.Exception) && (o.getDate().equals(date)))).collect(Collectors.toList());
         return records;
     }
 
     /**
-     *获取最新的错误记录
+     * 获取最新的错误记录
      *
      * @return
      */
-    public Record getLatestException(){
-        List<Record> records = readYaml().stream().filter(o->(o.getType().equals(Type.Exception))).collect(Collectors.toList());
-        return records.get(records.size()-1);
+    @Override
+    public Record getLatestException() {
+        List<Record> records = readYaml().stream().filter(o -> (o.getType().equals(Type.Exception))).collect(Collectors.toList());
+        return records.get(records.size() - 1);
     }
 
     /**
@@ -109,13 +160,13 @@ public class RecordOpe implements LogOperation{
      *
      * @param record
      */
-    private void dump(Record record){
+    private void dump(Record record) {
         List<Record> records = readYaml();
-        File dumpFile = new File("E://John.yaml");
+        File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
         records.add(record);
         try {
             YamlEncoder enc = new YamlEncoder(new FileOutputStream(dumpFile));
-            for(int i=0; i<records.size(); i++){
+            for (int i = 0; i < records.size(); i++) {
                 enc.writeObject(records.get(i));
                 enc.flush();
             }
@@ -124,20 +175,20 @@ public class RecordOpe implements LogOperation{
             e.printStackTrace();
         }
     }
-//    修改 起始设置
-    private void dumpfirst(Record record){
+
+    //    修改 起始设置
+    private void dumpfirst(Record record) {
         List<Record> records = readYaml();
-        File dumpFile = new File("E://John.yaml");
-        if(records.size()==0){
+        File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
+        if (records.size() == 0) {
             dump(record);
             return;
-        }
-        else{
-            records.set(0,record);
+        } else {
+            records.set(0, record);
         }
         try {
             YamlEncoder enc = new YamlEncoder(new FileOutputStream(dumpFile));
-            for(int i=0; i<records.size(); i++){
+            for (int i = 0; i < records.size(); i++) {
                 enc.writeObject(records.get(i));
                 enc.flush();
             }
@@ -153,22 +204,21 @@ public class RecordOpe implements LogOperation{
      *
      * @return
      */
-    private List<Record> readYaml(){
+    private List<Record> readYaml() {
         List<Record> records = new ArrayList<Record>();
         try {
-            File dumpFile = new File("E://John.yaml");
+            File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
             Record record = (Record) Yaml.loadType(dumpFile, Record.class);
             YamlDecoder dec = new YamlDecoder(new FileInputStream(dumpFile));
             while (true) {
                 record = (Record) dec.readObject();
                 records.add(record);
             }
-        }catch (FileNotFoundException ex){
+        } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-        }catch (EOFException e){
+        } catch (EOFException e) {
             System.out.println("done.");
-        }
-        finally {
+        } finally {
             return records;
         }
     }

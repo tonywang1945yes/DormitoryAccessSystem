@@ -14,6 +14,7 @@ import util.excel.ExcelUtil;
 
 import javax.mail.MessagingException;
 import java.security.GeneralSecurityException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,9 +30,9 @@ public class Controller implements DASService {
     Map<Tutor, String> tutorMap;
 
     private void readFile() throws FileNotFoundException, SheetNameException, WrongFormatException {
-        List<WhiteStudent> whiteList = ExcelUtil.readWhiteList(whiteListPath, "白名单");
-        List<BlackStudent> blackList = ExcelUtil.readBlackList(blackListPath, "关注名单");
-        tutorMap = ExcelUtil.readTutorStudentMaps(tutorMapList, "学生辅导员对应名单");
+        List<WhiteStudent> whiteList = ExcelUtil.readWhiteList(whiteListPath, "Sheet1");
+        List<BlackStudent> blackList = ExcelUtil.readBlackList(blackListPath, "Sheet1");
+        tutorMap = ExcelUtil.readTutorStudentMaps(tutorMapList, "Sheet1");
 
         inspector.setWhiteList(whiteList);
         inspector.setBlackList(blackList);
@@ -58,14 +59,16 @@ public class Controller implements DASService {
     }
 
     private void writeFile(List<SuspectStudent> students) throws FileNotWritable, FileNotClosable {
-        ExcelUtil.writeSuspectStudent(students, outputExcelPath);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        ExcelUtil.writeSuspectStudent(students, outputExcelPath + "/" + format.format(today) + "异常学生名单.xlsx");
     }
 
 //    private List<String> prepareDatabase(String password) throws DatabaseErrorException, DriverErrorException, DBConnectionException {
 //        probe = MDProbe.build(password);
 //        List<String> res;
 //        try {
-//            res = probe.check();
+//            res = probe.checkError();
 //        } catch (Exception e) {
 //            if (e.getMessage().contains("ClassNotFoundException"))
 //                throw new DriverErrorException("数据库驱动异常");
@@ -89,6 +92,7 @@ public class Controller implements DASService {
 
         //TODO 细分异常情况 done
         try {
+            probe = MDProbe.getInstance();
             readFile();
             List<SuspectStudent> students = doCheck(requirement);
             translateStatus(students);
@@ -122,7 +126,8 @@ public class Controller implements DASService {
         List<String> weirdDates;
         probe = MDProbe.build(password);
         try {
-            weirdDates = probe.check();
+            probe.checkConnection();
+            weirdDates = probe.checkError();
             res.put(CheckResult.DATABASE_ERROR, weirdDates);
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,7 +178,9 @@ public class Controller implements DASService {
     }
 
     private List<SuspectStudent> getSuspectedStudents() throws FileNotFoundException, SheetNameException, WrongFormatException {
-        return ExcelUtil.readSuspectStudent(outputExcelPath, "异常学生名单");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        return ExcelUtil.readSuspectStudent(outputExcelPath + "/" + format.format(today) + "异常学生名单.xlsx", "Sheet1");
     }
 
     private void translateStatus(List<SuspectStudent> students) {
@@ -189,11 +196,15 @@ public class Controller implements DASService {
                 builder.append("存在长时间在外的情况,");
             }
 
+            if (statusList.contains(StudentStatus.ABOUT_HOLIDAY.name()))
+                builder.append("异常记录与设置的假期有关");
+
             if (statusList.contains(StudentStatus.WITH_CONFUSION.name()))
                 builder.append("但存在混淆的记录;");
 
             if (statusList.contains(StudentStatus.WATCHED.name()))
                 builder.append("该学生在关注名单上");
+
 
             s.setStatus(builder.toString());
         });

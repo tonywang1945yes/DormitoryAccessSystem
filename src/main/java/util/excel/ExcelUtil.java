@@ -198,6 +198,30 @@ public class ExcelUtil {
 
     }
 
+    public static List<Holiday> readHoliday(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
+        Sheet sheet = openSheet(filePath, sheetName);
+        List<Holiday> res = new ArrayList<>();
+        int rowNum = sheet.getLastRowNum();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            for (int i = 1; i <= rowNum; i++) {
+                Holiday h = new Holiday();
+                Row row = sheet.getRow(i);
+                String name = row.getCell(0).toString();
+                Date d1 = format.parse(row.getCell(1).toString());
+                Date d2 = format.parse(row.getCell(2).toString());
+                TimePair tp = new TimePair(new Timestamp(d1.getTime()), new Timestamp(d2.getTime() + (1000 * 3600 * 24L)));
+                h.setName(name);
+                h.setInterval(tp);
+                res.add(h);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new WrongFormatException("格式不匹配");
+        }
+        return res;
+    }
+
     /**
      * 将异常学生列表输出为excel表格
      *
@@ -207,6 +231,16 @@ public class ExcelUtil {
      * @throws FileNotClosable 文件无法正常关闭时抛出该异常
      */
     public static void writeSuspectStudent(List<SuspectStudent> students, String filePath) throws FileNotWritable, FileNotClosable {
+//        File excelFile = new File(filePath);
+//        if (!excelFile.exists()) {
+//            try {
+//                excelFile.createNewFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                throw new FileNotWritable("无法创建文件");
+//            }
+//        }
+
         Workbook workbook;
         if (filePath.endsWith(".xls")) {
             workbook = new HSSFWorkbook();
@@ -284,6 +318,7 @@ public class ExcelUtil {
 
 
     }
+
 
     /**
      * 根据文件路径打开excel工作表

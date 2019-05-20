@@ -79,6 +79,8 @@ public abstract class LongStayInspector {
      * @return 如果学生被怀疑，封装并返回相关异常信息，否则为null
      */
     final SuspectStudent judge(String studentId, List<PassRecord> records, TimeRequirement req) {
+        records.sort(Comparator.comparing(PassRecord::getPassTime));
+        System.out.println("judging id " + studentId);
         SuspectStudent res = new SuspectStudent();
         res.setStudentId(studentId);
 
@@ -195,9 +197,14 @@ public abstract class LongStayInspector {
     final List<TimePair> getLongStayPairs(List<PassRecord> records, int firstDirection, Duration minBreak, TimeRequirement req) {
         List<TimePair> recordPairs = getInOutTimePairs(records, firstDirection, minBreak);
         List<TimePair> evidence = recordPairs.stream()
-                .filter(o -> !o.getStatus().equals(PairStatus.UNCOMPLETED.name()))
+                .filter(o -> !o.getStatus().contains(PairStatus.UNCOMPLETED.name()))
                 .filter(o -> req.cover(o) && o.getDuration().compareTo(req.getReqDuration()) > 0)
                 .collect(Collectors.toList());
+        evidence.forEach(o -> {
+            if (holidays.stream().anyMatch(h -> h.getInterval().include(o.getT1()) || h.getInterval().include(o.getT2()))) {
+                o.setStatus(o.getStatus() + ":" + PairStatus.ABOUTHOLIDAY.name());
+            }
+        });
         return evidence;
     }
 
@@ -275,6 +282,5 @@ public abstract class LongStayInspector {
 
         return res;
     }
-
 
 }

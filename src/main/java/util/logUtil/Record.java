@@ -1,7 +1,6 @@
 package util.logUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import enums.Type;
 
 public class Record {
     private String date;

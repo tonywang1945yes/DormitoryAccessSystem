@@ -8,7 +8,9 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import util.AppLog;
+import util.logUtil.AppLog;
+import util.logUtil.Record;
+import util.logUtil.RecordOpe;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,11 +28,17 @@ import java.util.stream.Collectors;
  * @since 2019/4/26
  */
 public class MDProbe {
+    private static MDProbe instance = null;
     private SqlSessionFactory sqlSessionFactory;
 
     //强制使用静态方法创建probe对象
     private MDProbe() {
     }
+
+    public static MDProbe getInstance() {
+        return instance;
+    }
+
 
     /**
      * 使用参数构建SqlSessionFactory字段
@@ -39,7 +47,7 @@ public class MDProbe {
      * @return probe对象
      */
     public static MDProbe build(String password) {
-        MDProbe probe = new MDProbe();
+        instance = new MDProbe();
 
 //        String driver = DaoConfig.driver;
 //        DataSource dataSource = new PooledDataSource(driver, url, username, password);
@@ -65,13 +73,10 @@ public class MDProbe {
         }
 
         //构建sqlSession的工厂
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is, props);
-        probe.sqlSessionFactory = sessionFactory;
+        instance.sqlSessionFactory = new SqlSessionFactoryBuilder().build(is, props);
 
-        SqlSession session = probe.sqlSessionFactory.openSession();
-        session.close();
 
-        return probe;
+        return instance;
     }
 
     public List<PassRecord> getRecordWithLimit(int limit) {
@@ -90,6 +95,17 @@ public class MDProbe {
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
             List<PassRecord> records = mapper.getAllRecords();
+            return records;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<PassRecord> getRecordByDate(String date) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+            List<PassRecord> records = mapper.getRecordByDate(date);
             return records;
         } finally {
             session.close();
@@ -125,34 +141,50 @@ public class MDProbe {
         }
     }
 
+    public void checkConnection() {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+            mapper.getRecordWithLimit(5);
+        } finally {
+            session.close();
+        }
+    }
+
     /**
      * 检查数据库自上次应用启动后是否出现异常情况
      */
-    public List<String> check() throws LogException {
-        //TODO 等待与文件键值对读写工具协作
+    public List<String> checkError() throws LogException {
+        //TODO 等待与文件键值对读写工具协作 done
         List<String> res = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(new Date());
-        AppLog log = AppLog.getInstance();
+        AppLog appLog = RecordOpe.getInstance();
+        Record latestStartRecord = appLog.getLatestStartRecord();
 
-        if (log.get("inited").equals("false"))
+        if (latestStartRecord == null) {
             init();
-
-        if (log.get("latestCheckDate").equals(today))
+            return res;
+        } else if (latestStartRecord.getDate().equals(today))
             return res;
 
         Date now = new Date();
         Date then;
         try {
-            then = new Date(format.parse(log.get("latestCheckDate")).getTime());
+            then = format.parse(latestStartRecord.getDate());
         } catch (ParseException e) {
             e.printStackTrace();
             throw new LogException("日志格式错误");
         }
 
+        //插入每日数据库更新条数记录
+        calcInsertionsInDuration(alignDate(then), alignDate(now));
+
+        //判断从上次启动之后数据库有没有出现异常
         List<Date> weirdDates = hasExceptionInDuration(alignDate(then), alignDate(now));
         weirdDates.forEach(d -> {
             //写入系统记录
+            appLog.createExceptionRecord("该日数据库记录存在异常", format.format(d));
             res.add(format.format(d));
         });
 
@@ -162,11 +194,8 @@ public class MDProbe {
     }
 
     private void init() {
-        AppLog log = AppLog.getInstance();
+        AppLog appLog = RecordOpe.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        log.put("inited", "true");
-        log.put("latestCheckDate", format.format(date));
 
         SqlSession session = sqlSessionFactory.openSession();
         try {
@@ -176,9 +205,11 @@ public class MDProbe {
             Map<String, List<PassRecord>> recordDateMap = records.stream().collect(Collectors.groupingBy(o -> format.format(o.getPassTime())));
             recordDateMap.forEach((k, r) -> {
                 if (lostData(r))
-                    ;//写入系统记录
+                    appLog.createExceptionRecord("该日数据库记录存在异常", k);
 
             });
+
+            appLog.createStartRecord();
         } finally {
             session.close();
         }
@@ -197,10 +228,11 @@ public class MDProbe {
         List<Date> res = new ArrayList<>();
         SqlSession session = sqlSessionFactory.openSession();
         PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
             for (long cur = d1; cur < d2; cur += 1000L * 3600 * 24) {
-                List<PassRecord> records = mapper.getRecordByDate(new Date());//假设已经排序好了(可以在sql语句中实现)
+                List<PassRecord> records = mapper.getRecordByDate(format.format(new Date(cur)));//假设已经排序好了(可以在sql语句中实现)
                 if (lostData(records))
                     res.add(new Date(cur));
             }
@@ -219,7 +251,9 @@ public class MDProbe {
      * @param records 待判断的记录
      * @return 如果出现数据丢失，返回true，否则为false
      */
-    private boolean lostData(List<PassRecord> records) {
+    public boolean lostData(List<PassRecord> records) {
+        records.sort(Comparator.comparing(PassRecord::getPassTime));
+
         int[] count = new int[1];
 //        List<String> errorRecords = new ArrayList<>();
 
@@ -229,13 +263,36 @@ public class MDProbe {
             Calendar c2 = Calendar.getInstance();
             c2.setTime(b.getPassTime());
             c1.add(Calendar.MINUTE, 30);
-            if (c1.after(c2))
+            if (c1.get(Calendar.HOUR_OF_DAY) >= 6 && c2.get(Calendar.HOUR_OF_DAY) >= 6 && c1.before(c2)) {
+                System.out.println(a.getPassTime() + " " + b.getPassTime());
                 count[0]++;
 //                        errorRecords.add(String.format("%s--%s", a.getPassTime().toString(), b.getPassTime().toString()));
+            }
             return b;
         });
 
-        return count[0] > 0;
+        Calendar c = Calendar.getInstance();
+
+
+        long[] hourCount = new long[24];
+        records.forEach(o -> {
+            //用于判断24个小时中是否有某个小时没有记录，以便判断数据断层
+            c.setTime(new Date(o.getPassTime().getTime()));
+            hourCount[c.get(Calendar.HOUR_OF_DAY)]++;
+        });
+
+        if (count[0] > 0 || records.size() < 2)
+            return true;
+        else {
+            for (int i = 0; i < 24; i++) {
+                //1到5点无记录也判断为无损失数据
+                if (1 <= i && i <= 5)
+                    continue;
+                if (hourCount[i] == 0)
+                    return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -288,6 +345,28 @@ public class MDProbe {
         res.values().removeIf(l -> l.size() == 0);
         res.forEach((k, v) -> System.out.println(k + " " + v));
         return res;
+    }
+
+    /**
+     * 计算并插入每日数据库更新条数记录
+     * 计算区间[then,now)
+     *
+     * @param then 开始时间，为某日期的00:00:00
+     * @param now  结束时间，为某日期的00:00:00
+     */
+    private void calcInsertionsInDuration(long then, long now) {
+        AppLog log = RecordOpe.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+
+            for (long t = then; t < now; t += 1000L * 3600 * 24) {
+                log.createInsSumRecord(mapper.getRecordCountByDate(new Date(t)), format.format(new Date(t)), "00:00:00");
+            }
+        } finally {
+            session.close();
+        }
     }
 
     /**

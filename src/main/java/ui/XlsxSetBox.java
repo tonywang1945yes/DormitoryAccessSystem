@@ -1,8 +1,8 @@
 package ui;
 
 import bl.Controller;
-import java.sql.Timestamp;
-
+import bl.strategy.LongInInspector;
+import bl.strategy.LongOutInspector;
 import entity.TimePair;
 import entity.TimeRequirement;
 import javafx.geometry.Pos;
@@ -14,24 +14,27 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import util.logUtil.LogOperation;
+import util.logUtil.AppLog;
 import util.logUtil.RecordOpe;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Locale;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class XlsxSetBox {
     Stage window;
+
     public void start(Stage primaryStage, boolean isOutStrategy, Integer day,
                       Integer hour, Integer minute, LocalDate begin, LocalDate end,
-                      String threshold){
+                      String threshold) {
         window = primaryStage;
-        AnchorPane panel=new AnchorPane();
+        AnchorPane panel = new AnchorPane();
         VBox vBox = new VBox();
         panel.getChildren().addAll(vBox);
 
@@ -47,18 +50,18 @@ public class XlsxSetBox {
         hBox.getChildren().add(text);
         hBox.getChildren().add(relate);
         relate.setOnAction(event -> {
-            FileChoose filechoose =new FileChoose();
+            FileChoose filechoose = new FileChoose();
             filechoose.getFilePath();
             text.setText(filechoose.path);
         });
 
         Button yesButton = new Button("确认生成");
-        vBox.getChildren().addAll(new Label(""),new Label(""),hBox,new Label(""),yesButton);
+        vBox.getChildren().addAll(new Label(""), new Label(""), hBox, new Label(""), yesButton);
 
         vBox.setAlignment(Pos.CENTER);
 
         yesButton.setOnAction(event -> {
-            LogOperation ope = new RecordOpe();
+            AppLog ope = RecordOpe.getInstance();
             try {
                 ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(), text.getText());
                 Controller controller = new Controller();
@@ -66,23 +69,23 @@ public class XlsxSetBox {
                 controller.setTutorMapList(Operator.relatesheet.getText());
                 controller.setBlackListPath(Operator.concernsheet.getText());
                 controller.setOutputExcelPath(text.getText());
+                controller.setInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
                 Timestamp time1 = string2Time(begin.toString());
                 Timestamp time2 = string2Time(end.toString());
-                TimePair pair = new TimePair(time1,time2);
+                TimePair pair = new TimePair(time1, time2);
 //                System.out.println(pair.getDuration());
-                LocalDateTime start = LocalDateTime.of(2000, 1, 1, 0, 0);
-                LocalDateTime done = LocalDateTime.of(2000, 1, day+1, hour, minute);
-                Duration result = Duration.between(start, done);
+                Duration result = Duration.of(24 * 60 * day + 60 * hour + minute, MINUTES);
+                //默认使用分钟
+                Duration specialReq = Duration.of(Integer.parseInt(threshold.substring(0, threshold.indexOf("分钟"))), MINUTES);
 
-                TimeRequirement requirement = new TimeRequirement(pair,pair.getDuration(),result,isOutStrategy);
+                TimeRequirement requirement = new TimeRequirement(pair, result, specialReq, isOutStrategy);
                 controller.generateStudentList(requirement);
-            }
-            catch (ParseException e){
+            } catch (ParseException e) {
                 ope.createExceptionRecord("ParseException");
                 System.out.println(e);
             }
         });
-        Scene scene=new Scene(panel, 380, 180);
+        Scene scene = new Scene(panel, 380, 180);
         window.setTitle("Dormitory Access System");
         window.setScene(scene);
         window.show();

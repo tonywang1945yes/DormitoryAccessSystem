@@ -8,5 +8,5 @@ package enums;
  * @since 2019/5/6
  */
 public enum PairStatus {
-    NORMAL, INASOUT, OUTASIN, UNCOMPLETED
+    NORMAL, INASOUT, OUTASIN, UNCOMPLETED, ABOUTHOLIDAY
 }

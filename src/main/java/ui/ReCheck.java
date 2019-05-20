@@ -33,7 +33,7 @@ public class ReCheck {
         Label label = new Label("请核对筛选策略，确认无误后点击确定按钮，"+"\n"+"有误请点击重置按钮");
         Label label1 = new Label("筛选策略:");
         String ranges = begin.toString()+"至"+end.toString()+"期间";
-        String scale = isOutStrategy?"至少离开寝室":"至多留在寝室";
+        String scale = isOutStrategy ? "至多离开寝室" : "至多留在寝室";
         String timeLength = day.toString()+"天"+hour.toString()+"小时"+minute.toString()+"分钟";
         Label label2 = new Label("筛选从"+ranges);
         Label label3 = new Label(scale+timeLength+"的学生");

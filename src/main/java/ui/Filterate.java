@@ -67,7 +67,7 @@ public class Filterate {
 
         Label label = new Label("筛选策略：      ");
         ToggleGroup group = new ToggleGroup();
-        RadioButton button1 = new RadioButton("至少外出时间");
+        RadioButton button1 = new RadioButton("至多外出时间");
         button1.setToggleGroup(group);
         button1.setSelected(true);
         RadioButton button2 = new RadioButton("至多在寝时间");

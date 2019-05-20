@@ -14,10 +14,11 @@
         where UserId not in (-1, 0)
     </select>
 
-    <select id="getRecordCountByDate" resultType="Long">
+    <select id="getRecordCountByDate" resultType="Integer">
         select count(*)
         from passinfo
         where date_format(PassTime, '%Y-%m-%d') = #{date}
+        order by PassTime asc
     </select>
 
     <select id="getRecordWithLimit" resultMap="PassRecord">

@@ -55,4 +55,15 @@ public class MDProbeTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void checkDatabaseErrorTest() {
+        try {
+            MDProbe probe = MDProbe.build("njuacdbtest");
+            List<PassRecord> records = probe.getRecordByDate("2019-01-27");
+            System.out.println(probe.lostData(records));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
