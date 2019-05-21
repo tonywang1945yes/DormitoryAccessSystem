@@ -36,9 +36,8 @@ public class Main extends Application {
         login.setOnAction(event -> {
             boolean res;
             Controller controller = new Controller();
-//            Map<CheckResult, List<String>> map = controller.testDatabase();
-//            if (map.containsKey(CheckResult.DRIVER_ERROR) || map.containsKey(CheckResult.CONNECTION_ERROR)) {
-            if(false){
+            Map<CheckResult, List<String>> map = controller.testDatabase();
+            if (map.containsKey(CheckResult.DRIVER_ERROR) || map.containsKey(CheckResult.CONNECTION_ERROR)) {
                 Warn.display("连接异常", "请重启软件");
                 window.close();
             } else {

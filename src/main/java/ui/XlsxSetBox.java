@@ -70,6 +70,7 @@ public class XlsxSetBox {
                 controller.setWhiteListPath(Operator.whitesheet.getText());
                 controller.setTutorMapListPath(Operator.relatesheet.getText());
                 controller.setBlackListPath(Operator.concernsheet.getText());
+                controller.setHolidayExcelPath(Operator.holidaySheet.getText());
                 controller.setOutputExcelPath(text.getText());
 //                设置节假日配置路径
                 controller.setHolidayExcelPath(Operator.holidaySheet.getText());
