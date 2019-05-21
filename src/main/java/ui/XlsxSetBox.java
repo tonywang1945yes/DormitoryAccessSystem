@@ -19,7 +19,6 @@ import util.logUtil.RecordOpe;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -66,14 +65,14 @@ public class XlsxSetBox {
         yesButton.setOnAction(event -> {
 
             try {
-                ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(),Operator.festivalStuSheet.getText(), text.getText());
+                ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(), Operator.holidaySheet.getText(), text.getText());
                 Controller controller = new Controller();
                 controller.setWhiteListPath(Operator.whitesheet.getText());
                 controller.setTutorMapListPath(Operator.relatesheet.getText());
                 controller.setBlackListPath(Operator.concernsheet.getText());
                 controller.setOutputExcelPath(text.getText());
-//                TODO
-//                设置节假日名单
+//                设置节假日配置路径
+                controller.setHolidayExcelPath(Operator.holidaySheet.getText());
                 controller.setInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
                 Timestamp time1 = string2Time(begin.toString());
                 Timestamp time2 = string2Time(end.toString());
@@ -87,7 +86,8 @@ public class XlsxSetBox {
                 controller.generateStudentList(requirement);
             } catch (Exception e) {
                 ope.createExceptionRecord("ParseException");
-                System.out.println(e);
+                e.printStackTrace();
+//                System.out.println(e);
             }
         });
         Scene scene = new Scene(panel, 380, 180);

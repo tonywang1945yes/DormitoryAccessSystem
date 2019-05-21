@@ -16,18 +16,18 @@ public class Operator {
 
     Stage window;
 
-    AppLog  log;
+    AppLog log;
     //    表格是否生成
-    static boolean isvisited=false;
+    static boolean isvisited = false;
     //    文件选择框
     static TextField whitesheet;
     //    文本选择框
     static TextField concernsheet;
     //     文本选择框
     static TextField relatesheet;
+    //节假日配置名单
+    static TextField holidaySheet;
     //     阈值
-    static TextField festivalStuSheet;
-    //节假日外出名单
     static String value;
     //    文件路径
     static String filepath;
@@ -36,15 +36,15 @@ public class Operator {
 
     public void start(Stage primaryStage) {
 
-        log =RecordOpe.getInstance();
+        log = RecordOpe.getInstance();
 
         window = primaryStage;
 //        图片加载器
-        ImageView mv=new ImageView();
+        ImageView mv = new ImageView();
 //        背景板
-        AnchorPane panel=new AnchorPane();
+        AnchorPane panel = new AnchorPane();
 //        图片
-        Image image=new Image(this.getClass().getResource("/ui/singal.jpg").toExternalForm(),true);
+        Image image = new Image(this.getClass().getResource("/ui/singal.jpg").toExternalForm(), true);
 
         mv.setImage(image);
         mv.setOpacity(0.2);
@@ -52,45 +52,45 @@ public class Operator {
         panel.getChildren().add(mv);
 //        panel.setMaxSize(BoundarySize.WIDTH + 1000,BoundarySize.HEIGHT + 1000);
 //        panel.setMinSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
-        panel.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+        panel.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 
-        VBox vbox=new VBox();
+        VBox vbox = new VBox();
         panel.getChildren().add(vbox);
 
 //        vbox.setPadding(new Insets(10, 12, 20, 40));
-        HBox hbox1=new HBox(); // 选择白名单
-        HBox hbox2=new HBox(); // 选择关注对象
-        HBox hbox3=new HBox(); // 选择筛选条件或者生成文件
-        HBox hbox4=new HBox(); // 空行
-        HBox hbox5=new HBox(); // 空行
-        HBox hBox6=new HBox(); // 空行
-        HBox hBox7=new HBox(); // 选择师生对应关系
-        HBox hbox8=new HBox();
-        HBox hBox9=new HBox();
+        HBox hbox1 = new HBox(); // 选择白名单
+        HBox hbox2 = new HBox(); // 选择关注对象
+        HBox hbox3 = new HBox(); // 选择筛选条件或者生成文件
+        HBox hbox4 = new HBox(); // 空行
+        HBox hbox5 = new HBox(); // 空行
+        HBox hBox6 = new HBox(); // 空行
+        HBox hBox7 = new HBox(); // 选择师生对应关系
+        HBox hbox8 = new HBox();
+        HBox hBox9 = new HBox();
         HBox hBox10 = new HBox();
 
 
 //        选择白名单
-        Label pathlabel=new Label("选择白名单 :  ");
-        whitesheet =new TextField();
+        Label pathlabel = new Label("选择白名单 :  ");
+        whitesheet = new TextField();
         whitesheet.setMinWidth(20);
         whitesheet.setEditable(false);
         whitesheet.setPromptText("在此选择文件");
         whitesheet.setOpacity(0.7);
         whitesheet.setText(log.readpath(0));
-        Button setpath=new Button("选择路径");
+        Button setpath = new Button("选择路径");
         hbox1.getChildren().add(pathlabel);
         hbox1.getChildren().add(whitesheet);
         hbox1.getChildren().add(setpath);
         setpath.setOnAction(event -> {
-            FileChoose filechoose=new FileChoose();
+            FileChoose filechoose = new FileChoose();
             filechoose.getFilePath();
             whitesheet.setText(filechoose.path);
         });
 
 //        输入密码
-        Label endlabel=new Label("选择关注名单:");
-        concernsheet =new TextField();
+        Label endlabel = new Label("选择关注名单:");
+        concernsheet = new TextField();
         concernsheet.setEditable(false);
         concernsheet.setPromptText("在此选择文件");
         concernsheet.setOpacity(0.7);
@@ -100,7 +100,7 @@ public class Operator {
         hbox2.getChildren().add(concernsheet);
         hbox2.getChildren().add(concern);
         concern.setOnAction(event -> {
-            FileChoose filechoose=new FileChoose();
+            FileChoose filechoose = new FileChoose();
             filechoose.getFilePath();
             concernsheet.setText(filechoose.path);
         });
@@ -117,31 +117,31 @@ public class Operator {
         hBox7.getChildren().add(Operator.relatesheet);
         hBox7.getChildren().add(relate);
         relate.setOnAction(event -> {
-            FileChoose filechoose =new FileChoose();
+            FileChoose filechoose = new FileChoose();
             filechoose.getFilePath();
             Operator.relatesheet.setText(filechoose.path);
         });
 
         Label festivalSheet = new Label("节假日名单:  ");
-        Operator.festivalStuSheet = new TextField();
-        Operator.festivalStuSheet.setPromptText("在此选择文件");
-        Operator.festivalStuSheet.setEditable(false);
-        Operator.festivalStuSheet.setOpacity(0.7);
-        Operator.festivalStuSheet.setText(log.readpath(3));
+        Operator.holidaySheet = new TextField();
+        Operator.holidaySheet.setPromptText("在此选择文件");
+        Operator.holidaySheet.setEditable(false);
+        Operator.holidaySheet.setOpacity(0.7);
+        Operator.holidaySheet.setText(log.readpath(3));
         Button fest = new Button("选择路径");
         hBox10.getChildren().add(festivalSheet);
-        hBox10.getChildren().add(festivalStuSheet);
+        hBox10.getChildren().add(holidaySheet);
         hBox10.getChildren().add(fest);
         fest.setOnAction(event -> {
-            FileChoose filechoose =new FileChoose();
+            FileChoose filechoose = new FileChoose();
             filechoose.getFilePath();
-            Operator.festivalStuSheet.setText(filechoose.path);
+            Operator.holidaySheet.setText(filechoose.path);
         });
 
 //        按钮
-        Label setfield=new Label();
+        Label setfield = new Label();
         setfield.setText("欢迎使用：   ");
-        Button filter=new Button();
+        Button filter = new Button();
         filter.setText("选择筛选条件");
         filter.setOpacity(1);
 
@@ -150,12 +150,12 @@ public class Operator {
         hbox3.getChildren().add(filter);
 
 
-        Label text=new Label();
+        Label text = new Label();
         text.setText("                    ");
-        Button deliver=new Button();
+        Button deliver = new Button();
         deliver.setText("点此发送名单至各辅导员邮箱");
         deliver.setOpacity(1);
-        hBox9.getChildren().addAll(text,deliver);
+        hBox9.getChildren().addAll(text, deliver);
 
         deliver.setOnAction(event -> {
             MailSend sender = new MailSend();
@@ -195,7 +195,7 @@ public class Operator {
 
 
 //        窗口
-        Scene scene=new Scene(panel, 400, 350);
+        Scene scene = new Scene(panel, 400, 350);
 
         window.setOnCloseRequest(event -> {
             event.consume(); //不然就算点No也会关闭，因为调用的是setOnCloseRequest
@@ -206,9 +206,10 @@ public class Operator {
         window.show();
         window.setResizable(false);
     }
-    private void closeProgram(){
-        Boolean answer = ConfirmBox.display("Title","Sure you want to exit?");
-        if(answer){
+
+    private void closeProgram() {
+        Boolean answer = ConfirmBox.display("Title", "Sure you want to exit?");
+        if (answer) {
             window.close();
         }
     }

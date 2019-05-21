@@ -15,7 +15,7 @@ public class MDProbeTest {
     @Test
     public void build() {
         try {
-            MDProbe probe = MDProbe.build("njuacdbtest");
+            MDProbe probe = MDProbe.build();
             List<PassRecord> records = probe.getRecordWithLimit(5);
             System.out.println(records);
 //            probe.getRecordWithLimit(5);
@@ -29,7 +29,7 @@ public class MDProbeTest {
     @Test
     public void getRecordsGrouped() {
         try {
-            MDProbe probe = MDProbe.build("njuacdbtest");
+            MDProbe probe = MDProbe.build();
 
             Instant i1 = Clock.systemDefaultZone().instant();
             Map<String, List<PassRecord>> records = probe.getRecordsGrouped();
@@ -48,7 +48,7 @@ public class MDProbeTest {
     @Test
     public void getUserIdMaps() {
         try {
-            MDProbe probe = MDProbe.build("njuacdbtest");
+            MDProbe probe = MDProbe.build();
             List<IdMap> maps = probe.getIdMap();
             System.out.println(maps);
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class MDProbeTest {
     @Test
     public void checkDatabaseErrorTest() {
         try {
-            MDProbe probe = MDProbe.build("njuacdbtest");
+            MDProbe probe = MDProbe.build();
             List<PassRecord> records = probe.getRecordByDate("2019-01-27");
             System.out.println(probe.lostData(records));
         } catch (Exception e) {

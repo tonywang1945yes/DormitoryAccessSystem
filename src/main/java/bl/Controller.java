@@ -24,6 +24,7 @@ public class Controller implements DASService {
     String blackListPath;
     String tutorMapListPath;
     String outputExcelPath;
+    String holidayExcelPath;
     LongStayInspector inspector;
 
     MDProbe probe;
@@ -33,10 +34,11 @@ public class Controller implements DASService {
         List<WhiteStudent> whiteList = ExcelUtil.readWhiteList(whiteListPath, "Sheet1");
         List<BlackStudent> blackList = ExcelUtil.readBlackList(blackListPath, "Sheet1");
         tutorMap = ExcelUtil.readTutorStudentMaps(tutorMapListPath, "Sheet1");
+        List<Holiday> holidayList = ExcelUtil.readHoliday(holidayExcelPath, "Sheet1");
 
         inspector.setWhiteList(whiteList);
         inspector.setBlackList(blackList);
-        inspector.setHolidays(ExcelUtil.readHoliday("节假日信息.xlsx", "Sheet1"));
+        inspector.setHolidays(holidayList);
     }
 
     public void setWhiteListPath(String whiteListPath) {
@@ -53,6 +55,10 @@ public class Controller implements DASService {
 
     public void setOutputExcelPath(String outputExcelPath) {
         this.outputExcelPath = outputExcelPath;
+    }
+
+    public void setHolidayExcelPath(String holidayExcelPath) {
+        this.holidayExcelPath = holidayExcelPath;
     }
 
     public void setInspector(LongStayInspector inspector) {
@@ -122,10 +128,10 @@ public class Controller implements DASService {
     }
 
     @Override
-    public Map<CheckResult, List<String>> testDatabase(String password) {
+    public Map<CheckResult, List<String>> testDatabase() {
         Map<CheckResult, List<String>> res = new HashMap<>();
         List<String> weirdDates;
-        probe = MDProbe.build(password);
+        probe = MDProbe.build();
         try {
             probe.checkConnection();
             weirdDates = probe.checkError();

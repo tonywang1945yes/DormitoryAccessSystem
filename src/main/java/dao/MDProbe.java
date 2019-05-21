@@ -43,10 +43,9 @@ public class MDProbe {
     /**
      * 使用参数构建SqlSessionFactory字段
      *
-     * @param password 登录密码
      * @return probe对象
      */
-    public static MDProbe build(String password) {
+    public static MDProbe build() {
         instance = new MDProbe();
 
 //        String driver = DaoConfig.driver;
@@ -62,18 +61,18 @@ public class MDProbe {
         //因为代码配置失败，使用xml文件配置
         String resource = "mybatis-config.xml";
         InputStream is = null;
-        Properties props = null;
+//        Properties props = null;
         try {
             is = Resources.getResourceAsStream(resource);
-            props = new Properties();
-            props.load(Resources.getResourceAsStream("jdbc.properties"));
-            props.setProperty("jdbc.password", password);
+//            props = new Properties();
+//            props.load(Resources.getResourceAsStream("jdbc.properties"));
+//            props.setProperty("jdbc.password", password);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //构建sqlSession的工厂
-        instance.sqlSessionFactory = new SqlSessionFactoryBuilder().build(is, props);
+        instance.sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
 
 
         return instance;

@@ -32,18 +32,19 @@ public class ControllerTest {
         Instant i1 = Clock.systemDefaultZone().instant();
 
         Controller controller = new Controller();
-        controller.testDatabase("njuacdbtest");
+        controller.testDatabase();
 
         controller.setWhiteListPath("F:/Docs/DormitoryAssessSystem/白名单.xlsx");
         controller.setBlackListPath("F:/Docs/DormitoryAssessSystem/关注名单.xlsx");
         controller.setTutorMapListPath("F:/Docs/DormitoryAssessSystem/辅导员名单.xlsx");
+        controller.setHolidayExcelPath("F:/Docs/DormitoryAssessSystem/节假日信息.xlsx");
         controller.setOutputExcelPath("F:/Docs/DormitoryAssessSystem");
         controller.setInspector(new LongOutInspector());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         TimeRequirement requirement = new TimeRequirement();
         try {
-            requirement.setInterval(new TimePair(new Timestamp(dateFormat.parse("2018-09-01").getTime()), new Timestamp(dateFormat.parse("2019-01-09").getTime())));
+            requirement.setInterval(new TimePair(new Timestamp(dateFormat.parse("2018-11-01").getTime()), new Timestamp(dateFormat.parse("2018-11-09").getTime())));
             requirement.setReqDuration(Duration.of(1, DAYS));
             requirement.setLimitationToNow(Duration.of(15, MINUTES));
         } catch (ParseException e) {
@@ -72,7 +73,7 @@ public class ControllerTest {
         Instant i1 = Clock.systemDefaultZone().instant();
 
         Controller controller = new Controller();
-        controller.testDatabase("njuacdbtest");
+        controller.testDatabase();
 
         controller.setWhiteListPath("F:/Docs/DormitoryAssessSystem/白名单.xlsx");
         controller.setBlackListPath("F:/Docs/DormitoryAssessSystem/关注名单.xlsx");
