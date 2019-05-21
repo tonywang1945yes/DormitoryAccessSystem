@@ -32,7 +32,8 @@ public class XlsxSetBox {
 
     public void start(Stage primaryStage, boolean isOutStrategy, Integer day,
                       Integer hour, Integer minute, LocalDate begin, LocalDate end,
-                      String threshold) {
+                      Integer thresheldDay,
+                      Integer thresheldHour, Integer thresheldMinute) {
         AppLog ope = RecordOpe.getInstance();
         window = primaryStage;
         AnchorPane panel = new AnchorPane();
@@ -65,12 +66,14 @@ public class XlsxSetBox {
         yesButton.setOnAction(event -> {
 
             try {
-                ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(), text.getText());
+                ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(),Operator.festivalStuSheet.getText(), text.getText());
                 Controller controller = new Controller();
                 controller.setWhiteListPath(Operator.whitesheet.getText());
                 controller.setTutorMapList(Operator.relatesheet.getText());
                 controller.setBlackListPath(Operator.concernsheet.getText());
                 controller.setOutputExcelPath(text.getText());
+//                TODO
+//                设置节假日名单
                 controller.setInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
                 Timestamp time1 = string2Time(begin.toString());
                 Timestamp time2 = string2Time(end.toString());
@@ -78,7 +81,7 @@ public class XlsxSetBox {
 //                System.out.println(pair.getDuration());
                 Duration result = Duration.of(24 * 60 * day + 60 * hour + minute, MINUTES);
                 //默认使用分钟
-                Duration specialReq = Duration.of(Integer.parseInt(threshold.substring(0, threshold.indexOf("分钟"))), MINUTES);
+                Duration specialReq = Duration.of(24 * 60 * thresheldDay + 60 * thresheldHour + thresheldMinute, MINUTES);
 
                 TimeRequirement requirement = new TimeRequirement(pair, result, specialReq, isOutStrategy);
                 controller.generateStudentList(requirement);

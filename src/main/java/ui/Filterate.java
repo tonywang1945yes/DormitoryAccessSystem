@@ -24,7 +24,7 @@ public class Filterate {
     //    终止日期
     static DatePicker endfield;
     //     阈值框
-    static TextField threshold;
+//    static TextField threshold;
     //     阈值
     static String value;
     //    文件路径
@@ -105,12 +105,17 @@ public class Filterate {
         hbox2.getChildren().add(endfield);
 
 //        输入阈值
-        Label threshold = new Label("阈值:         ");
-        Filterate.threshold = new TextField();
-        Filterate.threshold.setPromptText("在此输入阈值");
-        Filterate.threshold.setOpacity(0.7);
-        hBox7.getChildren().add(threshold);
-        hBox7.getChildren().add(Filterate.threshold);
+        Label labelx = new Label("阈值:         ");
+        ChoiceBox<Integer> choiceBox4thresholdDay = new ChoiceBox();
+        choiceBox4thresholdDay.setItems(FXCollections.observableArrayList(getTimeList(0,15)));
+        Label label4thresholdDate = new Label("天 ");
+        ChoiceBox<Integer> choiceBox4thresholdHour = new ChoiceBox();
+        choiceBox4thresholdHour.setItems(FXCollections.observableArrayList(getTimeList(0,23)));
+        Label label4thresholdHour = new Label("小时 ");
+        ChoiceBox<Integer> choiceBox4thresholdMin = new ChoiceBox();
+        choiceBox4thresholdMin.setItems(FXCollections.observableArrayList(getTimeList(0,59)));
+        Label label4thresholdMin = new Label("分钟");
+        hBox7.getChildren().addAll(labelx,choiceBox4thresholdDay,label4thresholdDate,choiceBox4thresholdHour,label4thresholdHour,choiceBox4thresholdMin,label4thresholdMin);
 
 
 //        按钮
@@ -131,14 +136,14 @@ public class Filterate {
             }
             else if (endfield.getValue()==null){
                 LackRemindBox.display("记录筛选终止日期不完全","请选择合适的终止日期");
-            }else if (this.threshold.getText().equals("")){
-                LackRemindBox.display("阈值输入不能为空","请输入阈值");
+            }else if (choiceBox4thresholdDay.getValue()==null||choiceBox4thresholdHour.getValue()==null||choiceBox4thresholdMin.getValue()==null){
+                LackRemindBox.display("阈值选择不完全","请选择合适的阈值");
             }
             else{
                 ReCheck reCheck = new ReCheck();
                 reCheck.start(new Stage(),button1.isSelected(),choiceBoxDate.getValue(),
                         choiceBoxHour.getValue(),choiceBoxMinute.getValue(),beginfield.getValue(),
-                        endfield.getValue(),this.threshold.getText());
+                        endfield.getValue(),choiceBox4thresholdDay.getValue(),choiceBox4thresholdHour.getValue(),choiceBox4thresholdMin.getValue());
                 window.close();
             }
 

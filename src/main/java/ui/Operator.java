@@ -26,6 +26,8 @@ public class Operator {
     //     文本选择框
     static TextField relatesheet;
     //     阈值
+    static TextField festivalStuSheet;
+    //节假日外出名单
     static String value;
     //    文件路径
     static String filepath;
@@ -65,6 +67,7 @@ public class Operator {
         HBox hBox7=new HBox(); // 选择师生对应关系
         HBox hbox8=new HBox();
         HBox hBox9=new HBox();
+        HBox hBox10 = new HBox();
 
 
 //        选择白名单
@@ -117,6 +120,22 @@ public class Operator {
             FileChoose filechoose =new FileChoose();
             filechoose.getFilePath();
             Operator.relatesheet.setText(filechoose.path);
+        });
+
+        Label festivalSheet = new Label("节假日名单:  ");
+        Operator.festivalStuSheet = new TextField();
+        Operator.festivalStuSheet.setPromptText("在此选择文件");
+        Operator.festivalStuSheet.setEditable(false);
+        Operator.festivalStuSheet.setOpacity(0.7);
+        Operator.festivalStuSheet.setText(log.readpath(3));
+        Button fest = new Button("选择路径");
+        hBox10.getChildren().add(festivalSheet);
+        hBox10.getChildren().add(festivalStuSheet);
+        hBox10.getChildren().add(fest);
+        fest.setOnAction(event -> {
+            FileChoose filechoose =new FileChoose();
+            filechoose.getFilePath();
+            Operator.festivalStuSheet.setText(filechoose.path);
         });
 
 //        按钮

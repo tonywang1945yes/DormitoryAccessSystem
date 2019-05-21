@@ -12,6 +12,7 @@ public class Record {
     private String relationSheet;
     private String concernSheet;
     private String resultSheet;
+    private String festival;
 
     public String getRelationSheet() {
         return relationSheet;
@@ -85,6 +86,14 @@ public class Record {
         this.num = num;
     }
 
+    public String getFestival() {
+        return festival;
+    }
+
+    public void setFestival(String festival) {
+        this.festival = festival;
+    }
+
     public Record(){
 
     };
@@ -104,7 +113,7 @@ public class Record {
         this.description = description;
     }
 
-    public Record(String date, String time, Type type, int num, String description, String whiteSheet, String relationSheet, String concernSheet, String resultSheet) {
+    public Record(String date, String time, Type type, int num, String description, String whiteSheet, String relationSheet, String concernSheet,String festival, String resultSheet) {
         this.date = date;
         this.time = time;
         this.type = type;
@@ -113,6 +122,7 @@ public class Record {
         this.whiteSheet = whiteSheet;
         this.relationSheet = relationSheet;
         this.concernSheet = concernSheet;
+        this.festival = festival;
         this.resultSheet = resultSheet;
     }
 }

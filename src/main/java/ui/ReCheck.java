@@ -18,7 +18,8 @@ public class ReCheck {
 
     public void start(Stage primaryStage, boolean isOutStrategy, Integer day,
                       Integer hour, Integer minute, LocalDate begin, LocalDate end,
-                      String threshold){
+                      Integer theshreldDay,
+                      Integer theshreldHour, Integer theshreldMin){
         window = new Stage();
 
 //        背景板
@@ -37,14 +38,15 @@ public class ReCheck {
         String timeLength = day.toString()+"天"+hour.toString()+"小时"+minute.toString()+"分钟";
         Label label2 = new Label("筛选从"+ranges);
         Label label3 = new Label(scale+timeLength+"的学生");
-        Label label4 = new Label("阈值为"+threshold);
+        String thresheld = theshreldDay.toString()+"天"+theshreldHour.toString()+"小时"+theshreldMin.toString()+"分钟";
+        Label label4 = new Label("阈值为"+thresheld);
 
         HBox hBox = new HBox();
         Button yesButton = new Button("确认");
         Button noButton = new Button("重置");
         yesButton.setOnAction(event -> {
             XlsxSetBox setBox = new XlsxSetBox();
-            setBox.start(new Stage(),isOutStrategy,day,hour,minute,begin,end,threshold);
+            setBox.start(new Stage(),isOutStrategy,day,hour,minute,begin,end,theshreldDay,theshreldHour,theshreldMin);
             window.close();
         });
         noButton.setOnAction(event -> {

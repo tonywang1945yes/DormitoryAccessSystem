@@ -9,7 +9,7 @@ public interface AppLog {
      *
      * @param
      */
-    public void createInsertionRecord(String white, String relat, String concern, String res);
+    public void createInsertionRecord(String white, String relat, String concern, String fest,String res);
 
     public void createExceptionRecord(String str);
 

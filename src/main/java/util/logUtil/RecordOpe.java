@@ -63,12 +63,12 @@ public class RecordOpe implements AppLog {
     }
 
     @Override
-    public void createInsertionRecord(String white, String relat, String concern, String res) {
+    public void createInsertionRecord(String white, String relat, String concern, String fest,String res) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
-        Record record = new Record(date, time, Type.Start, 1, "", white, relat, concern, res);
+        Record record = new Record(date, time, Type.Start, 1, "", white, relat, concern,fest, res);
         dumpfirst(record);
     }
 
@@ -174,6 +174,7 @@ public class RecordOpe implements AppLog {
                 case 0:return startRecord.getWhiteSheet();
                 case 1:return startRecord.getRelationSheet();
                 case 2:return startRecord.getConcernSheet();
+                case 3:return startRecord.getFestival();
                 default:return startRecord.getResultSheet();
             }
         }
