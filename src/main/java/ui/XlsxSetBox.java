@@ -69,7 +69,7 @@ public class XlsxSetBox {
                 ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(),Operator.festivalStuSheet.getText(), text.getText());
                 Controller controller = new Controller();
                 controller.setWhiteListPath(Operator.whitesheet.getText());
-                controller.setTutorMapList(Operator.relatesheet.getText());
+                controller.setTutorMapListPath(Operator.relatesheet.getText());
                 controller.setBlackListPath(Operator.concernsheet.getText());
                 controller.setOutputExcelPath(text.getText());
 //                TODO

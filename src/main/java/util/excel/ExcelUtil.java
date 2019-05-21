@@ -297,6 +297,10 @@ public class ExcelUtil {
             }
         }
 
+        for (int i = 0; i < 6; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
         //        新建文件。找不到文件夹。
         FileOutputStream out = null;
         try {
@@ -406,7 +410,7 @@ public class ExcelUtil {
         Cell st = row.createCell(4);
         st.setCellValue(format.format(new Date(tp.getT1().getTime())));
         Cell et = row.createCell(5);
-        et.setCellValue(format.format(new Date(tp.getT2().getTime())));
+        et.setCellValue(tp.getT2() == null ? "" : format.format(new Date(tp.getT2().getTime())));
     }
 
     /**
@@ -421,8 +425,18 @@ public class ExcelUtil {
         Cell st = row.getCell(4);
         res.setT1(new Timestamp(format.parse(st.toString()).getTime()));
         Cell et = row.getCell(5);
-        res.setT2(new Timestamp(format.parse(et.toString()).getTime()));
+        res.setT2(et.toString().equals("") ? null : new Timestamp(format.parse(et.toString()).getTime()));
         return res;
     }
+
+//    public static void outputSize(String filePath, String sheetName) throws FileNotFoundException, SheetNameException {
+//        Sheet sheet = openSheet(filePath, sheetName);
+//
+//        Row row = sheet.getRow(1);
+//        for(int i=0;i<6;i++){
+//            Cell cell = row.getCell(i);
+//            System.out.println(cell.getCellStyle());
+//        }
+//    }
 
 }

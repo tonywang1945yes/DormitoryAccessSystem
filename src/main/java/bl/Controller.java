@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class Controller implements DASService {
     String whiteListPath;
     String blackListPath;
-    String tutorMapList;
+    String tutorMapListPath;
     String outputExcelPath;
     LongStayInspector inspector;
 
@@ -32,10 +32,11 @@ public class Controller implements DASService {
     private void readFile() throws FileNotFoundException, SheetNameException, WrongFormatException {
         List<WhiteStudent> whiteList = ExcelUtil.readWhiteList(whiteListPath, "Sheet1");
         List<BlackStudent> blackList = ExcelUtil.readBlackList(blackListPath, "Sheet1");
-        tutorMap = ExcelUtil.readTutorStudentMaps(tutorMapList, "Sheet1");
+        tutorMap = ExcelUtil.readTutorStudentMaps(tutorMapListPath, "Sheet1");
 
         inspector.setWhiteList(whiteList);
         inspector.setBlackList(blackList);
+        inspector.setHolidays(ExcelUtil.readHoliday("节假日信息.xlsx", "Sheet1"));
     }
 
     public void setWhiteListPath(String whiteListPath) {
@@ -46,8 +47,8 @@ public class Controller implements DASService {
         this.blackListPath = blackListPath;
     }
 
-    public void setTutorMapList(String tutorMapList) {
-        this.tutorMapList = tutorMapList;
+    public void setTutorMapListPath(String tutorMapListPath) {
+        this.tutorMapListPath = tutorMapListPath;
     }
 
     public void setOutputExcelPath(String outputExcelPath) {
@@ -188,19 +189,19 @@ public class Controller implements DASService {
             List<String> statusList = Arrays.stream(s.getStatus().split(":")).filter(o -> o.length() > 0).collect(Collectors.toList());
             StringBuilder builder = new StringBuilder();
             if (statusList.contains(StudentStatus.STILL_OUT.name()))
-                builder.append("学生长时间在外，到现在仍未回;");
+                builder.append("学生长时间在外，到现在仍未回; ");
 
             if (statusList.contains(StudentStatus.LONG_IN.name())) {
                 builder.append("存在长时间待在宿舍的情况,");
-            } else {
-                builder.append("存在长时间在外的情况,");
+            } else if (statusList.contains(StudentStatus.LONG_OUT.name())) {
+                builder.append("存在长时间在外的情况; ");
             }
 
             if (statusList.contains(StudentStatus.ABOUT_HOLIDAY.name()))
-                builder.append("异常记录与设置的假期有关");
+                builder.append("异常记录与设置的假期有关; ");
 
             if (statusList.contains(StudentStatus.WITH_CONFUSION.name()))
-                builder.append("但存在混淆的记录;");
+                builder.append("但存在混淆的记录; ");
 
             if (statusList.contains(StudentStatus.WATCHED.name()))
                 builder.append("该学生在关注名单上");

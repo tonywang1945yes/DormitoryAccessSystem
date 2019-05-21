@@ -226,9 +226,9 @@ public abstract class LongStayInspector {
         Iterator<PassRecord> i2 = records.iterator();
         i2.next();
 
-        //找到第一条方向符合firstDirection的记录。可能最后为i2无next且i1指向的记录的方向仍不为fD，此情况在下方处理
-        while (i2.hasNext() && !i1.next().getDirection().equals(firstDirection))
-            i2.next();
+
+//        while (i2.hasNext() && !i1.next().getDirection().equals(firstDirection))
+//            i2.next();
 
 
         while (true) {
@@ -250,17 +250,26 @@ public abstract class LongStayInspector {
             //正常情况，可以拿到时间对
             PassRecord p1 = i1.next();
             PassRecord p2 = i2.next();
+
+            //找到第一条方向符合firstDirection的记录。可能最后为i2无next且i1指向的记录的方向仍不为fD，此情况在上方处理
+            if (res.size() == 0 && !p1.getDirection().equals(firstDirection))
+                continue;
+
             tp.setT1(p1.getPassTime());
             tp.setT2(p2.getPassTime());
 
             if (!p1.getDirection().equals(p2.getDirection()) && p1.getDirection().equals(firstDirection)) {
-
-                TimePair latest = res.get(res.size() - 1);
-                if (Duration.between(latest.getT2().toInstant(), tp.getT1().toInstant()).compareTo(minBreak) < 0) {
-                    //如果距上一对的距离太近，归为同一对记录
-                    latest.setT2(tp.getT2());
+                if (res.size() > 0) {
+                    TimePair latest = res.get(res.size() - 1);
+                    if (Duration.between(latest.getT2().toInstant(), tp.getT1().toInstant()).compareTo(minBreak) < 0) {
+                        //如果距上一对的距离太近，归为同一对记录
+                        latest.setT2(tp.getT2());
+                    } else {
+                        //正常情况
+                        tp.setStatus(PairStatus.NORMAL.name());
+                        res.add(tp);
+                    }
                 } else {
-                    //正常情况
                     tp.setStatus(PairStatus.NORMAL.name());
                     res.add(tp);
                 }
@@ -273,9 +282,11 @@ public abstract class LongStayInspector {
                 res.add(tp);
             } else {
                 //完全反向，在与之前的记录之间的
-                TimePair latest = res.get(res.size() - 1);
-                if (Duration.between(latest.getT2().toInstant(), tp.getT1().toInstant()).compareTo(minBreak) < 0)
-                    latest.setT2(tp.getT2());
+//                if (res.size() > 0) {
+//                    TimePair latest = res.get(res.size() - 1);
+//                    if (Duration.between(latest.getT2().toInstant(), tp.getT1().toInstant()).compareTo(minBreak) < 0)
+//                        latest.setT2(tp.getT2());
+//                }
             }
 
         }

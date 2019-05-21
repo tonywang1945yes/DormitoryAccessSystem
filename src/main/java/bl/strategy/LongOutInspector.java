@@ -56,7 +56,7 @@ public class LongOutInspector extends LongStayInspector {
             if (evidence.stream().map(TimePair::getStatus).noneMatch(o -> o.contains(PairStatus.NORMAL.name()))) {
                 student.setStatus(student.getStatus() + ":" + StudentStatus.WITH_CONFUSION);
             }
-            if (evidence.stream().map(TimePair::getStatus).noneMatch(o -> o.contains(PairStatus.NORMAL.name()))) {
+            if (evidence.stream().map(TimePair::getStatus).allMatch(o -> o.contains(PairStatus.ABOUTHOLIDAY.name()))) {
                 student.setStatus(student.getStatus() + ":" + StudentStatus.ABOUT_HOLIDAY);
             }
         }

@@ -59,16 +59,17 @@ public class TimeRequirement {
         return tr;
     }
 
-    public TimeRequirement(){
+    public TimeRequirement() {
 
     }
-    public TimeRequirement(TimePair interval, Duration reqDuration, Duration limitationToNow,boolean isOut) {
+
+    public TimeRequirement(TimePair interval, Duration reqDuration, Duration limitationToNow, boolean isOut) {
         this.interval = interval;
         this.reqDuration = reqDuration;
-        if(isOut) {
+        if (isOut) {
             this.limitationToNow = limitationToNow;
-        }
-        else
+            this.minBreak = Duration.ZERO;
+        } else
             this.minBreak = limitationToNow;
     }
 }
