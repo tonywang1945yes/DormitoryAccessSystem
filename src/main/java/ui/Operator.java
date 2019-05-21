@@ -122,7 +122,7 @@ public class Operator {
             Operator.relatesheet.setText(filechoose.path);
         });
 
-        Label festivalSheet = new Label("节假日名单:  ");
+        Label festivalSheet = new Label("节假日名单:   ");
         Operator.holidaySheet = new TextField();
         Operator.holidaySheet.setPromptText("在此选择文件");
         Operator.holidaySheet.setEditable(false);
@@ -176,12 +176,14 @@ public class Operator {
         vbox.getChildren().add(hbox5);
         vbox.getChildren().add(hBox7);
         vbox.getChildren().add(hBox6);
+        vbox.getChildren().add(hBox10);
+        vbox.getChildren().add(new Label(""));
         vbox.getChildren().add(hbox3);
         vbox.getChildren().add(hbox8);
         vbox.getChildren().add(hBox9);
 //        设置边距
         vbox.setLayoutX(20);
-        vbox.setLayoutY(60);
+        vbox.setLayoutY(40);
 
 //
 //        setpath.setOnMouseClicked(new Setpath());
