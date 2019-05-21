@@ -167,6 +167,7 @@ public class MDProbe {
         } else if (latestStartRecord.getDate().equals(today))
             return res;
 
+
         Date now = new Date();
         Date then;
         try {
@@ -175,6 +176,9 @@ public class MDProbe {
             e.printStackTrace();
             throw new LogException("日志格式错误");
         }
+
+        //插入今天启动的信息
+        appLog.createStartRecord();
 
         //插入每日数据库更新条数记录
         calcInsertionsInDuration(alignDate(then), alignDate(now));

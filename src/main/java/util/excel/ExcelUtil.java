@@ -122,6 +122,8 @@ public class ExcelUtil {
                 String name = row.getCell(2).toString();
                 String institution = row.getCell(3).toString();
                 String grade = row.getCell(4).toString();
+                if (grade.contains("."))
+                    grade = grade.substring(0, grade.indexOf("."));
 
                 Tutor t = new Tutor();
                 t.setEmailAddress(emailAddress);
@@ -231,15 +233,6 @@ public class ExcelUtil {
      * @throws FileNotClosable 文件无法正常关闭时抛出该异常
      */
     public static void writeSuspectStudent(List<SuspectStudent> students, String filePath) throws FileNotWritable, FileNotClosable {
-//        File excelFile = new File(filePath);
-//        if (!excelFile.exists()) {
-//            try {
-//                excelFile.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                throw new FileNotWritable("无法创建文件");
-//            }
-//        }
 
         Workbook workbook;
         if (filePath.endsWith(".xls")) {
@@ -248,7 +241,7 @@ public class ExcelUtil {
             workbook = new XSSFWorkbook();
         }
 
-        Sheet sheet = workbook.createSheet("异常学生名单");
+        Sheet sheet = workbook.createSheet("Sheet1");
         Row title = sheet.createRow(0);
         Cell cell0 = title.createCell(0);
         cell0.setCellValue("学号");
@@ -392,7 +385,7 @@ public class ExcelUtil {
             if (raw.contains("分钟"))
                 minutes = Integer.parseInt(raw.substring(0, raw.indexOf("分钟")));
             else
-                minutes = Integer.parseInt(raw);
+                minutes = ((int) Double.parseDouble(raw));
             return Duration.of(minutes, MINUTES);
         } catch (Exception e) {
             throw new WrongFormatException("时间长度格式不匹配");
@@ -429,14 +422,5 @@ public class ExcelUtil {
         return res;
     }
 
-//    public static void outputSize(String filePath, String sheetName) throws FileNotFoundException, SheetNameException {
-//        Sheet sheet = openSheet(filePath, sheetName);
-//
-//        Row row = sheet.getRow(1);
-//        for(int i=0;i<6;i++){
-//            Cell cell = row.getCell(i);
-//            System.out.println(cell.getCellStyle());
-//        }
-//    }
 
 }
