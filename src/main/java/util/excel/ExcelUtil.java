@@ -44,6 +44,10 @@ public class ExcelUtil {
         try {
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
+                if (isBlankRow(row, 3)) {
+                    sheet.removeRow(row);
+                    continue;
+                }
                 String studentId = row.getCell(0).toString();
                 Timestamp startTime = new Timestamp(format.parse(row.getCell(1).toString()).getTime());
                 Timestamp endTime = new Timestamp(format.parse(row.getCell(2).toString()).getTime());
@@ -79,6 +83,10 @@ public class ExcelUtil {
         try {
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
+                if (isBlankRow(row, 5)) {
+                    sheet.removeRow(row);
+                    continue;
+                }
                 row.getCell(0).setCellType(CellType.STRING);
                 String studentId = row.getCell(0).toString();
                 Duration outDuration = parseHours(row.getCell(1).toString());
@@ -117,6 +125,10 @@ public class ExcelUtil {
         try {
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
+                if (isBlankRow(row, 5)) {
+                    sheet.removeRow(row);
+                    continue;
+                }
                 String idPrefix = row.getCell(0).toString();
                 String emailAddress = row.getCell(1).toString();
                 String name = row.getCell(2).toString();
@@ -161,6 +173,10 @@ public class ExcelUtil {
             List<TimePair> records = new ArrayList<>();
             for (int i = 1; i <= rowNum; i++) {
                 Row row = sheet.getRow(i);
+                if (isBlankRow(row, 6)) {
+                    sheet.removeRow(row);
+                    continue;
+                }
                 //如果是学生的第一条记录且使用者确定要发送该学生的信息
                 if (row.getFirstCellNum() == 0 && row.getCell(3).toString().equals("是")) {
                     s = new SuspectStudent();
@@ -207,8 +223,12 @@ public class ExcelUtil {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             for (int i = 1; i <= rowNum; i++) {
-                Holiday h = new Holiday();
                 Row row = sheet.getRow(i);
+                if (isBlankRow(row, 3)) {
+                    sheet.removeRow(row);
+                    continue;
+                }
+                Holiday h = new Holiday();
                 String name = row.getCell(0).toString();
                 Date d1 = format.parse(row.getCell(1).toString());
                 Date d2 = format.parse(row.getCell(2).toString());
@@ -420,6 +440,16 @@ public class ExcelUtil {
         Cell et = row.getCell(5);
         res.setT2(et.toString().equals("") ? null : new Timestamp(format.parse(et.toString()).getTime()));
         return res;
+    }
+
+    private static boolean isBlankRow(Row row, int columnNum) {
+        boolean flag = true;
+        for (int i = 0; i < columnNum; i++)
+            if (!row.getCell(i).getCellType().equals(CellType._NONE) && !row.getCell(i).getCellType().equals(CellType.BLANK)) {
+                flag = false;
+                break;
+            }
+        return flag;
     }
 
 

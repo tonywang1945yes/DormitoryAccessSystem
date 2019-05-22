@@ -61,8 +61,8 @@ public abstract class LongStayInspector {
                 .map(o -> judge(o.getKey(), o.getValue(), requirement))
                 .collect(Collectors.toList()));
 
-        whiteList.forEach(o -> res.add(judgeWhite(o, recordMaps.get(o.getStudentId()), requirement)));
-        blackList.forEach(o -> res.add(judgeBlack(o, recordMaps.get(o.getStudentId()), requirement)));
+        whiteList.forEach(o -> res.add(judgeWhite(o, recordMaps.getOrDefault(o.getStudentId(), new ArrayList<>()), requirement)));
+        blackList.forEach(o -> res.add(judgeBlack(o, recordMaps.getOrDefault(o.getStudentId(), new ArrayList<>()), requirement)));
 
         return res
                 .stream()
@@ -79,6 +79,9 @@ public abstract class LongStayInspector {
      * @return 如果学生被怀疑，封装并返回相关异常信息，否则为null
      */
     final SuspectStudent judge(String studentId, List<PassRecord> records, TimeRequirement req) {
+        if (records == null || records.size() == 0)
+            return null;
+
         records.sort(Comparator.comparing(PassRecord::getPassTime));
         System.out.println("judging id " + studentId);
         SuspectStudent res = new SuspectStudent();
@@ -106,9 +109,10 @@ public abstract class LongStayInspector {
      */
     private SuspectStudent judgeWhite(WhiteStudent whiteInfo, List<PassRecord> records, TimeRequirement req) {
         return judge(whiteInfo.getStudentId(), records
-                .stream()
-                .filter(o -> o.getPassTime().after(req.getEndTime())) //默认之处理白名单时间之后的记录
-                .collect(Collectors.toList()), req);
+                        .stream()
+                        .filter(o -> o.getPassTime().after(whiteInfo.getValidTime().getT2())) //默认之处理白名单时间之后的记录
+                        .collect(Collectors.toList()),
+                req);
     }
 
     /**
@@ -214,7 +218,7 @@ public abstract class LongStayInspector {
      *
      * @param records        某个学生的宿舍通过记录，默认以时间先后顺序排序
      * @param firstDirection 时间对第一个时间戳所对应的方向
-     * @return 时间对列表，以map形式呈现是为了带上时间对的信息(是否正常)
+     * @return 时间对列表
      */
     final List<TimePair> getInOutTimePairs(List<PassRecord> records, int firstDirection, Duration minBreak) {
         List<TimePair> res = new ArrayList<>();

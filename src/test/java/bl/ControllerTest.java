@@ -20,8 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.*;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class ControllerTest {
@@ -44,8 +43,8 @@ public class ControllerTest {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         TimeRequirement requirement = new TimeRequirement();
         try {
-            requirement.setInterval(new TimePair(new Timestamp(dateFormat.parse("2018-11-01").getTime()), new Timestamp(dateFormat.parse("2018-11-09").getTime())));
-            requirement.setReqDuration(Duration.of(1, DAYS));
+            requirement.setInterval(new TimePair(new Timestamp(dateFormat.parse("2018-11-01").getTime()), new Timestamp(dateFormat.parse("2018-11-02").getTime())));
+            requirement.setReqDuration(Duration.of(6, HOURS));
             requirement.setLimitationToNow(Duration.of(15, MINUTES));
         } catch (ParseException e) {
             e.printStackTrace();
