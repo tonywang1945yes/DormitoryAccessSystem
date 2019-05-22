@@ -57,7 +57,7 @@ public class ExcelUtilTest {
     public void testBReadSuspectStudent() {
 
         try {
-            List<SuspectStudent> students = ExcelUtil.readSuspectStudent("异常学生名单.xlsx", "异常学生名单");
+            List<SuspectStudent> students = ExcelUtil.readSuspectStudent("异常学生名单.xlsx", "Sheet1");
             assertThat(students.size()).isEqualTo(1);
         } catch (FileNotFoundException | WrongFormatException | SheetNameException e) {
             e.printStackTrace();

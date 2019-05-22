@@ -56,6 +56,9 @@ public class ControllerTest {
         Instant i2 = Clock.systemDefaultZone().instant();
         System.out.println("用时: " + Duration.between(i1, i2));
         assertThat(result).isEqualTo(CheckResult.SUCCESS);
+
+//        MailResult r2 = controller.sendMail("...", "...");
+//        assertThat(r2).isEqualTo(MailResult.OK);
     }
 
     @Test

@@ -71,21 +71,6 @@ public class Controller implements DASService {
         ExcelUtil.writeSuspectStudent(students, outputExcelPath + "/" + format.format(today) + "异常学生名单.xlsx");
     }
 
-//    private List<String> prepareDatabase(String password) throws DatabaseErrorException, DriverErrorException, DBConnectionException {
-//        probe = MDProbe.build(password);
-//        List<String> res;
-//        try {
-//            res = probe.checkError();
-//        } catch (Exception e) {
-//            if (e.getMessage().contains("ClassNotFoundException"))
-//                throw new DriverErrorException("数据库驱动异常");
-//            else
-//                throw new DBConnectionException("连接数据库发生异常");
-//        }
-//        return res;
-//
-//    }
-
 
     private List<SuspectStudent> doCheck(TimeRequirement requirement) {
         Map<String, List<PassRecord>> recordMaps = probe.getRecordsGrouped();
@@ -136,6 +121,7 @@ public class Controller implements DASService {
             probe.checkConnection();
             weirdDates = probe.checkError();
             res.put(CheckResult.DATABASE_ERROR, weirdDates);
+
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("ClassNotFoundException"))
@@ -178,7 +164,7 @@ public class Controller implements DASService {
                     .filter(e -> Pattern.matches(e.getValue() + ".*", id))
                     .max(Comparator.comparing(e -> e.getValue().length()))
                     .ifPresent(e -> {
-                        res.get(e.getKey()).add(e.getValue());
+                        res.get(e.getKey()).add(id);
                     });
         });
         return res;
