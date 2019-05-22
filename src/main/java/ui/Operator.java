@@ -1,5 +1,6 @@
 package ui;
 
+import bl.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +19,7 @@ public class Operator {
 
     AppLog log;
     //    表格是否生成
-    static boolean isvisited = false;
+    static Controller controller =new Controller();
     //    文件选择框
     static TextField whitesheet;
     //    文本选择框

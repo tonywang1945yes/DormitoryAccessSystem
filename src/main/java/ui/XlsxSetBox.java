@@ -66,15 +66,16 @@ public class XlsxSetBox {
 
             try {
                 ope.createInsertionRecord(Operator.whitesheet.getText(), Operator.relatesheet.getText(), Operator.concernsheet.getText(), Operator.holidaySheet.getText(), text.getText());
-                Controller controller = new Controller();
-                controller.setWhiteListPath(Operator.whitesheet.getText());
-                controller.setTutorMapListPath(Operator.relatesheet.getText());
-                controller.setBlackListPath(Operator.concernsheet.getText());
-                controller.setHolidayExcelPath(Operator.holidaySheet.getText());
-                controller.setOutputExcelPath(text.getText());
+
+
+                Operator.controller.setWhiteListPath(Operator.whitesheet.getText());
+                Operator.controller.setTutorMapListPath(Operator.relatesheet.getText());
+                Operator.controller.setBlackListPath(Operator.concernsheet.getText());
+                Operator.controller.setHolidayExcelPath(Operator.holidaySheet.getText());
+                Operator.controller.setOutputExcelPath(text.getText());
 //                设置节假日配置路径
-                controller.setHolidayExcelPath(Operator.holidaySheet.getText());
-                controller.setInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
+                Operator.controller.setHolidayExcelPath(Operator.holidaySheet.getText());
+                Operator.controller.setInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
                 Timestamp time1 = string2Time(begin.toString());
                 Timestamp time2 = string2Time(end.toString());
                 TimePair pair = new TimePair(time1, time2);
@@ -84,7 +85,7 @@ public class XlsxSetBox {
                 Duration specialReq = Duration.of(24 * 60 * thresheldDay + 60 * thresheldHour + thresheldMinute, MINUTES);
 
                 TimeRequirement requirement = new TimeRequirement(pair, result, specialReq, isOutStrategy);
-                controller.generateStudentList(requirement);
+                Operator.controller.generateStudentList(requirement);
             } catch (Exception e) {
                 ope.createExceptionRecord("ParseException");
                 e.printStackTrace();
