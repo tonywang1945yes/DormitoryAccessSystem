@@ -84,7 +84,9 @@ public class XlsxSetBox {
                 Duration specialReq = Duration.of(24 * 60 * thresheldDay + 60 * thresheldHour + thresheldMinute, MINUTES);
 
                 TimeRequirement requirement = new TimeRequirement(pair, result, specialReq, isOutStrategy);
-                Operator.controller.generateStudentList(requirement);
+                GuavaWaiting waiting = new GuavaWaiting();
+                waiting.execute(requirement);
+                window.close();
             } catch (Exception e) {
                 ope.createExceptionRecord("ParseException");
                 e.printStackTrace();

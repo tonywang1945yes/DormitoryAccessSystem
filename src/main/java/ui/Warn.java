@@ -16,7 +16,7 @@ public class Warn {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //
         window.setTitle(title);
-        window.setMinWidth(270);
+        window.setMinWidth(300);
         window.setMinHeight(170);
         Label label = new Label();
         label.setText(message);

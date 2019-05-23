@@ -194,6 +194,7 @@ public class Operator {
         filter.setOnAction(event -> {
             Filterate filterate = new Filterate();
             filterate.start(new Stage());
+            filter.setDisable(true);
         });
 
 
@@ -211,9 +212,10 @@ public class Operator {
     }
 
     private void closeProgram() {
-        Boolean answer = ConfirmBox.display("Title", "Sure you want to exit?");
+        Boolean answer = ConfirmBox.display("提示", "Sure you want to exit?");
         if (answer) {
             window.close();
+            System.exit(0);
         }
     }
 }

@@ -41,8 +41,8 @@ public class MailSend {
         HBox hbox2 = new HBox();
         hbox2.getChildren().addAll(password,mailPassword);
 
-        box.setLayoutX(20);
-        box.setLayoutY(60);
+        box.setLayoutX(40);
+        box.setLayoutY(30);
         Button button = new Button("确认发送");
         button.setLayoutX(140);
         button.setLayoutY(140);
@@ -51,7 +51,7 @@ public class MailSend {
         button.setOnAction(event -> {
             MailResult  res =Operator.controller.sendMail(hostName.getText(),mailPassword.getText());
             if(res.equals(MailResult.NO_SUCH_FILE)){
-                Warn.display("文件路径错误","请检查输入的路径");
+                Warn.display("失败","请检查输入的路径");
                 window.close();
             }
             else if(res.equals(MailResult.NOT_OK)){
@@ -62,6 +62,7 @@ public class MailSend {
                 Warn.display("成功","发送成功");
                 window.close();
             }
+            System.exit(0);
         });
 
         window.setOnCloseRequest(event -> {
@@ -74,8 +75,9 @@ public class MailSend {
         window.setResizable(false);
     }
     private void closeProgram(){
-        Boolean answer = ConfirmBox.display("Title","Sure you want to exit?");
+        Boolean answer = ConfirmBox.display("提示","Sure you want to exit?");
         if(answer){
+            System.exit(0);
             window.close();
         }
     }

@@ -34,22 +34,9 @@ public class Main extends Application {
         login = new Button("登录");
 
         login.setOnAction(event -> {
-            boolean res;
-            Controller controller = new Controller();
-            Map<CheckResult, List<String>> map = controller.testDatabase();
-            if (map.containsKey(CheckResult.DRIVER_ERROR) || map.containsKey(CheckResult.CONNECTION_ERROR)) {
-//            if(false){
-                Warn.display("连接异常", "请重启软件");
-                window.close();
-            } else {
-                try {
-                    Operator open = new Operator();
-                    open.start(new Stage());
-                    window.hide();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            Logging logging = new Logging();
+            logging.execute();
+            window.hide();
         });
 
 

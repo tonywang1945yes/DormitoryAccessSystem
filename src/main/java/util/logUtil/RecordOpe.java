@@ -256,6 +256,7 @@ public class RecordOpe implements AppLog {
         List<Record> records = new ArrayList<Record>();
         try {
             File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
+//            File dumpFile = new File("D://log.yaml");
             Record record = (Record) Yaml.loadType(dumpFile, Record.class);
             YamlDecoder dec = new YamlDecoder(new FileInputStream(dumpFile));
             while ((record = (Record) dec.readObject()) != null) {
