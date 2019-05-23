@@ -33,18 +33,19 @@ public class RecordOpe implements AppLog {
      */
     @Override
     public void createExceptionRecord(String str) {
+        System.out.println("-writing exception log: " + str);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
         Record record = new Record(Type.Exception, str, date, time);
-        dump(record,0);
+        dump(record, 0);
     }
 
     @Override
     public void createExceptionRecord(String str, String date) {
         Record record = new Record(Type.Exception, str, date, "00:00:00");
-        dump(record,0);
+        dump(record, 0);
     }
 
     /**
@@ -54,21 +55,22 @@ public class RecordOpe implements AppLog {
      */
     @Override
     public void createInsertionRecord(String str) {
+        System.out.println("-writing insertion log: " + str);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
         Record record = new Record(Type.SingleRecord, str, date, time);
-        dump(record,0);
+        dump(record, 0);
     }
 
     @Override
-    public void createInsertionRecord(String white, String relat, String concern, String fest,String res) {
+    public void createInsertionRecord(String white, String relat, String concern, String fest, String res) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
-        Record record = new Record(date, time, Type.Start, 1, "", white, relat, concern,fest, res);
+        Record record = new Record(date, time, Type.Start, 1, "", white, relat, concern, fest, res);
         dumpfirst(record);
     }
 
@@ -103,8 +105,9 @@ public class RecordOpe implements AppLog {
      */
     @Override
     public void createInsSumRecord(int num, String date, String time) {
+        System.out.println("-writing insert sum log");
         Record record = new Record(date, time, Type.SumRecord, num, "This is a sum");
-        dump(record,0);
+        dump(record, 0);
     }
 
     /**
@@ -112,16 +115,18 @@ public class RecordOpe implements AppLog {
      */
     @Override
     public void createStartRecord() {
+        System.out.println("-writing start log");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String date = df.format(new Date());// new Date()为获取当前系统时间
         df = new SimpleDateFormat("HH:mm:ss");
         String time = df.format(new Date());
         Record record = new Record(Type.Start, "Starting", date, time);
-        dump(record,0);
+        dump(record, 0);
     }
 
     @Override
     public Record getLatestStartRecord() {
+        System.out.println("-getting latest start log");
         List<Record> records = readYaml()
                 .stream()
                 .filter(o -> o.getType().equals(Type.Start))
@@ -140,6 +145,7 @@ public class RecordOpe implements AppLog {
      */
     @Override
     public List<Record> getExceptionByDate(String date) {
+        System.out.println("-getting that date's exception log: " + date);
         List<Record> records = readYaml().stream().filter(o -> (o.getType().equals(Type.Exception) && (o.getDate().equals(date)))).collect(Collectors.toList());
         return records;
     }
@@ -151,6 +157,7 @@ public class RecordOpe implements AppLog {
      */
     @Override
     public Record getLatestException() {
+        System.out.println("-getting latest exception log");
         List<Record> records = readYaml().stream().filter(o -> (o.getType().equals(Type.Exception))).collect(Collectors.toList());
         return records.get(records.size() - 1);
     }
@@ -158,24 +165,29 @@ public class RecordOpe implements AppLog {
 
     /**
      * 读取已录入的路径
+     *
      * @param which
      * @return
      */
     @Override
-    public String readpath(int which){
+    public String readpath(int which) {
 //        File logger = new File("D://log.yaml");
         File logger = new File(System.getenv("APPDATA") + "/das/applog.yaml");
-        if(!logger.exists()){
+        if (!logger.exists()) {
             return "";
-        }
-        else{
+        } else {
             Record startRecord = (Record) readYaml().get(0);
-            switch (which){
-                case 0:return startRecord.getWhiteSheet();
-                case 1:return startRecord.getRelationSheet();
-                case 2:return startRecord.getConcernSheet();
-                case 3:return startRecord.getFestival();
-                default:return startRecord.getResultSheet();
+            switch (which) {
+                case 0:
+                    return startRecord.getWhiteSheet();
+                case 1:
+                    return startRecord.getRelationSheet();
+                case 2:
+                    return startRecord.getConcernSheet();
+                case 3:
+                    return startRecord.getFestival();
+                default:
+                    return startRecord.getResultSheet();
             }
         }
     }
@@ -185,21 +197,20 @@ public class RecordOpe implements AppLog {
      *
      * @param record
      */
-    private void dump(Record record,int cases) {
+    private void dump(Record record, int cases) {
         List<Record> records = readYaml();
         File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
 //        File dumpFile =new File("D://log.yaml");
         dumpFile.delete();
         try {
             dumpFile.createNewFile();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        if (cases==0) {
+        if (cases == 0) {
             records.add(record);
-        }else if(cases==1){
-            records.set(0,record);
+        } else if (cases == 1) {
+            records.set(0, record);
         }
         try {
             YamlEncoder enc = new YamlEncoder(new FileOutputStream(dumpFile));
@@ -221,15 +232,15 @@ public class RecordOpe implements AppLog {
             if (!dumpFile.exists()) {
                 dumpFile.createNewFile();
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         List<Record> records = readYaml();
         if (records.size() == 0) {
-            dump(record,0);
+            dump(record, 0);
             return;
         } else {
-            dump(record,1);
+            dump(record, 1);
 
         }
 
@@ -247,7 +258,7 @@ public class RecordOpe implements AppLog {
             File dumpFile = new File(System.getenv("APPDATA") + "/das/applog.yaml");
             Record record = (Record) Yaml.loadType(dumpFile, Record.class);
             YamlDecoder dec = new YamlDecoder(new FileInputStream(dumpFile));
-            while ((record = (Record) dec.readObject())!=null) {
+            while ((record = (Record) dec.readObject()) != null) {
                 records.add(record);
             }
             dec.close();
@@ -255,7 +266,7 @@ public class RecordOpe implements AppLog {
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (EOFException e) {
-            System.out.println("done.");
+//            System.out.println("done.");
         } finally {
             return records;
         }

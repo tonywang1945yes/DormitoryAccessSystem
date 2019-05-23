@@ -35,6 +35,7 @@ public class ExcelUtil {
      * @throws WrongFormatException  文件格式解析错误时抛出该异常
      */
     public static List<WhiteStudent> readWhiteList(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
+        System.out.println("--reading whitelist file, path: " + filePath + ", sheetName: " + sheetName);
         Sheet sheet = openSheet(filePath, sheetName);
 
         List<WhiteStudent> whiteList = new LinkedList<>();
@@ -75,6 +76,7 @@ public class ExcelUtil {
      * @throws WrongFormatException  文件格式解析错误时抛出该异常
      */
     public static List<BlackStudent> readBlackList(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
+        System.out.println("--reading blacklist file, path: " + filePath + ", sheetName: " + sheetName);
         Sheet sheet = openSheet(filePath, sheetName);
 
         List<BlackStudent> blackList = new ArrayList<>();
@@ -119,6 +121,7 @@ public class ExcelUtil {
      * @throws WrongFormatException  文件格式解析错误时抛出该异常
      */
     public static Map<Tutor, String> readTutorStudentMaps(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
+        System.out.println("--reading tutorStudentMap file, path: " + filePath + ", sheetName: " + sheetName);
         Sheet sheet = openSheet(filePath, sheetName);
         Map<Tutor, String> res = new HashMap<>();
         int rowNum = sheet.getLastRowNum();
@@ -154,6 +157,45 @@ public class ExcelUtil {
     }
 
     /**
+     * 读取配置的节假日信息
+     *
+     * @param filePath  节假日文件路径
+     * @param sheetName 表名
+     * @return 包含节假日信息的list
+     * @throws FileNotFoundException 不存在指定文件时抛出该异常
+     * @throws WrongFormatException  文件格式解析错误时抛出该异常
+     * @throws SheetNameException    表名错误时抛出该异常
+     */
+    public static List<Holiday> readHoliday(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
+        System.out.println("--reading holiday file, path: " + filePath + ", sheetName: " + sheetName);
+        Sheet sheet = openSheet(filePath, sheetName);
+        List<Holiday> res = new ArrayList<>();
+        int rowNum = sheet.getLastRowNum();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            for (int i = 1; i <= rowNum; i++) {
+                Row row = sheet.getRow(i);
+                if (isBlankRow(row, 3)) {
+                    sheet.removeRow(row);
+                    continue;
+                }
+                Holiday h = new Holiday();
+                String name = row.getCell(0).toString();
+                Date d1 = format.parse(row.getCell(1).toString());
+                Date d2 = format.parse(row.getCell(2).toString());
+                TimePair tp = new TimePair(new Timestamp(d1.getTime()), new Timestamp(d2.getTime() + (1000 * 3600 * 24L)));
+                h.setName(name);
+                h.setInterval(tp);
+                res.add(h);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new WrongFormatException("格式不匹配");
+        }
+        return res;
+    }
+
+    /**
      * 读取之前程序输出的异常学生名单
      *
      * @param filePath 名单所在路径
@@ -162,6 +204,7 @@ public class ExcelUtil {
      * @throws WrongFormatException  文件格式解析错误时抛出该异常
      */
     public static List<SuspectStudent> readSuspectStudent(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
+        System.out.println("--reading suspectedStudent file, path: " + filePath + ", sheetName: " + sheetName);
         Sheet sheet = openSheet(filePath, sheetName);
 
         List<SuspectStudent> res = new ArrayList<>();
@@ -216,33 +259,6 @@ public class ExcelUtil {
 
     }
 
-    public static List<Holiday> readHoliday(String filePath, String sheetName) throws FileNotFoundException, WrongFormatException, SheetNameException {
-        Sheet sheet = openSheet(filePath, sheetName);
-        List<Holiday> res = new ArrayList<>();
-        int rowNum = sheet.getLastRowNum();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            for (int i = 1; i <= rowNum; i++) {
-                Row row = sheet.getRow(i);
-                if (isBlankRow(row, 3)) {
-                    sheet.removeRow(row);
-                    continue;
-                }
-                Holiday h = new Holiday();
-                String name = row.getCell(0).toString();
-                Date d1 = format.parse(row.getCell(1).toString());
-                Date d2 = format.parse(row.getCell(2).toString());
-                TimePair tp = new TimePair(new Timestamp(d1.getTime()), new Timestamp(d2.getTime() + (1000 * 3600 * 24L)));
-                h.setName(name);
-                h.setInterval(tp);
-                res.add(h);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new WrongFormatException("格式不匹配");
-        }
-        return res;
-    }
 
     /**
      * 将异常学生列表输出为excel表格
@@ -253,6 +269,7 @@ public class ExcelUtil {
      * @throws FileNotClosable 文件无法正常关闭时抛出该异常
      */
     public static void writeSuspectStudent(List<SuspectStudent> students, String filePath) throws FileNotWritable, FileNotClosable {
+        System.out.println("-writing suspectedStudent file, path: " + filePath + ", sheetName: Sheet1");
 
         Workbook workbook;
         if (filePath.endsWith(".xls")) {
@@ -445,7 +462,7 @@ public class ExcelUtil {
     private static boolean isBlankRow(Row row, int columnNum) {
         boolean flag = true;
         for (int i = 0; i < columnNum; i++)
-            if (!row.getCell(i).getCellType().equals(CellType._NONE) && !row.getCell(i).getCellType().equals(CellType.BLANK)) {
+            if (row.getCell(i) != null && !row.getCell(i).getCellType().equals(CellType._NONE) && !row.getCell(i).getCellType().equals(CellType.BLANK)) {
                 flag = false;
                 break;
             }

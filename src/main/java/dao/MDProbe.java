@@ -61,19 +61,14 @@ public class MDProbe {
         //因为代码配置失败，使用xml文件配置
         String resource = "mybatis-config.xml";
         InputStream is = null;
-//        Properties props = null;
         try {
             is = Resources.getResourceAsStream(resource);
-//            props = new Properties();
-//            props.load(Resources.getResourceAsStream("jdbc.properties"));
-//            props.setProperty("jdbc.password", password);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //构建sqlSession的工厂
         instance.sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
-
 
         return instance;
     }
@@ -132,6 +127,7 @@ public class MDProbe {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+            System.out.println("---getting all records");
             List<PassRecord> records = mapper.getAllRecords();
             List<IdMap> maps = mapper.getUserIdMaps();
             return group(records, maps);
@@ -141,6 +137,7 @@ public class MDProbe {
     }
 
     public void checkConnection() {
+        System.out.println("--checking database connection condition");
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
@@ -154,6 +151,7 @@ public class MDProbe {
      * 检查数据库自上次应用启动后是否出现异常情况
      */
     public List<String> checkError() throws LogException {
+        System.out.println("--checking database error");
         //TODO 等待与文件键值对读写工具协作 done
         List<String> res = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -197,6 +195,7 @@ public class MDProbe {
     }
 
     private void init() {
+        System.out.println("---it's the first time that this software sets up, initializing...");
         AppLog appLog = RecordOpe.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -306,6 +305,7 @@ public class MDProbe {
      * @return 真实id与刷卡记录的映射
      */
     private Map<String, List<PassRecord>> group(List<PassRecord> records, List<IdMap> maps) {
+        System.out.println("---grouping records by id");
         Map<String, List<PassRecord>> res = new HashMap<>();
         Map<String, List<PassRecord>> recordMap = records.stream().collect(Collectors.groupingBy(PassRecord::getUserId));
 
@@ -346,7 +346,7 @@ public class MDProbe {
                 });
 
         res.values().removeIf(l -> l.size() == 0);
-        res.forEach((k, v) -> System.out.println(k + " " + v));
+//        res.forEach((k, v) -> System.out.println(k + " " + v));
         return res;
     }
 

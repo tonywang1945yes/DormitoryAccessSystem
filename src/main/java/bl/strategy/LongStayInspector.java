@@ -50,6 +50,7 @@ public abstract class LongStayInspector {
      * @return 被怀疑的学生列表
      */
     public List<SuspectStudent> apply(TimeRequirement requirement) {
+        System.out.println("--applying filtering strategy");
         List<SuspectStudent> res = new ArrayList<>();
 
         List<String> whiteIds = whiteList.stream().map(WhiteStudent::getStudentId).collect(Collectors.toList());
@@ -83,7 +84,7 @@ public abstract class LongStayInspector {
             return null;
 
         records.sort(Comparator.comparing(PassRecord::getPassTime));
-        System.out.println("judging id " + studentId);
+        System.out.println("---judging student whose id is " + studentId);
         SuspectStudent res = new SuspectStudent();
         res.setStudentId(studentId);
 
@@ -139,7 +140,7 @@ public abstract class LongStayInspector {
         SuspectStudent res = judge(blackInfo.getStudentId(), records, specificReq);
         if (res != null) {
             res.setLevel(res.getLevel() + 1);
-            res.setStatus(":" + StudentStatus.WATCHED.name());
+            res.setStatus(res.getStatus() + ":" + StudentStatus.WATCHED.name());
         }
         return res;
     }

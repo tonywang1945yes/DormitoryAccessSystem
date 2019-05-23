@@ -39,7 +39,7 @@ public class Mail {
         message.setSubject(subject);// 主题
         message.setText(content);// 内容
         Transport.send(message);
-        System.out.println("The message has been sent.");
+//        System.out.println("The message has been sent.");
     }
 
     /**

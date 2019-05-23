@@ -31,6 +31,7 @@ public class Controller implements DASService {
     Map<Tutor, String> tutorMap;
 
     private void readFile() throws FileNotFoundException, SheetNameException, WrongFormatException {
+        System.out.println("-reading files");
         List<WhiteStudent> whiteList = ExcelUtil.readWhiteList(whiteListPath, "Sheet1");
         List<BlackStudent> blackList = ExcelUtil.readBlackList(blackListPath, "Sheet1");
         tutorMap = ExcelUtil.readTutorStudentMaps(tutorMapListPath, "Sheet1");
@@ -73,6 +74,8 @@ public class Controller implements DASService {
 
 
     private List<SuspectStudent> doCheck(TimeRequirement requirement) {
+        System.out.println("-doing check");
+        System.out.println("--getting records");
         Map<String, List<PassRecord>> recordMaps = probe.getRecordsGrouped();
         inspector.setRecordMaps(recordMaps);
         return inspector.apply(requirement);
@@ -114,6 +117,8 @@ public class Controller implements DASService {
 
     @Override
     public Map<CheckResult, List<String>> testDatabase() {
+        System.out.println("-checking database");
+
         Map<CheckResult, List<String>> res = new HashMap<>();
         List<String> weirdDates;
         probe = MDProbe.build();
@@ -134,6 +139,7 @@ public class Controller implements DASService {
 
     @Override
     public MailResult sendMail(String hostName, String password) {
+        System.out.println("-preparing to send emails");
         try {
             List<SuspectStudent> students = getSuspectedStudents();
             Map<Tutor, List<String>> tsMap = mappingIds(tutorMap, students

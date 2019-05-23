@@ -7,6 +7,8 @@ import util.mail.Mail;
 
 import javax.mail.MessagingException;
 import java.security.GeneralSecurityException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,13 +38,18 @@ public class EmailSender {
         if (students.size() == 0)
             return;
 
+        System.out.println("--sending email");
         for (Map.Entry<Tutor, List<String>> e : tsMap.entrySet()) {
             Tutor tutor = e.getKey();
             List<String> list = e.getValue();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy年M月d日");
+            Date today = new Date();
 
             StringBuilder builder = new StringBuilder();
             builder.append(tutor.getName())
-                    .append("老师，您好。今日")
+                    .append("老师你好。今日(")
+                    .append(format.format(today))
+                    .append(")")
                     .append(tutor.getInstitute())
                     .append("的")
                     .append(tutor.getGrade())
@@ -54,6 +61,7 @@ public class EmailSender {
                         builder.append(o.getStudentId()).append(" ").append(o.getStatus()).append("\n");
                     });
             Mail.sendSimpleMail(hostAddress, password, "学生刷卡记录检测", tutor.getEmailAddress(), builder.toString());
+            System.out.println("-finish sending");
         }
 
 

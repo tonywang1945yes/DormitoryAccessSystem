@@ -1,6 +1,5 @@
 package ui;
 
-import bl.Controller;
 import bl.strategy.LongInInspector;
 import bl.strategy.LongOutInspector;
 import entity.TimePair;
@@ -107,7 +106,7 @@ public class XlsxSetBox {
         dateFormat.setLenient(false);
         java.util.Date timeDate = dateFormat.parse(dateString);//util类型
         java.sql.Timestamp dateTime = new java.sql.Timestamp(timeDate.getTime());//Timestamp类型,timeDate.getTime()返回一个long型
-        System.out.println(dateTime);
+//        System.out.println(dateTime);
         return dateTime;
     }
 }
