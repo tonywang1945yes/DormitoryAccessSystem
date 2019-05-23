@@ -3,7 +3,6 @@ package util.excel;
 import entity.*;
 import exception.excelException.FileNotFoundException;
 import exception.excelException.*;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -51,7 +50,7 @@ public class ExcelUtil {
                 }
                 String studentId = row.getCell(0).toString();
                 Timestamp startTime = new Timestamp(format.parse(row.getCell(1).toString()).getTime());
-                Timestamp endTime = new Timestamp(format.parse(row.getCell(2).toString()).getTime());
+                Timestamp endTime = new Timestamp(format.parse(row.getCell(2).toString()).getTime() + 1000L * 3600 * 24);
 
                 WhiteStudent ws = new WhiteStudent();
                 ws.setStudentId(studentId);
@@ -272,11 +271,11 @@ public class ExcelUtil {
         System.out.println("-writing suspectedStudent file, path: " + filePath + ", sheetName: Sheet1");
 
         Workbook workbook;
-        if (filePath.endsWith(".xls")) {
-            workbook = new HSSFWorkbook();
-        } else {
-            workbook = new XSSFWorkbook();
-        }
+//        if (filePath.endsWith(".xlsx")) {
+//            workbook = new HSSFWorkbook();
+//        } else {
+        workbook = new XSSFWorkbook();
+//        }
 
         Sheet sheet = workbook.createSheet("Sheet1");
         Row title = sheet.createRow(0);
@@ -372,12 +371,12 @@ public class ExcelUtil {
         String type = filePath.substring(filePath.lastIndexOf("."));
         try {
             InputStream inputStream = new FileInputStream(filePath);
-            if (type.equals(".xls")) {
-                workbook = new HSSFWorkbook(inputStream);
-            } else if (type.equals(".xlsx")) {
-                workbook = new XSSFWorkbook(inputStream);
+//            if (type.equals(".xlsx")) {
+//                workbook = new HSSFWorkbook(inputStream);
+//            } else if (type.equals(".xls")) {
+            workbook = new XSSFWorkbook(inputStream);
 
-            }
+//            }
         } catch (IOException e) {
             throw new FileNotFoundException("The file cannot be found.");
         }

@@ -1,26 +1,15 @@
 package ui;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.*;
 import entity.TimeRequirement;
 import enums.CheckResult;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
@@ -28,9 +17,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class GuavaWaiting extends Application{
-    static CheckResult result ;
-    static boolean finish = false;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class GuavaWaiting extends Application {
+    static CheckResult result;
+    static boolean finished = false;
     Task copyWorker;
 
     public void execute(TimeRequirement timeRequirement) {
@@ -43,12 +36,13 @@ public class GuavaWaiting extends Application{
 
             @Override
             public String call() throws Exception {
-                System.out.println("task started!");
+                System.out.println("generating task start");
                 result = Operator.controller.generateStudentList(timeRequirement);
+//                result = CheckResult.SUCCESS;
                 //模拟耗时操作
-                Thread.sleep(3000);
-                System.out.println("task finished!");
-                return "hello";
+//                Thread.sleep(30000);
+                System.out.println("generating task finished");
+                return "finished";
             }
         });
         //添加回调，回调由executor中的线程触发，但也可以指定一个新的线程
@@ -57,14 +51,15 @@ public class GuavaWaiting extends Application{
             //耗时任务执行失败后回调该方法
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("failure");
+                t.printStackTrace();
+                System.out.println("task failed");
             }
 
             //耗时任务执行成功后回调该方法
             @Override
             public void onSuccess(String s) {
-                System.out.println("success " + s);
-                finish =true;
+                System.out.println("task success");
+                finished = true;
             }
         });
 
@@ -73,6 +68,7 @@ public class GuavaWaiting extends Application{
 
         start(new Stage());
     }
+
     @Override
     public void start(Stage primaryStage) {
         Group root = new Group();
@@ -99,47 +95,31 @@ public class GuavaWaiting extends Application{
             public void changed(ObservableValue<? extends String> observable,
                                 String oldValue, String newValue) {
                 System.out.println(newValue);
-//                if(newValue.equals("是der")){
-//                    //NO_SUCH_FILE, WRONG_FORMAT, SHEET_NAME_ERROR,
-//                    //    WRONG_PASSWORD, CONNECTION_ERROR, DRIVER_ERROR, DATABASE_ERROR,
-//                    //    FILE_WRITING_ERROR,
-//                    //    SUCCESS
-//                    if(result.equals(CheckResult.SUCCESS)) {
-//                        Warn.display("成功", "生成名单成功");
-//                        primaryStage.close();
-//                    }
-//                    else if(result.equals(CheckResult.WRONG_FORMAT)){
-//                        Warn.display("失败", "输入格式错误");
-//                        primaryStage.close();
-//                    }
-//                    else if(result.equals(CheckResult.CONNECTION_ERROR)){
-//                        Warn.display("失败", "连接错误");
-//                        primaryStage.close();
-//                    }
-//                    else if(result.equals(CheckResult.SHEET_NAME_ERROR)){
-//                        Warn.display("失败", "文件名错误");
-//                        primaryStage.close();
-//                    }
-//                    else if(result.equals(CheckResult.DATABASE_ERROR)){
-//                        Warn.display("失败", "数据库错误");
-//                        primaryStage.close();
-//                    }
-//                    else if(result.equals(CheckResult.DRIVER_ERROR)){
-//                        Warn.display("失败", "驱动错误");
-//                        primaryStage.close();
-//                    } else if(result.equals(CheckResult.NO_SUCH_FILE)){
-//                        Warn.display("失败", "文件路径错误");
-//                        primaryStage.close();
-//                    }
-//                    else if(result.equals(CheckResult.FILE_WRITING_ERROR)){
-//                        Warn.display("失败","写生成文件失败");
-//                        primaryStage.close();
-//                    }
-//
-//                }
-                if(newValue.equals("是der")){
-                    Warn.display("成功", "生成名单成功");
-                    primaryStage.close();
+                if (newValue.equals("finished")) {
+                    //NO_SUCH_FILE, WRONG_FORMAT, SHEET_NAME_ERROR,
+                    //    WRONG_SECRET, CONNECTION_ERROR, DRIVER_ERROR, DATABASE_ERROR,
+                    //    FILE_WRITING_ERROR,
+                    //    SUCCESS
+                    if (result.equals(CheckResult.SUCCESS)) {
+                        Warn.display("成功", "生成名单成功");
+                        primaryStage.close();
+                    } else if (result.equals(CheckResult.WRONG_FORMAT)) {
+                        Warn.display("失败", "输入格式错误");
+                        primaryStage.close();
+                    } else if (result.equals(CheckResult.SHEET_NAME_ERROR)) {
+                        Warn.display("失败", "表名错误");
+                        primaryStage.close();
+                    } else if (result.equals(CheckResult.NO_SUCH_FILE)) {
+                        Warn.display("失败", "文件路径错误");
+                        primaryStage.close();
+                    } else if (result.equals(CheckResult.FILE_WRITING_ERROR)) {
+                        Warn.display("失败", "写生成文件失败");
+                        primaryStage.close();
+                    } else if (result.equals(CheckResult.CONNECTION_ERROR)) {
+                        Warn.display("失败", "连接错误");
+                        primaryStage.close();
+                    }
+
                 }
             }
         });
@@ -152,9 +132,9 @@ public class GuavaWaiting extends Application{
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                for (int i = 0; i < 10; i++) {
-                    Thread.sleep(2000);
-                    updateMessage(finish?"是der":"Nope");
+                for (int i = 0; i < 200; i++) {
+                    Thread.sleep(1000);
+                    updateMessage(finished ? "finished" : "unfinished");
                 }
                 return true;
             }

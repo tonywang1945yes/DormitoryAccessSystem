@@ -57,7 +57,6 @@ public class EmailSender {
             students.stream()
                     .filter(o -> list.contains(o.getStudentId()))
                     .forEach(o -> {
-                        //TODO 邮件内容还需要再仔细处理
                         builder.append(o.getStudentId()).append(" ").append(o.getStatus()).append("\n");
                     });
             Mail.sendSimpleMail(hostAddress, password, "学生刷卡记录检测", tutor.getEmailAddress(), builder.toString());

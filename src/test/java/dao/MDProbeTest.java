@@ -1,6 +1,5 @@
 package dao;
 
-import entity.IdMap;
 import entity.PassRecord;
 import org.junit.Test;
 
@@ -15,10 +14,9 @@ public class MDProbeTest {
     @Test
     public void build() {
         try {
-            MDProbe probe = MDProbe.build();
+            MDProbe probe = MDProbe.build("ddas");
             List<PassRecord> records = probe.getRecordWithLimit(5);
             System.out.println(records);
-//            probe.getRecordWithLimit(5);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,7 +27,7 @@ public class MDProbeTest {
     @Test
     public void getRecordsGrouped() {
         try {
-            MDProbe probe = MDProbe.build();
+            MDProbe probe = MDProbe.build("123");
 
             Instant i1 = Clock.systemDefaultZone().instant();
             Map<String, List<PassRecord>> records = probe.getRecordsGrouped();
@@ -45,25 +43,25 @@ public class MDProbeTest {
         }
     }
 
-    @Test
-    public void getUserIdMaps() {
-        try {
-            MDProbe probe = MDProbe.build();
-            List<IdMap> maps = probe.getIdMap();
-            System.out.println(maps);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void checkDatabaseErrorTest() {
-        try {
-            MDProbe probe = MDProbe.build();
-            List<PassRecord> records = probe.getRecordByDate("2019-01-27");
-            System.out.println(probe.lostData(records));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    public void getUserIdMaps() {
+//        try {
+//            MDProbe probe = MDProbe.build();
+//            List<IdMap> maps = probe.getIdMap();
+//            System.out.println(maps);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Test
+//    public void checkDatabaseErrorTest() {
+//        try {
+//            MDProbe probe = MDProbe.build();
+//            List<PassRecord> records = probe.getRecordByDate("2019-01-27");
+//            System.out.println(probe.lostData(records));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

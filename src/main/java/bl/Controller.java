@@ -6,6 +6,7 @@ import entity.*;
 import enums.CheckResult;
 import enums.MailResult;
 import enums.StudentStatus;
+import exception.daoException.DBConnectionException;
 import exception.daoException.DatabaseErrorException;
 import exception.excelException.*;
 import exception.mailException.MailException;
@@ -85,7 +86,6 @@ public class Controller implements DASService {
     @Override
     public CheckResult generateStudentList(TimeRequirement requirement) {
 
-        //TODO 细分异常情况 done
         try {
             probe = MDProbe.getInstance();
             readFile();
@@ -121,12 +121,14 @@ public class Controller implements DASService {
 
         Map<CheckResult, List<String>> res = new HashMap<>();
         List<String> weirdDates;
-        probe = MDProbe.build();
         try {
+            probe = MDProbe.build("ddas");
             probe.checkConnection();
             weirdDates = probe.checkError();
             res.put(CheckResult.DATABASE_ERROR, weirdDates);
 
+        } catch (DBConnectionException e) {
+            res.put(CheckResult.WRONG_SECRET, null);
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("ClassNotFoundException"))

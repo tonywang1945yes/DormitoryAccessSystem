@@ -3,14 +3,16 @@ package dao;
 import entity.IdMap;
 import entity.PassRecord;
 import entity.TimePair;
+import exception.daoException.DBConnectionException;
 import exception.logException.LogException;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import util.log.AppLog;
-import util.log.Record;
 import util.log.LogImpl;
+import util.log.Record;
+import util.security.SecretUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,32 +45,33 @@ public class MDProbe {
     /**
      * 使用参数构建SqlSessionFactory字段
      *
+     * @param secret 使用的密钥
      * @return probe对象
      */
-    public static MDProbe build() {
+    public static MDProbe build(String secret) throws DBConnectionException {
         instance = new MDProbe();
 
-//        String driver = DaoConfig.driver;
-//        DataSource dataSource = new PooledDataSource(driver, url, username, password);
-//        TransactionFactory transactionFactory = new JdbcTransactionFactory();
-//        Environment environment = new Environment("development", transactionFactory, dataSource);
-//        Configuration configuration = new Configuration(environment);
-//
-//        configuration.addMapper(PassRecordMapper.class);
-//
-//        probe.sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
         //因为代码配置失败，使用xml文件配置
         String resource = "mybatis-config.xml";
         InputStream is = null;
+        Properties properties = null;
         try {
             is = Resources.getResourceAsStream(resource);
+            properties = Resources.getResourceAsProperties("jdbc.properties");
+            //解密
+            properties.put("jdbc.url", SecretUtil.decrypt(properties.getProperty("jdbc.url"), secret));
+            properties.put("jdbc.username", SecretUtil.decrypt(properties.getProperty("jdbc.username"), secret));
+            properties.put("jdbc.password", SecretUtil.decrypt(properties.getProperty("jdbc.password"), secret));
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new DBConnectionException("密钥不正确");
         }
 
         //构建sqlSession的工厂
-        instance.sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
+        instance.sqlSessionFactory = new SqlSessionFactoryBuilder().build(is, properties);
 
         return instance;
     }
@@ -83,39 +86,39 @@ public class MDProbe {
             session.close();
         }
     }
-
-    public List<PassRecord> getAllRecords() {
-        SqlSession session = sqlSessionFactory.openSession();
-        try {
-            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
-            List<PassRecord> records = mapper.getAllRecords();
-            return records;
-        } finally {
-            session.close();
-        }
-    }
-
-    public List<PassRecord> getRecordByDate(String date) {
-        SqlSession session = sqlSessionFactory.openSession();
-        try {
-            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
-            List<PassRecord> records = mapper.getRecordByDate(date);
-            return records;
-        } finally {
-            session.close();
-        }
-    }
-
-    public List<IdMap> getIdMap() {
-        SqlSession session = sqlSessionFactory.openSession();
-        try {
-            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
-            List<IdMap> maps = mapper.getUserIdMaps();
-            return maps;
-        } finally {
-            session.close();
-        }
-    }
+//
+//    public List<PassRecord> getAllRecords() {
+//        SqlSession session = sqlSessionFactory.openSession();
+//        try {
+//            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+//            List<PassRecord> records = mapper.getAllRecords();
+//            return records;
+//        } finally {
+//            session.close();
+//        }
+//    }
+//
+//    public List<PassRecord> getRecordByDate(String date) {
+//        SqlSession session = sqlSessionFactory.openSession();
+//        try {
+//            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+//            List<PassRecord> records = mapper.getRecordByDate(date);
+//            return records;
+//        } finally {
+//            session.close();
+//        }
+//    }
+//
+//    public List<IdMap> getIdMap() {
+//        SqlSession session = sqlSessionFactory.openSession();
+//        try {
+//            PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
+//            List<IdMap> maps = mapper.getUserIdMaps();
+//            return maps;
+//        } finally {
+//            session.close();
+//        }
+//    }
 
 
     /**
@@ -152,7 +155,6 @@ public class MDProbe {
      */
     public List<String> checkError() throws LogException {
         System.out.println("--checking database error");
-        //TODO 等待与文件键值对读写工具协作 done
         List<String> res = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(new Date());
@@ -206,6 +208,7 @@ public class MDProbe {
             List<PassRecord> records = mapper.getAllRecords();
             Map<String, List<PassRecord>> recordDateMap = records.stream().collect(Collectors.groupingBy(o -> format.format(o.getPassTime())));
             recordDateMap.forEach((k, r) -> {
+                appLog.createInsSumRecord(r.size(), k, "00:00:00");
                 if (lostData(r))
                     appLog.createExceptionRecord("该日数据库记录存在异常", k);
 
@@ -379,7 +382,7 @@ public class MDProbe {
      * @return 当前日期且小时-分钟-秒数为00-00-00的毫秒总数
      */
     private long alignDate(Date date) {
-        return date.getTime() - date.getTime() % (24 * 3600 * 1000L) - (8 * 3600 * 1000L);
+        return date.getTime() - date.getTime() % (24 * 3600 * 1000L);
     }
 
 }
