@@ -16,13 +16,13 @@ import java.util.List;
  */
 @Mapper
 public interface PassRecordMapper {
-    public List<PassRecord> getAllRecords();
+    List<PassRecord> getAllRecords();
 
-    public List<IdMap> getUserIdMaps();
+    List<IdMap> getUserIdMaps();
 
-    public List<PassRecord> getRecordByDate(String date);
+    List<PassRecord> getRecordByDate(String date);
 
-    public List<PassRecord> getRecordWithLimit(int limit);
+    List<PassRecord> getRecordWithLimit(int limit);
 
-    public int getRecordCountByDate(Date date);
+    int getRecordCountByDate(Date date);
 }

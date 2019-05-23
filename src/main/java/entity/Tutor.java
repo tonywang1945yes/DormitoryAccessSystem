@@ -2,7 +2,7 @@ package entity;
 
 import org.apache.poi.ss.usermodel.Row;
 
-public class Tutor extends People {
+public class Tutor {
     private String institute;
     private String name;
     private String grade;
@@ -11,11 +11,12 @@ public class Tutor extends People {
 
     /**
      * 通过传入某一行来构造一个Tutor对象
+     *
      * @param row
      */
-    public Tutor(Row row){
+    public Tutor(Row row) {
         String grade = row.getCell(1).toString();
-        if (grade.endsWith(".0")){
+        if (grade.endsWith(".0")) {
             grade = grade.substring(0, grade.length() - 2);
         }
         this.grade = grade;
@@ -109,10 +110,9 @@ public class Tutor extends People {
 
 
         this.name = row.getCell(2).toString();
-        if (checkValid(row.getCell(3).toString())){
+        if (checkValid(row.getCell(3).toString())) {
             this.emailAddress = row.getCell(3).toString();
-        }
-        else {
+        } else {
             this.emailAddress = "";
         }
     }
@@ -122,28 +122,26 @@ public class Tutor extends People {
 
     /**
      * 检查Email地址是否是合法的
+     *
      * @param address
      * @return
      */
-    private boolean checkValid(String address){
-        if (address == null || address.length() == 0 || address.length() > 30){
+    private boolean checkValid(String address) {
+        if (address == null || address.length() == 0 || address.length() > 30) {
             return false;
         }
-        if (!address.contains("@") || !address.contains(".")){
+        if (!address.contains("@") || !address.contains(".")) {
             return false;
         }
         if (address.lastIndexOf("@") > address.lastIndexOf(".")
-                || address.charAt(address.length() - 1) == '.'){
+                || address.charAt(address.length() - 1) == '.') {
             return false;
         }
         char capital = address.charAt(0);
-        if (!(capital == '_'
+        return capital == '_'
                 || (capital >= 'a' && capital <= 'z')
                 || (capital >= 'A' && capital <= 'Z')
-                || (capital >= '0' && capital <= '9'))){
-            return false;
-        }
-        return true;
+                || (capital >= '0' && capital <= '9');
     }
 
 

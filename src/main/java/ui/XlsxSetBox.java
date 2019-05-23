@@ -13,8 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import util.logUtil.AppLog;
-import util.logUtil.RecordOpe;
+import util.log.AppLog;
+import util.log.LogImpl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -32,7 +32,7 @@ public class XlsxSetBox {
                       Integer hour, Integer minute, LocalDate begin, LocalDate end,
                       Integer thresheldDay,
                       Integer thresheldHour, Integer thresheldMinute) {
-        AppLog ope = RecordOpe.getInstance();
+        AppLog ope = LogImpl.getInstance();
         window = primaryStage;
         AnchorPane panel = new AnchorPane();
         VBox vBox = new VBox();
@@ -45,7 +45,7 @@ public class XlsxSetBox {
         text.setPromptText("在此选择路径");
         text.setEditable(false);
         text.setOpacity(0.7);
-        text.setText(ope.readpath(4));
+        text.setText(ope.readPath(4));
         Button relate = new Button("选择路径");
         hBox.getChildren().add(path);
         hBox.getChildren().add(text);

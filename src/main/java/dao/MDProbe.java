@@ -8,9 +8,9 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import util.logUtil.AppLog;
-import util.logUtil.Record;
-import util.logUtil.RecordOpe;
+import util.log.AppLog;
+import util.log.Record;
+import util.log.LogImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -156,7 +156,7 @@ public class MDProbe {
         List<String> res = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(new Date());
-        AppLog appLog = RecordOpe.getInstance();
+        AppLog appLog = LogImpl.getInstance();
         Record latestStartRecord = appLog.getLatestStartRecord();
 
         if (latestStartRecord == null) {
@@ -196,7 +196,7 @@ public class MDProbe {
 
     private void init() {
         System.out.println("---it's the first time that this software sets up, initializing...");
-        AppLog appLog = RecordOpe.getInstance();
+        AppLog appLog = LogImpl.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         SqlSession session = sqlSessionFactory.openSession();
@@ -358,7 +358,7 @@ public class MDProbe {
      * @param now  结束时间，为某日期的00:00:00
      */
     private void calcInsertionsInDuration(long then, long now) {
-        AppLog log = RecordOpe.getInstance();
+        AppLog log = LogImpl.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         SqlSession session = sqlSessionFactory.openSession();
         try {

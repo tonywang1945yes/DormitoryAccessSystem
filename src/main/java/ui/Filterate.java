@@ -67,7 +67,7 @@ public class Filterate {
 
         Label label = new Label("筛选策略：      ");
         ToggleGroup group = new ToggleGroup();
-        RadioButton button1 = new RadioButton("至多外出时间");
+        RadioButton button1 = new RadioButton("至多离寝时间");
         button1.setToggleGroup(group);
         button1.setSelected(true);
         RadioButton button2 = new RadioButton("至多在寝时间");
@@ -135,7 +135,9 @@ public class Filterate {
                 LackRemindBox.display("记录筛选起始日期不完全","请选择合适的起始日期");
             }
             else if (endfield.getValue()==null){
-                LackRemindBox.display("记录筛选终止日期不完全","请选择合适的终止日期");
+                LackRemindBox.display("记录筛选结束日期不完全","请选择合适的结束日期");
+            }else if(beginfield.getValue().isAfter(endfield.getValue())){
+                LackRemindBox.display("日期逻辑错误","起始日期不能在结束日期之后");
             }else if (choiceBox4thresholdDay.getValue()==null||choiceBox4thresholdHour.getValue()==null||choiceBox4thresholdMin.getValue()==null){
                 LackRemindBox.display("阈值选择不完全","请选择合适的阈值");
             }
