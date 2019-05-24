@@ -1,27 +1,19 @@
 package ui;
 
-import bl.Controller;
-import enums.CheckResult;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.List;
-import java.util.Map;
 
 public class Main extends Application {
 
     Stage window;
     Button login;
-    static TextField key;
+    static PasswordField secret;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -42,13 +34,12 @@ public class Main extends Application {
         });
 
 
-
-        key = new TextField();
-        HBox vbox =new HBox();
-        vbox.getChildren().addAll(new Label("密钥："),key);
-        vbox.setLayoutX(35);
-        vbox.setLayoutY(50);
-        panel.getChildren().add(vbox);
+        secret = new PasswordField();
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(new Label("密钥："), secret);
+        hBox.setLayoutX(35);
+        hBox.setLayoutY(50);
+        panel.getChildren().add(hBox);
         login.setLayoutX(130);
         login.setLayoutY(120);
         panel.getChildren().add(login);

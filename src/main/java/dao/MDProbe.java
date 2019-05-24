@@ -206,9 +206,21 @@ public class MDProbe {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
             //这里会有很大的时间花销
             List<PassRecord> records = mapper.getAllRecords();
+            //删除2018年1月1日之前的记录
+            records.removeIf(o -> o.getPassTime().getTime() < 1514736000000L);
+            records.sort(Comparator.comparing(PassRecord::getPassTime));
+
             Map<String, List<PassRecord>> recordDateMap = records.stream().collect(Collectors.groupingBy(o -> format.format(o.getPassTime())));
+
+            //计算每日的数据库记录总数
+            long earliest = alignDate(records.get(0).getPassTime());
+            long latest = alignDate(records.get(records.size() - 1).getPassTime());
+            for (long c = earliest; c <= latest; c += 1000L * 3600 * 24) {
+                String cur = format.format(new Date(c));
+                appLog.createInsSumRecord(recordDateMap.getOrDefault(cur, new ArrayList<>()).size(), cur, "00:00:00");
+            }
             recordDateMap.forEach((k, r) -> {
-                appLog.createInsSumRecord(r.size(), k, "00:00:00");
+//                appLog.createInsSumRecord(r.size(), k, "00:00:00");
                 if (lostData(r))
                     appLog.createExceptionRecord("该日数据库记录存在异常", k);
 
@@ -355,19 +367,19 @@ public class MDProbe {
 
     /**
      * 计算并插入每日数据库更新条数记录
-     * 计算区间[then,now)
+     * 计算区间[start, end)
      *
-     * @param then 开始时间，为某日期的00:00:00
-     * @param now  结束时间，为某日期的00:00:00
+     * @param start 开始时间，为某日期的00:00:00
+     * @param end   结束时间，为某日期的00:00:00
      */
-    private void calcInsertionsInDuration(long then, long now) {
+    private void calcInsertionsInDuration(long start, long end) {
         AppLog log = LogImpl.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
 
-            for (long t = then; t < now; t += 1000L * 3600 * 24) {
+            for (long t = start; t < end; t += 1000L * 3600 * 24) {
                 log.createInsSumRecord(mapper.getRecordCountByDate(new Date(t)), format.format(new Date(t)), "00:00:00");
             }
         } finally {

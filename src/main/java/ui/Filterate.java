@@ -14,11 +14,7 @@ import java.util.List;
 
 public class Filterate {
     Stage window;
-    Button button;
 
-
-    //    表格是否生成
-    static boolean isvisited=false;
     //    起始时间
     static DatePicker beginfield;
     //    终止日期
@@ -35,11 +31,11 @@ public class Filterate {
     public void start(Stage primaryStage) {
         window = primaryStage;
 //        图片加载器
-        ImageView mv=new ImageView();
+        ImageView mv = new ImageView();
 //        背景板
-        AnchorPane panel=new AnchorPane();
+        AnchorPane panel = new AnchorPane();
 //        图片
-        Image image=new Image(this.getClass().getResource("/ui/singal.jpg").toExternalForm(),true);
+        Image image = new Image(this.getClass().getResource("/ui/singal.jpg").toExternalForm(), true);
 
         mv.setImage(image);
         mv.setOpacity(0.2);
@@ -47,49 +43,49 @@ public class Filterate {
         panel.getChildren().add(mv);
 //        panel.setMaxSize(BoundarySize.WIDTH + 1000,BoundarySize.HEIGHT + 1000);
 //        panel.setMinSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
-        panel.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+        panel.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 
-        VBox vbox=new VBox();
+        VBox vbox = new VBox();
         panel.getChildren().add(vbox);
 
         HBox hbox0 = new HBox();
         HBox hbox00 = new HBox();
 //        vbox.setPadding(new Insets(10, 12, 20, 40));
-        HBox hbox1=new HBox(); // 选择起始时间
-        HBox hbox2=new HBox(); // 选择终止时间
-        HBox hbox3=new HBox(); // 按钮
-        HBox hbox4=new HBox(); // 空行
-        HBox hbox5=new HBox(); // 空行
-        HBox hBox6=new HBox(); // 空行
-        HBox hBox7=new HBox(); // 输入阈值
+        HBox hbox1 = new HBox(); // 选择起始时间
+        HBox hbox2 = new HBox(); // 选择终止时间
+        HBox hbox3 = new HBox(); // 按钮
+        HBox hbox4 = new HBox(); // 空行
+        HBox hbox5 = new HBox(); // 空行
+        HBox hBox6 = new HBox(); // 空行
+        HBox hBox7 = new HBox(); // 输入阈值
         HBox hbox8 = new HBox();
         HBox hbox9 = new HBox();
 
         Label label = new Label("筛选策略：      ");
         ToggleGroup group = new ToggleGroup();
-        RadioButton button1 = new RadioButton("至多离寝时间");
+        RadioButton button1 = new RadioButton("查找长时间离寝");
         button1.setToggleGroup(group);
         button1.setSelected(true);
-        RadioButton button2 = new RadioButton("至多在寝时间");
+        RadioButton button2 = new RadioButton("查找长时间在寝");
         button2.setToggleGroup(group);
-        hbox0.getChildren().addAll(label,button1,button2);
+        hbox0.getChildren().addAll(label, button1, button2);
 
         Label label1 = new Label("请选择时长: ");
         ChoiceBox<Integer> choiceBoxDate = new ChoiceBox();
-        choiceBoxDate.setItems(FXCollections.observableArrayList(getTimeList(0,15)));
+        choiceBoxDate.setItems(FXCollections.observableArrayList(getTimeList(0, 15)));
         Label label2 = new Label("天 ");
         ChoiceBox<Integer> choiceBoxHour = new ChoiceBox();
-        choiceBoxHour.setItems(FXCollections.observableArrayList(getTimeList(0,23)));
+        choiceBoxHour.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
         Label label3 = new Label("小时 ");
         ChoiceBox<Integer> choiceBoxMinute = new ChoiceBox();
-        choiceBoxMinute.setItems(FXCollections.observableArrayList(getTimeList(0,59)));
+        choiceBoxMinute.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
         Label label4 = new Label("分钟");
-        hbox00.getChildren().addAll(label1,choiceBoxDate,label2,choiceBoxHour,label3,choiceBoxMinute,label4);
+        hbox00.getChildren().addAll(label1, choiceBoxDate, label2, choiceBoxHour, label3, choiceBoxMinute, label4);
 
 //        System.out.println(button2.selectedProperty().getValue());
 //        System.out.println(button1.selectedProperty().getValue());
 //        选择路径
-        Label pathlabel=new Label("起始日期：");
+        Label pathlabel = new Label("起始日期：");
         beginfield = new DatePicker();
         beginfield.setPromptText("起始于该日的00:00分");
         beginfield.setOpacity(0.7);
@@ -97,7 +93,7 @@ public class Filterate {
         hbox1.getChildren().add(beginfield);
 
 //        输入密码
-        Label endlabel=new Label("结束日期：");
+        Label endlabel = new Label("结束日期：");
         endfield = new DatePicker();
         endfield.setPromptText("截止至该日的23:59分");
         endfield.setOpacity(0.7);
@@ -107,45 +103,42 @@ public class Filterate {
 //        输入阈值
         Label labelx = new Label("阈值:         ");
         ChoiceBox<Integer> choiceBox4thresholdDay = new ChoiceBox();
-        choiceBox4thresholdDay.setItems(FXCollections.observableArrayList(getTimeList(0,15)));
+        choiceBox4thresholdDay.setItems(FXCollections.observableArrayList(getTimeList(0, 15)));
         Label label4thresholdDate = new Label("天 ");
         ChoiceBox<Integer> choiceBox4thresholdHour = new ChoiceBox();
-        choiceBox4thresholdHour.setItems(FXCollections.observableArrayList(getTimeList(0,23)));
+        choiceBox4thresholdHour.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
         Label label4thresholdHour = new Label("小时 ");
         ChoiceBox<Integer> choiceBox4thresholdMin = new ChoiceBox();
-        choiceBox4thresholdMin.setItems(FXCollections.observableArrayList(getTimeList(0,59)));
+        choiceBox4thresholdMin.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
         Label label4thresholdMin = new Label("分钟");
-        hBox7.getChildren().addAll(labelx,choiceBox4thresholdDay,label4thresholdDate,choiceBox4thresholdHour,label4thresholdHour,choiceBox4thresholdMin,label4thresholdMin);
+        hBox7.getChildren().addAll(labelx, choiceBox4thresholdDay, label4thresholdDate, choiceBox4thresholdHour, label4thresholdHour, choiceBox4thresholdMin, label4thresholdMin);
 
 
 //        按钮
-        Label setfield=new Label();
+        Label setfield = new Label();
         setfield.setText("欢迎使用：");
-        Button setxlsx=new Button();
+        Button setxlsx = new Button();
         setxlsx.setText("点此确认生成筛选条件");
         setxlsx.setOpacity(1);
         hbox3.getChildren().add(setfield);
         hbox3.getChildren().add(setxlsx);
 
         setxlsx.setOnAction(event -> {
-            if(choiceBoxDate.getValue()==null||choiceBoxHour.getValue()==null||choiceBoxMinute.getValue()==null){
-                LackRemindBox.display("时长选择不完全","请选择合适的时长");
-            }
-            else if (beginfield.getValue()==null){
-                LackRemindBox.display("记录筛选起始日期不完全","请选择合适的起始日期");
-            }
-            else if (endfield.getValue()==null){
-                LackRemindBox.display("记录筛选结束日期不完全","请选择合适的结束日期");
-            }else if(beginfield.getValue().isAfter(endfield.getValue())){
-                LackRemindBox.display("日期逻辑错误","起始日期不能在结束日期之后");
-            }else if (choiceBox4thresholdDay.getValue()==null||choiceBox4thresholdHour.getValue()==null||choiceBox4thresholdMin.getValue()==null){
-                LackRemindBox.display("阈值选择不完全","请选择合适的阈值");
-            }
-            else{
+            if (choiceBoxDate.getValue() == null || choiceBoxHour.getValue() == null || choiceBoxMinute.getValue() == null) {
+                LackRemindBox.display("时长选择不完全", "请选择合适的时长");
+            } else if (beginfield.getValue() == null) {
+                LackRemindBox.display("记录筛选起始日期不完全", "请选择合适的起始日期");
+            } else if (endfield.getValue() == null) {
+                LackRemindBox.display("记录筛选结束日期不完全", "请选择合适的结束日期");
+            } else if (beginfield.getValue().isAfter(endfield.getValue())) {
+                LackRemindBox.display("日期逻辑错误", "起始日期不能在结束日期之后");
+            } else if (choiceBox4thresholdDay.getValue() == null || choiceBox4thresholdHour.getValue() == null || choiceBox4thresholdMin.getValue() == null) {
+                LackRemindBox.display("阈值选择不完全", "请选择合适的阈值");
+            } else {
                 ReCheck reCheck = new ReCheck();
-                reCheck.start(new Stage(),button1.isSelected(),choiceBoxDate.getValue(),
-                        choiceBoxHour.getValue(),choiceBoxMinute.getValue(),beginfield.getValue(),
-                        endfield.getValue(),choiceBox4thresholdDay.getValue(),choiceBox4thresholdHour.getValue(),choiceBox4thresholdMin.getValue());
+                reCheck.start(new Stage(), button1.isSelected(), choiceBoxDate.getValue(),
+                        choiceBoxHour.getValue(), choiceBoxMinute.getValue(), beginfield.getValue(),
+                        endfield.getValue(), choiceBox4thresholdDay.getValue(), choiceBox4thresholdHour.getValue(), choiceBox4thresholdMin.getValue());
                 window.close();
             }
 
@@ -179,7 +172,7 @@ public class Filterate {
 //        deliver.setOnMouseClicked(new Deliver());
 
 //        窗口
-        Scene scene=new Scene(panel, 400, 350);
+        Scene scene = new Scene(panel, 400, 350);
 
         window.setTitle("Dormitory Access System");
         window.setOnCloseRequest(event -> {
@@ -190,16 +183,17 @@ public class Filterate {
         window.show();
         window.setResizable(false);
     }
-    private void closeProgram(){
-        Boolean answer = ConfirmBox.display("Title","Sure you want to exit?");
-        if(answer){
+
+    private void closeProgram() {
+        Boolean answer = ConfirmBox.display("Title", "Sure you want to exit?");
+        if (answer) {
             window.close();
         }
     }
 
-    private List<Integer> getTimeList(int start,int end){
+    private List<Integer> getTimeList(int start, int end) {
         List<Integer> timeList = new ArrayList<>();
-        for(int i = start;i<=end;i++){
+        for (int i = start; i <= end; i++) {
             timeList.add(i);
         }
         return timeList;

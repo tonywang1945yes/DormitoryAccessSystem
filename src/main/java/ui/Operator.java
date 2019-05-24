@@ -19,7 +19,7 @@ public class Operator {
 
     AppLog log;
     //    表格是否生成
-    static Controller controller =new Controller();
+    static Controller controller = new Controller();
     //    文件选择框
     static TextField whitesheet;
     //    文本选择框

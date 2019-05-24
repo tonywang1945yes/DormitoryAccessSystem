@@ -32,7 +32,7 @@ public class ControllerTest {
         Instant i1 = Clock.systemDefaultZone().instant();
 
         Controller controller = new Controller();
-        controller.testDatabase();
+        controller.testDatabase("ddas");
 
         controller.setWhiteListPath("F:/Docs/DormitoryAssessSystem/白名单.xlsx");
         controller.setBlackListPath("F:/Docs/DormitoryAssessSystem/关注名单.xlsx");
@@ -76,7 +76,7 @@ public class ControllerTest {
         Instant i1 = Clock.systemDefaultZone().instant();
 
         Controller controller = new Controller();
-        controller.testDatabase();
+        controller.testDatabase("ddas");
 
         controller.setWhiteListPath("F:/Docs/DormitoryAssessSystem/白名单.xlsx");
         controller.setBlackListPath("F:/Docs/DormitoryAssessSystem/关注名单.xlsx");

@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class LackRemindBox {
 
-    public static void display(String title,String message) {
+    public static void display(String title, String message) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //
         window.setTitle(title);
@@ -25,10 +25,10 @@ public class LackRemindBox {
         VBox layout = new VBox(10);
 //        HBox box = new HBox();
 //        layout.getChildren().add(box);
-        layout.getChildren().addAll(label,yesButton);
+        layout.getChildren().addAll(label, yesButton);
         layout.setAlignment(Pos.CENTER);
 
-        Scene scene  =  new Scene(layout);
+        Scene scene = new Scene(layout);
         window.setScene(scene);
 
         window.show();

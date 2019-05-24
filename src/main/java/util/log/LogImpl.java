@@ -118,7 +118,7 @@ public class LogImpl implements AppLog {
      */
     @Override
     public void createInsSumRecord(int num, String date, String time) {
-        System.out.println("-writing insert sum log");
+        System.out.println("-writing insert sum log fot date " + date);
         Record record = new Record(date, time, Type.SumRecord, num, "This is a sum");
         dump(record, 0);
     }

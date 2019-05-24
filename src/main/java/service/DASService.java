@@ -22,7 +22,7 @@ public interface DASService {
      *
      * @return 检查结果(如果为数据库出错 ， 包含出错的日期)
      */
-    Map<CheckResult, List<String>> testDatabase();
+    Map<CheckResult, List<String>> testDatabase(String secret);
 
     /**
      * 读取生成的学生名单，发送邮件

@@ -116,13 +116,18 @@ public class Controller implements DASService {
     }
 
     @Override
-    public Map<CheckResult, List<String>> testDatabase() {
+    public Map<CheckResult, List<String>> testDatabase(String secret) {
         System.out.println("-checking database");
-
         Map<CheckResult, List<String>> res = new HashMap<>();
         List<String> weirdDates;
+
+        if (secret == null || secret.length() == 0) {
+            res.put(CheckResult.WRONG_SECRET, null);
+            return res;
+        }
+
         try {
-            probe = MDProbe.build("ddas");
+            probe = MDProbe.build(secret);
             probe.checkConnection();
             weirdDates = probe.checkError();
             res.put(CheckResult.DATABASE_ERROR, weirdDates);
