@@ -47,19 +47,20 @@ public class Logging extends Application{
             @Override
             public String call() throws Exception {
                 System.out.println("task started!");
-//                Controller controller = new Controller();
-//                Map<CheckResult, List<String>> map = controller.testDatabase();
-//                if (map.containsKey(CheckResult.DRIVER_ERROR) ){
-//                    result = CheckResult.DRIVER_ERROR;
-//                }
-//                else if(map.containsKey(CheckResult.CONNECTION_ERROR)){
-//                    result= CheckResult.CONNECTION_ERROR;
-//                }
+                Controller controller = new Controller();
+                Map<CheckResult, List<String>> map = controller.testDatabase(Main.key.getText());
+                if (map.containsKey(CheckResult.DRIVER_ERROR) ){
+                    result = CheckResult.DRIVER_ERROR;
+                }
+                else if(map.containsKey(CheckResult.CONNECTION_ERROR)){
+                    result= CheckResult.CONNECTION_ERROR;
+                }
 //                else if(map.containsKey(CheckResult.DATABASE_ERROR)){
 //                    result = CheckResult.DATABASE_ERROR;
-//                }else {
-//                    result = CheckResult.SUCCESS;
 //                }
+                else {
+                    result = CheckResult.SUCCESS;
+                }
                 result = CheckResult.SUCCESS;
                 Thread.sleep(3000);
                 System.out.println("task finished!");
