@@ -31,7 +31,7 @@ public class ReCheck {
 
         VBox vBox = new VBox();
 
-        Label label = new Label("    请核对筛选策略，确认无误后点击确定，"  + "有误请点击重置");
+        Label label = new Label("\n    请核对筛选策略，确认无误后点击确定，"  + "有误请点击重置");
         Label label1 = new Label("筛选策略:");
         String ranges = begin.toString() + "至" + end.toString() + "期间";
         String scale = isOutStrategy ? "至多离开寝室" : "至多留在寝室";
@@ -41,7 +41,7 @@ public class ReCheck {
         String thresheld = theshreldDay.toString() + "天" + theshreldHour.toString() + "小时" + theshreldMin.toString() + "分钟";
         Label label4 = new Label((isOutStrategy ? "到当前最长时间为" : "最小出进间隔为") + thresheld);
 
-        HBox hBox = new HBox();
+        HBox hBox = new HBox(10);
         Button yesButton = new Button("确认");
         Button noButton = new Button("重置");
         yesButton.setOnAction(event -> {
@@ -59,9 +59,9 @@ public class ReCheck {
         vBox.getChildren().addAll( label1, label2, label3, label4, new Label(""), hBox);
 
         vBox.setLayoutX(70);
-        vBox.setLayoutY(50);
+        vBox.setLayoutY(70);
         panel.getChildren().addAll(label,vBox);
-        Scene scene = new Scene(panel, 400, 210);
+        Scene scene = new Scene(panel, 400, 220);
         window.setTitle("Dormitory Access System");
         window.setScene(scene);
         window.show();
