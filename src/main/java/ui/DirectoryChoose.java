@@ -1,23 +1,21 @@
 package ui;
 
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 
-public class FileChoose {
+public class DirectoryChoose {
     String path;
     public void getFilePath(Stage primaryStage){
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(primaryStage);
+        DirectoryChooser chooser = new DirectoryChooser();
+        File file = chooser.showDialog(primaryStage);
         if(file==null){
             path=null;
         }
         else {
             path=file.getPath();
         }
-        System.out.println(path);
     }
 }

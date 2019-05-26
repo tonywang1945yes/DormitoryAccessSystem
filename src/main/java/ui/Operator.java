@@ -85,7 +85,7 @@ public class Operator {
         hbox1.getChildren().add(setpath);
         setpath.setOnAction(event -> {
             FileChoose filechoose = new FileChoose();
-            filechoose.getFilePath();
+            filechoose.getFilePath(new Stage());
             whitesheet.setText(filechoose.path);
         });
 
@@ -102,7 +102,7 @@ public class Operator {
         hbox2.getChildren().add(concern);
         concern.setOnAction(event -> {
             FileChoose filechoose = new FileChoose();
-            filechoose.getFilePath();
+            filechoose.getFilePath(new Stage());
             concernsheet.setText(filechoose.path);
         });
 
@@ -119,7 +119,7 @@ public class Operator {
         hBox7.getChildren().add(relate);
         relate.setOnAction(event -> {
             FileChoose filechoose = new FileChoose();
-            filechoose.getFilePath();
+            filechoose.getFilePath(new Stage());
             Operator.relatesheet.setText(filechoose.path);
         });
 
@@ -135,7 +135,7 @@ public class Operator {
         hBox10.getChildren().add(fest);
         fest.setOnAction(event -> {
             FileChoose filechoose = new FileChoose();
-            filechoose.getFilePath();
+            filechoose.getFilePath(new Stage());
             Operator.holidaySheet.setText(filechoose.path);
         });
 

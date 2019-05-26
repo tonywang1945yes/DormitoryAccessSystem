@@ -194,6 +194,7 @@ public class Filterate {
         Boolean answer = ConfirmBox.display("Title", "Sure you want to exit?");
         if (answer) {
             window.close();
+            System.exit(0);
         }
     }
 

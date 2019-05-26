@@ -30,8 +30,8 @@ public class ReCheck {
 //        panel.setMinSize(BoundarySize.WIDTH,BoundarySize.HEIGHT);
 
         VBox vBox = new VBox();
-        panel.getChildren().add(vBox);
-        Label label = new Label("请核对筛选策略，确认无误后点击确定按钮，" + "\n" + "有误请点击重置按钮");
+
+        Label label = new Label("    请核对筛选策略，确认无误后点击确定，"  + "有误请点击重置");
         Label label1 = new Label("筛选策略:");
         String ranges = begin.toString() + "至" + end.toString() + "期间";
         String scale = isOutStrategy ? "至多离开寝室" : "至多留在寝室";
@@ -56,10 +56,12 @@ public class ReCheck {
         });
         hBox.getChildren().addAll(yesButton, noButton);
         hBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(label, label1, label2, label3, label4, new Label(""), hBox);
+        vBox.getChildren().addAll( label1, label2, label3, label4, new Label(""), hBox);
 
-        vBox.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(panel, 320, 190);
+        vBox.setLayoutX(70);
+        vBox.setLayoutY(50);
+        panel.getChildren().addAll(label,vBox);
+        Scene scene = new Scene(panel, 400, 210);
         window.setTitle("Dormitory Access System");
         window.setScene(scene);
         window.show();

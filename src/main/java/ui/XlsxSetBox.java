@@ -51,9 +51,10 @@ public class XlsxSetBox {
         hBox.getChildren().add(text);
         hBox.getChildren().add(relate);
         relate.setOnAction(event -> {
-            FileChoose filechoose = new FileChoose();
-            filechoose.getFilePath();
-            text.setText(filechoose.path);
+            DirectoryChoose choose =new DirectoryChoose();
+            choose.getFilePath(new Stage());
+            text.setText(choose.path);
+            System.out.println(choose.path);
         });
 
         Button yesButton = new Button("确认生成");
