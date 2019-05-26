@@ -73,11 +73,14 @@ public class Filterate {
         Label label1 = new Label("请选择时长: ");
         ChoiceBox<Integer> choiceBoxDate = new ChoiceBox();
         choiceBoxDate.setItems(FXCollections.observableArrayList(getTimeList(0, 15)));
+        choiceBoxDate.setValue(1);
         Label label2 = new Label("天 ");
         ChoiceBox<Integer> choiceBoxHour = new ChoiceBox();
         choiceBoxHour.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
+        choiceBoxHour.setValue(0);
         Label label3 = new Label("小时 ");
         ChoiceBox<Integer> choiceBoxMinute = new ChoiceBox();
+        choiceBoxMinute.setValue(0);
         choiceBoxMinute.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
         Label label4 = new Label("分钟");
         hbox00.getChildren().addAll(label1, choiceBoxDate, label2, choiceBoxHour, label3, choiceBoxMinute, label4);
@@ -103,12 +106,15 @@ public class Filterate {
 //        输入阈值
         Label labelx = new Label("阈值:         ");
         ChoiceBox<Integer> choiceBox4thresholdDay = new ChoiceBox();
+        choiceBox4thresholdDay.setValue(1);
         choiceBox4thresholdDay.setItems(FXCollections.observableArrayList(getTimeList(0, 15)));
         Label label4thresholdDate = new Label("天 ");
         ChoiceBox<Integer> choiceBox4thresholdHour = new ChoiceBox();
+        choiceBox4thresholdHour.setValue(0);
         choiceBox4thresholdHour.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
         Label label4thresholdHour = new Label("小时 ");
         ChoiceBox<Integer> choiceBox4thresholdMin = new ChoiceBox();
+        choiceBox4thresholdMin.setValue(0);
         choiceBox4thresholdMin.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
         Label label4thresholdMin = new Label("分钟");
         hBox7.getChildren().addAll(labelx, choiceBox4thresholdDay, label4thresholdDate, choiceBox4thresholdHour, label4thresholdHour, choiceBox4thresholdMin, label4thresholdMin);
