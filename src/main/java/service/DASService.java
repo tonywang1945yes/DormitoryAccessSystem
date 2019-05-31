@@ -1,6 +1,7 @@
 package service;
 
 
+import entity.TimePair;
 import entity.TimeRequirement;
 import enums.CheckResult;
 import enums.MailResult;
@@ -12,10 +13,11 @@ public interface DASService {
     /**
      * 检查数据，生成异常学生名单
      *
-     * @param requirement 时间要求
+     * @param longStayRequirement      长时间停留的时间要求
+     * @param nightRequirement 夜不归宿的时间要求
      * @return 检查的结果
      */
-    CheckResult generateStudentList(TimeRequirement requirement);
+    CheckResult generateStudentList(TimeRequirement longStayRequirement, TimePair nightRequirement);
 
     /**
      * 检查数据库连接并检查到现在为止的每一天数据库有出错情况发生

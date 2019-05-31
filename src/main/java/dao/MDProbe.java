@@ -30,6 +30,9 @@ import java.util.stream.Collectors;
  * @since 2019/4/26
  */
 public class MDProbe {
+    //171250530: MTcxMjUwNTMw
+    //171250606: MTcxMjUwNjA2
+    //161250143: MTYxMjUwMTQz
     private static MDProbe instance = null;
     private SqlSessionFactory sqlSessionFactory;
 
@@ -130,7 +133,7 @@ public class MDProbe {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
-            System.out.println("---getting all records");
+            System.out.println("---获取所有刷卡记录");
             List<PassRecord> records = mapper.getAllRecords();
             List<IdMap> maps = mapper.getUserIdMaps();
             return group(records, maps);
@@ -140,7 +143,7 @@ public class MDProbe {
     }
 
     public void checkConnection() {
-        System.out.println("--checking database connection condition");
+        System.out.println("--检查数据库连接状态");
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
@@ -394,7 +397,7 @@ public class MDProbe {
      * @return 当前日期且小时-分钟-秒数为00-00-00的毫秒总数
      */
     private long alignDate(Date date) {
-        return date.getTime() - date.getTime() % (24 * 3600 * 1000L);
+        return date.getTime() - date.getTime() % (24 * 3600 * 1000L) - (8 * 3600 * 1000L);
     }
 
 }

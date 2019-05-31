@@ -75,7 +75,7 @@ public class XlsxSetBox {
                 Operator.controller.setOutputExcelPath(text.getText());
 //                设置节假日配置路径
                 Operator.controller.setHolidayExcelPath(Operator.holidaySheet.getText());
-                Operator.controller.setInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
+                Operator.controller.setLongInspector(isOutStrategy ? new LongOutInspector() : new LongInInspector());
                 Timestamp time1 = string2Time(begin.toString());
                 Timestamp time2 = string2Time(end.toString());
                 TimePair pair = new TimePair(time1, time2);

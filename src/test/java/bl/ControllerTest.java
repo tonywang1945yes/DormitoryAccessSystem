@@ -39,7 +39,7 @@ public class ControllerTest {
         controller.setTutorMapListPath("F:/Docs/DormitoryAssessSystem/辅导员名单.xlsx");
         controller.setHolidayExcelPath("F:/Docs/DormitoryAssessSystem/节假日信息.xlsx");
         controller.setOutputExcelPath("F:/Docs/DormitoryAssessSystem");
-        controller.setInspector(new LongOutInspector());
+        controller.setLongInspector(new LongOutInspector());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         TimeRequirement requirement = new TimeRequirement();
@@ -82,7 +82,7 @@ public class ControllerTest {
         controller.setBlackListPath("F:/Docs/DormitoryAssessSystem/关注名单.xlsx");
         controller.setTutorMapListPath("F:/Docs/DormitoryAssessSystem/辅导员名单.xlsx");
         controller.setOutputExcelPath("F:/Docs/DormitoryAssessSystem");
-        controller.setInspector(new LongInInspector());
+        controller.setLongInspector(new LongInInspector());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         TimeRequirement requirement = new TimeRequirement();

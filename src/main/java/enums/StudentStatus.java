@@ -14,6 +14,7 @@ public enum StudentStatus {
     WATCHED("在关注名单上"),
     LONG_IN_WITH_CONFUSION("长时间待在宿舍，但是存在混淆记录"),
     LONG_IN("长时间呆在宿舍"),
+    NIGHT_ABSENCE("昨夜旷寝"),
     WITH_CONFUSION("存在混淆记录"),
     ABOUT_HOLIDAY("与假期有关");
 
