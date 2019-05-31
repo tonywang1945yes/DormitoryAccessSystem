@@ -156,7 +156,6 @@ public class Operator {
         Button deliver = new Button();
         deliver.setText("点此发送名单至各辅导员邮箱");
         deliver.setOpacity(1);
-        deliver.setDisable(true);
         hBox9.getChildren().addAll(text, deliver);
 
         deliver.setOnAction(event -> {
@@ -193,9 +192,9 @@ public class Operator {
 //        deliver.setOnMouseClicked(new Deliver());
 
         filter.setOnAction(event -> {
-            ConditionChooser.display("模式选择","请选择筛选模式");
+            Filterate filterate = new Filterate();
+            filterate.start(new Stage());
             filter.setDisable(true);
-            deliver.setDisable(false);
         });
 
 
