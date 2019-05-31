@@ -1,6 +1,7 @@
 package ui;
 
 import com.google.common.util.concurrent.*;
+import entity.TimePair;
 import entity.TimeRequirement;
 import enums.CheckResult;
 import javafx.application.Application;
@@ -26,7 +27,7 @@ public class GuavaWaiting extends Application {
     static boolean finished = false;
     Task copyWorker;
 
-    public void execute(TimeRequirement timeRequirement) {
+    public void execute(TimeRequirement timeRequirement, TimePair pair) {
         ExecutorService executor = Executors.newFixedThreadPool(1);
 
         // 使用guava提供的MoreExecutors工具类包装原始的线程池
@@ -37,7 +38,7 @@ public class GuavaWaiting extends Application {
             @Override
             public String call() throws Exception {
                 System.out.println("generating task start");
-                result = Operator.controller.generateStudentList(timeRequirement);
+                result = Operator.controller.generateStudentList(timeRequirement,pair);
 //                result = CheckResult.SUCCESS;
                 //模拟耗时操作
 //                Thread.sleep(30000);

@@ -157,6 +157,7 @@ public class Operator {
         deliver.setText("点此发送名单至各辅导员邮箱");
         deliver.setOpacity(1);
         hBox9.getChildren().addAll(text, deliver);
+        deliver.setDisable(true);
 
         deliver.setOnAction(event -> {
             MailSend sender = new MailSend();
@@ -195,6 +196,7 @@ public class Operator {
             Filterate filterate = new Filterate();
             filterate.start(new Stage());
             filter.setDisable(true);
+            deliver.setDisable(false);
         });
 
 

@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
@@ -31,7 +32,7 @@ public class XlsxSetBox {
     public void start(Stage primaryStage, boolean isOutStrategy, Integer day,
                       Integer hour, Integer minute, LocalDate begin, LocalDate end,
                       Integer thresheldDay,
-                      Integer thresheldHour, Integer thresheldMinute) {
+                      Integer thresheldHour, Integer thresheldMinute, LocalDateTime yesterday,LocalDateTime today) {
         AppLog ope = LogImpl.getInstance();
         window = primaryStage;
         AnchorPane panel = new AnchorPane();
@@ -84,9 +85,11 @@ public class XlsxSetBox {
                 //默认使用分钟
                 Duration specialReq = Duration.of(24 * 60 * thresheldDay + 60 * thresheldHour + thresheldMinute, MINUTES);
 
+                TimePair pair1 = new TimePair(Timestamp.valueOf(yesterday),Timestamp.valueOf(today));
+
                 TimeRequirement requirement = new TimeRequirement(pair, result, specialReq, isOutStrategy);
                 GuavaWaiting waiting = new GuavaWaiting();
-                waiting.execute(requirement);
+                waiting.execute(requirement,pair1);
                 window.close();
             } catch (Exception e) {
                 ope.createExceptionRecord("ParseException");
