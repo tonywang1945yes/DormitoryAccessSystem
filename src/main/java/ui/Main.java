@@ -5,14 +5,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     Stage window;
     Button login;
+
+    static TextField url;
+    static TextField hostname;
     static PasswordField secret;
 
     @Override
@@ -33,17 +38,32 @@ public class Main extends Application {
             window.hide();
         });
 
+        url = new TextField();
+        HBox urlBox = new HBox();
+        urlBox.getChildren().addAll(new Label("url：  "),url);
+
+
+        hostname = new TextField();
+        HBox hostBox = new HBox();
+        hostBox.getChildren().addAll(new Label("用户："),hostname);
+
+
 
         secret = new PasswordField();
         HBox hBox = new HBox();
         hBox.getChildren().addAll(new Label("密钥："), secret);
-        hBox.setLayoutX(35);
-        hBox.setLayoutY(50);
-        panel.getChildren().add(hBox);
+
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(urlBox,hostBox,hBox);
+
+        vBox.setLayoutX(35);
+        vBox.setLayoutY(50);
+
         login.setLayoutX(130);
-        login.setLayoutY(120);
+        login.setLayoutY(190);
+        panel.getChildren().add(vBox);
         panel.getChildren().add(login);
-        Scene scene = new Scene(panel, 300, 200);
+        Scene scene = new Scene(panel, 300, 230);
         window.setScene(scene);
         window.show();
         window.setResizable(false);

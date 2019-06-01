@@ -86,7 +86,7 @@ public class Filterate {
         Label label3 = new Label("小时 ");
         ChoiceBox<Integer> choiceBoxMinute = new ChoiceBox();
         choiceBoxMinute.setValue(0);
-        choiceBoxMinute.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
+        choiceBoxMinute.setItems(FXCollections.observableArrayList(getMinuteList(0, 59)));
         Label label4 = new Label("分钟");
         hbox00.getChildren().addAll(label1, choiceBoxDate, label2, choiceBoxHour, label3, choiceBoxMinute, label4);
 
@@ -120,7 +120,7 @@ public class Filterate {
         Label label4thresholdHour = new Label("小时 ");
         ChoiceBox<Integer> choiceBox4thresholdMin = new ChoiceBox();
         choiceBox4thresholdMin.setValue(0);
-        choiceBox4thresholdMin.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
+        choiceBox4thresholdMin.setItems(FXCollections.observableArrayList(getMinuteList(0, 59)));
         Label label4thresholdMin = new Label("分钟");
         hBox7.getChildren().addAll(labelx, choiceBox4thresholdDay, label4thresholdDate, choiceBox4thresholdHour, label4thresholdHour, choiceBox4thresholdMin, label4thresholdMin);
 
@@ -143,14 +143,11 @@ public class Filterate {
         hour4Yesterday.setValue(23);
         Label labeli = new Label("时");
         ChoiceBox<Integer> minute4Yesterday = new ChoiceBox();
-        minute4Yesterday.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
+        minute4Yesterday.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
         minute4Yesterday.setValue(0);
         Label labelii = new Label("分");
-        ChoiceBox<Integer> second4Yesterday = new ChoiceBox();
-        second4Yesterday.setValue(0);
-        second4Yesterday.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
-        Label labeliii = new Label("秒");
-        hbox10.getChildren().addAll(label4yesterday, hour4Yesterday, labeli, minute4Yesterday, labelii, second4Yesterday, labeliii);
+
+        hbox10.getChildren().addAll(label4yesterday, hour4Yesterday, labeli, minute4Yesterday, labelii);
 
         HBox hbox11 = new HBox();
         Label label4today = new Label("直至:       ");
@@ -159,14 +156,10 @@ public class Filterate {
         hour4Today.setValue(7);
         Label labelu = new Label("时");
         ChoiceBox<Integer> minute4Today = new ChoiceBox();
-        minute4Today.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
+        minute4Today.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
         minute4Today.setValue(0);
         Label labeluu = new Label("分");
-        ChoiceBox<Integer> second4Today = new ChoiceBox();
-        second4Today.setValue(0);
-        second4Today.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
-        Label labeluuu = new Label("秒");
-        hbox11.getChildren().addAll(label4today, hour4Today, labelu, minute4Today, labeluu, second4Today, labeluuu);
+        hbox11.getChildren().addAll(label4today, hour4Today, labelu, minute4Today, labeluu);
 
         HBox hBoxxx = new HBox();
         hBoxxx.getChildren().addAll(new Label("筛选未归同学："));
@@ -175,7 +168,7 @@ public class Filterate {
 
         setxlsx.setOnAction(event -> {
             LocalDate todayDate = LocalDate.now();
-            LocalTime todayTime = LocalTime.of(hour4Today.getValue(),minute4Today.getValue(),second4Today.getValue());
+            LocalTime todayTime = LocalTime.of(hour4Today.getValue(),minute4Today.getValue());
             LocalDateTime today = LocalDateTime.of(todayDate,todayTime);
 
             LocalDate yesterdayDate;
@@ -184,7 +177,7 @@ public class Filterate {
             }else{
                 yesterdayDate = todayDate;
             }
-            LocalTime yesterdayTime = LocalTime.of(hour4Yesterday.getValue(),minute4Yesterday.getValue(),second4Yesterday.getValue());
+            LocalTime yesterdayTime = LocalTime.of(hour4Yesterday.getValue(),minute4Yesterday.getValue());
             LocalDateTime yesterday = LocalDateTime.of(yesterdayDate,yesterdayTime);
             if (choiceBoxDate.getValue() == null || choiceBoxHour.getValue() == null || choiceBoxMinute.getValue() == null) {
                 LackRemindBox.display("时长选择不完全", "请选择合适的时长");
@@ -200,6 +193,8 @@ public class Filterate {
             else if (choiceBox4thresholdDay.getValue() == null || choiceBox4thresholdHour.getValue() == null || choiceBox4thresholdMin.getValue() == null) {
                 LackRemindBox.display("阈值选择不完全", "请选择合适的阈值");
             } else {
+                System.out.println(yesterday);
+                System.out.println(today);
                 ReCheck reCheck = new ReCheck();
                 reCheck.start(new Stage(), button1.isSelected(), choiceBoxDate.getValue(),
                         choiceBoxHour.getValue(), choiceBoxMinute.getValue(), beginfield.getValue(),
@@ -278,6 +273,14 @@ public class Filterate {
             return timeList;
         }
         for (int i = start; i <= end; i++) {
+            timeList.add(i);
+        }
+        return timeList;
+    }
+    private List<Integer> getMinuteList(int start, int end) {
+
+        List<Integer> timeList = new ArrayList<>();
+        for (int i = start; i <= end; i=i+5) {
             timeList.add(i);
         }
         return timeList;

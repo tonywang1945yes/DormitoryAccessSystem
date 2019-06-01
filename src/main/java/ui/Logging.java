@@ -40,7 +40,8 @@ public class Logging extends Application {
             public String call() throws Exception {
                 System.out.println("task started!");
                 Controller controller = new Controller();
-                Map<CheckResult, List<String>> map = controller.testDatabase("114.212.99.210:3306/test", "dbtest", "njuacdbtest");
+//                Map<CheckResult, List<String>> map = controller.testDatabase("114.212.99.210:3306/test", "dbtest", "njuacdbtest");
+                Map<CheckResult, List<String>> map = controller.testDatabase(Main.url.getText(), Main.hostname.getText(), Main.secret.getText());
                 if (map.containsKey(CheckResult.DRIVER_ERROR)) {
                     result = CheckResult.DRIVER_ERROR;
                 } else if (map.containsKey(CheckResult.CONNECTION_ERROR)) {
