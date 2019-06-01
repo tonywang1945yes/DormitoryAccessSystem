@@ -98,7 +98,7 @@ public class GuavaWaiting extends Application {
                 System.out.println(newValue);
                 if (newValue.equals("finished")) {
                     //NO_SUCH_FILE, WRONG_FORMAT, SHEET_NAME_ERROR,
-                    //    WRONG_SECRET, CONNECTION_ERROR, DRIVER_ERROR, DATABASE_ERROR,
+                    //    WRONG_PASSWORD, CONNECTION_ERROR, DRIVER_ERROR, DATABASE_ERROR,
                     //    FILE_WRITING_ERROR,
                     //    SUCCESS
                     if (result.equals(CheckResult.SUCCESS)) {

@@ -14,7 +14,7 @@ public class MDProbeTest {
     @Test
     public void build() {
         try {
-            MDProbe probe = MDProbe.build("ddas");
+            MDProbe probe = MDProbe.build("114.212.99.210:3306/test", "dbtest", "njuacdbtest");
             List<PassRecord> records = probe.getRecordWithLimit(5);
             System.out.println(records);
 
@@ -27,7 +27,7 @@ public class MDProbeTest {
     @Test
     public void getRecordsGrouped() {
         try {
-            MDProbe probe = MDProbe.build("123");
+            MDProbe probe = MDProbe.build("114.212.99.210:3306/test", "dbtest", "njuacdbtest");
 
             Instant i1 = Clock.systemDefaultZone().instant();
             Map<String, List<PassRecord>> records = probe.getRecordsGrouped();

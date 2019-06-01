@@ -12,7 +12,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import util.log.AppLog;
 import util.log.LogImpl;
 import util.log.Record;
-import util.security.SecretUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,10 +47,12 @@ public class MDProbe {
     /**
      * 使用参数构建SqlSessionFactory字段
      *
-     * @param secret 使用的密钥
+     * @param url      数据库url
+     * @param username 登录用用户名
+     * @param password 登录用密码
      * @return probe对象
      */
-    public static MDProbe build(String secret) throws DBConnectionException {
+    public static MDProbe build(String url, String username, String password) throws DBConnectionException {
         instance = new MDProbe();
 
 
@@ -63,9 +64,9 @@ public class MDProbe {
             is = Resources.getResourceAsStream(resource);
             properties = Resources.getResourceAsProperties("jdbc.properties");
             //解密
-            properties.put("jdbc.url", SecretUtil.decrypt(properties.getProperty("jdbc.url"), secret));
-            properties.put("jdbc.username", SecretUtil.decrypt(properties.getProperty("jdbc.username"), secret));
-            properties.put("jdbc.password", SecretUtil.decrypt(properties.getProperty("jdbc.password"), secret));
+            properties.put("jdbc.url", "jdbc:mysql://" + url);
+            properties.put("jdbc.username", username);
+            properties.put("jdbc.password", password);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (RuntimeException e) {
@@ -133,7 +134,7 @@ public class MDProbe {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);
-            System.out.println("---获取所有刷卡记录");
+            System.out.println("---get all records");
             List<PassRecord> records = mapper.getAllRecords();
             List<IdMap> maps = mapper.getUserIdMaps();
             return group(records, maps);
@@ -143,7 +144,7 @@ public class MDProbe {
     }
 
     public void checkConnection() {
-        System.out.println("--检查数据库连接状态");
+        System.out.println("--check database connection");
         SqlSession session = sqlSessionFactory.openSession();
         try {
             PassRecordMapper mapper = session.getMapper(PassRecordMapper.class);

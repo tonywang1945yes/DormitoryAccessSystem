@@ -40,7 +40,7 @@ public class Logging extends Application {
             public String call() throws Exception {
                 System.out.println("task started!");
                 Controller controller = new Controller();
-                Map<CheckResult, List<String>> map = controller.testDatabase(Main.secret.getText());
+                Map<CheckResult, List<String>> map = controller.testDatabase("114.212.99.210:3306/test", "dbtest", "njuacdbtest");
                 if (map.containsKey(CheckResult.DRIVER_ERROR)) {
                     result = CheckResult.DRIVER_ERROR;
                 } else if (map.containsKey(CheckResult.CONNECTION_ERROR)) {
@@ -123,8 +123,8 @@ public class Logging extends Application {
                     } else if (result.equals(CheckResult.DRIVER_ERROR)) {
                         Warn.display("失败", "驱动错误");
                         primaryStage.close();
-                    } else if (result.equals(CheckResult.WRONG_SECRET)) {
-                        Warn.display("失败", "密钥错误");
+                    } else if (result.equals(CheckResult.WRONG_PASSWORD)) {
+                        Warn.display("失败", "密码错误");
                         primaryStage.close();
                     }
 

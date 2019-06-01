@@ -7,7 +7,6 @@ import entity.*;
 import enums.CheckResult;
 import enums.MailResult;
 import enums.StudentStatus;
-import exception.daoException.DBConnectionException;
 import exception.daoException.DatabaseErrorException;
 import exception.excelException.*;
 import exception.mailException.MailException;
@@ -125,28 +124,29 @@ public class Controller implements DASService {
     }
 
     @Override
-    public Map<CheckResult, List<String>> testDatabase(String secret) {
+    public Map<CheckResult, List<String>> testDatabase(String url, String username, String password) {
         System.out.println("-checking database");
         Map<CheckResult, List<String>> res = new HashMap<>();
         List<String> weirdDates;
 
-        if (secret == null || secret.length() == 0) {
-            res.put(CheckResult.WRONG_SECRET, null);
-            return res;
-        }
+        //TODO 检查是否符合格式应该由前端来检查
+//        if (url == null || url.length() == 0 || username == null || username.length() == 0 || password == null || password.length() == 0) {
+//            res.put(CheckResult.WRONG_PASSWORD, null);
+//            return res;
+//        }
 
         try {
-            probe = MDProbe.build(secret);
+            probe = MDProbe.build(url, username, password);
             probe.checkConnection();
             weirdDates = probe.checkError();
             res.put(CheckResult.DATABASE_ERROR, weirdDates);
 
-        } catch (DBConnectionException e) {
-            res.put(CheckResult.WRONG_SECRET, null);
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains("ClassNotFoundException"))
                 res.put(CheckResult.DRIVER_ERROR, null);
+            else if (e.getMessage().contains("Access denied"))
+                res.put(CheckResult.WRONG_PASSWORD, null);
             else
                 res.put(CheckResult.CONNECTION_ERROR, null);
         }

@@ -141,11 +141,11 @@ public class Filterate {
         ChoiceBox<Integer> hour4Yesterday = new ChoiceBox();
         hour4Yesterday.setItems(FXCollections.observableArrayList(getTimeList(23, 6)));
         hour4Yesterday.setValue(23);
-        Label labeli = new Label("小时");
+        Label labeli = new Label("时");
         ChoiceBox<Integer> minute4Yesterday = new ChoiceBox();
         minute4Yesterday.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
         minute4Yesterday.setValue(0);
-        Label labelii = new Label("分钟");
+        Label labelii = new Label("分");
         ChoiceBox<Integer> second4Yesterday = new ChoiceBox();
         second4Yesterday.setValue(0);
         second4Yesterday.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
@@ -157,11 +157,11 @@ public class Filterate {
         ChoiceBox<Integer> hour4Today = new ChoiceBox();
         hour4Today.setItems(FXCollections.observableArrayList(getTimeList(0, 7)));
         hour4Today.setValue(7);
-        Label labelu = new Label("小时");
+        Label labelu = new Label("时");
         ChoiceBox<Integer> minute4Today = new ChoiceBox();
         minute4Today.setItems(FXCollections.observableArrayList(getTimeList(0, 23)));
         minute4Today.setValue(0);
-        Label labeluu = new Label("分钟");
+        Label labeluu = new Label("分");
         ChoiceBox<Integer> second4Today = new ChoiceBox();
         second4Today.setValue(0);
         second4Today.setItems(FXCollections.observableArrayList(getTimeList(0, 59)));
